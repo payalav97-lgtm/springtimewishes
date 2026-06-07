@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Springtime Wishes archive — media fragments, garments, memory, trace.">
+<title>archive / springtime wishes</title>
+<style>
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"LTC Metropolitan";src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  --paper:#bdb6a7;
+  --pale:#d9d2c2;
+  --ink:rgba(222,215,202,.84);
+  --hair:rgba(214,205,188,.20);
+  --hair2:rgba(214,205,188,.10);
+  --font-sans:"Aktiv Grotesk",Arial,Helvetica,sans-serif;
+  --font-ital:"LTC Metropolitan",Georgia,"Times New Roman",serif;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-r:env(safe-area-inset-right,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+  color:var(--ink);
+  -webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+body{
+  font-family:var(--font-sans);
+  font-weight:300;
+  cursor:crosshair;
+  isolation:isolate;
+}
+body.is-frozen *{animation-play-state:paused!important}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:1px dotted var(--pale);outline-offset:4px}
+
+#root{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 49% 10%,rgba(170,160,142,.14),transparent 30%),
+    radial-gradient(ellipse at 13% 73%,rgba(100,85,67,.23),transparent 37%),
+    radial-gradient(ellipse at 92% 34%,rgba(155,145,126,.07),transparent 33%),
+    linear-gradient(180deg,#000 0%,#030201 42%,#000 100%);
+}
+#root::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:90;
+  opacity:.34;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.024) 0 1px,transparent 1px 3px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.93' numOctaves='3' type='fractalNoise' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.58'/%3E%3C/svg%3E");
+  background-size:100% 2px,168px 168px;
+  mix-blend-mode:overlay;
+  animation:paperDrift 2.8s steps(3,end) infinite;
+}
+#root::after{
+  content:"";
+  position:absolute;
+  inset:9px;
+  pointer-events:none;
+  z-index:65;
+  border:1px solid rgba(207,197,178,.18);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.65),inset 0 0 92px rgba(0,0,0,.75);
+  opacity:.72;
+}
+@keyframes paperDrift{
+  0%{transform:translate3d(0,0,0)}
+  33%{transform:translate3d(-1px,1px,0)}
+  66%{transform:translate3d(1px,-1px,0)}
+  100%{transform:translate3d(0,-1px,0)}
+}
+
+.noise-canvas{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:.74;
+}
+.old-grid{
+  position:absolute;
+  inset:16px;
+  z-index:2;
+  pointer-events:none;
+  opacity:.29;
+  background:
+    linear-gradient(90deg,transparent calc(25% - .5px),var(--hair2) calc(25% - .5px) calc(25% + .5px),transparent calc(25% + .5px)),
+    linear-gradient(90deg,transparent calc(50% - .5px),var(--hair2) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+    linear-gradient(90deg,transparent calc(75% - .5px),var(--hair2) calc(75% - .5px) calc(75% + .5px),transparent calc(75% + .5px)),
+    linear-gradient(0deg,transparent calc(50% - .5px),var(--hair2) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+    repeating-linear-gradient(0deg,transparent 0 23px,rgba(214,205,188,.033) 24px 25px);
+}
+.wordmark{
+  position:absolute;
+  left:50%;
+  top:calc(var(--safe-t) + clamp(7px,2.4vh,22px));
+  width:min(98vw,1740px);
+  height:auto;
+  z-index:22;
+  opacity:.20;
+  filter:grayscale(1) contrast(1.2) brightness(.72) blur(.15px) drop-shadow(0 0 18px rgba(220,211,194,.12));
+  mix-blend-mode:screen;
+  pointer-events:none;
+  transform:translateX(-50%);
+  animation:wordmarkAge 11.5s steps(2,end) infinite;
+}
+@keyframes wordmarkAge{
+  0%,100%{opacity:.18;transform:translateX(-50%) translateY(0) scale(1)}
+  18%{opacity:.29;transform:translateX(-50%) translateY(1px) scale(1.003)}
+  19%{opacity:.11;transform:translateX(calc(-50% + 2px)) translateY(0) scale(.999)}
+  20%,56%{opacity:.22;transform:translateX(-50%) translateY(0) scale(1)}
+  57%{opacity:.08;filter:grayscale(1) contrast(1.9) brightness(.55) blur(.55px)}
+  59%{opacity:.32;filter:grayscale(1) contrast(1.1) brightness(.78) blur(.05px)}
+}
+.vignette{
+  position:absolute;
+  inset:-5%;
+  z-index:60;
+  pointer-events:none;
+  box-shadow:inset 0 0 15vw 8vw #000;
+  opacity:.72;
+}
+.old-button{
+  position:absolute;
+  z-index:75;
+  font-family:var(--font-sans);
+  font-size:11px;
+  line-height:1.18;
+  letter-spacing:.015em;
+  color:rgba(222,214,198,.74);
+  background:
+    linear-gradient(180deg,rgba(24,19,14,.96),rgba(0,0,0,.98) 52%,rgba(16,12,9,.94)),
+    repeating-linear-gradient(90deg,rgba(225,213,190,.03) 0 1px,transparent 1px 6px);
+  border:1px solid rgba(210,198,174,.25);
+  clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px);
+  box-shadow:inset 1px 1px 0 rgba(235,224,199,.15),inset -1px -1px 0 rgba(0,0,0,.95),inset 0 0 17px rgba(0,0,0,.72),0 0 0 1px rgba(0,0,0,.94),0 12px 30px rgba(0,0,0,.62);
+}
+.old-button::before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  pointer-events:none;
+  opacity:.7;
+  border:1px solid rgba(213,201,177,.13);
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);
+}
+.old-button:hover{color:rgba(255,248,232,.95);filter:brightness(1.12)}
+.old-button:active{transform:translate(1px,1px)}
+.back-home{
+  left:calc(var(--safe-l) + clamp(13px,2.1vw,30px));
+  top:calc(var(--safe-t) + clamp(13px,2.1vh,28px));
+  display:inline-grid;
+  place-items:center;
+  min-height:32px;
+  min-width:58px;
+  padding:8px 13px 9px;
+  text-align:center;
+}
+
+.archive-deck{
+  position:absolute;
+  left:calc(var(--safe-l) + clamp(12px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(13px,2.1vh,28px) + 45px);
+  z-index:64;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2px;
+  width:min(238px,36vw);
+  opacity:.44;
+  pointer-events:none;
+}
+.archive-deck span{
+  height:2px;
+  background:rgba(218,208,188,.34);
+  transform-origin:left;
+  animation:deckBlink 5.2s steps(2,end) infinite;
+  animation-delay:calc(var(--i) * -.19s);
+}
+@keyframes deckBlink{
+  0%,100%{opacity:.13;transform:scaleX(.1)}
+  36%{opacity:.8;transform:scaleX(1)}
+  67%{opacity:.26;transform:scaleX(.42);transform-origin:right}
+}
+
+.archive-head{
+  position:absolute;
+  left:calc(var(--safe-l) + clamp(14px,3.2vw,52px));
+  right:calc(var(--safe-r) + clamp(14px,3.2vw,52px));
+  bottom:calc(var(--safe-b) + clamp(16px,3vh,34px));
+  z-index:66;
+  pointer-events:none;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:end;
+  gap:18px;
+}
+.kicker{
+  display:block;
+  margin:0 0 9px;
+  color:rgba(222,214,198,.48);
+  font-size:11px;
+  line-height:1.25;
+  font-weight:300;
+  letter-spacing:.022em;
+}
+h1{
+  margin:0;
+  color:rgba(225,218,204,.70);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(64px,12vw,190px);
+  line-height:.74;
+  letter-spacing:-.06em;
+  text-shadow:0 0 18px rgba(218,208,190,.11);
+  filter:blur(.08px);
+}
+.archive-count{
+  max-width:300px;
+  margin:0 0 6px;
+  color:rgba(224,216,198,.42);
+  font-size:11px;
+  line-height:1.45;
+  letter-spacing:.01em;
+  text-align:right;
+}
+
+.stage{
+  position:absolute;
+  inset:0;
+  z-index:12;
+  overflow:hidden;
+  pointer-events:none;
+  contain:layout paint style;
+}
+.archive-card{
+  position:absolute;
+  left:0;
+  top:0;
+  width:var(--w);
+  aspect-ratio:var(--ar);
+  z-index:var(--z);
+  opacity:0;
+  transform:translate3d(var(--x), var(--y), 0);
+  will-change:transform,opacity;
+  pointer-events:auto;
+  contain:layout paint style;
+  animation-duration:var(--dur);
+  animation-delay:var(--delay);
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  animation-direction:alternate;
+}
+.archive-card[data-axis="x"]{animation-name:travelX}
+.archive-card[data-axis="y"]{animation-name:travelY}
+@keyframes travelX{
+  0%{transform:translate3d(calc(var(--x) - var(--travel)), var(--y), 0)}
+  100%{transform:translate3d(calc(var(--x) + var(--travel)), var(--y), 0)}
+}
+@keyframes travelY{
+  0%{transform:translate3d(var(--x), calc(var(--y) - var(--travel)), 0)}
+  100%{transform:translate3d(var(--x), calc(var(--y) + var(--travel)), 0)}
+}
+.archive-card.is-live{
+  opacity:var(--op);
+  transition:opacity .72s ease, filter .72s ease;
+}
+.archive-card.is-changing{
+  opacity:.05;
+  filter:blur(6px);
+}
+.archive-card.is-front{
+  --op:.98;
+  z-index:42;
+}
+.archive-card.is-quiet{
+  --op:.24;
+  z-index:8;
+}
+.archive-card::before,
+.archive-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+}
+.archive-card::before{
+  border:1px solid rgba(214,204,183,.15);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.06),
+    inset -1px -1px 0 rgba(0,0,0,.82),
+    0 10px 32px rgba(0,0,0,.54);
+}
+.archive-card::after{
+  opacity:var(--surface);
+  mix-blend-mode:overlay;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 10px,rgba(234,224,205,.075) 11px 12px),
+    repeating-linear-gradient(90deg,transparent 0 17px,rgba(234,224,205,.045) 18px 19px);
+  animation:surfaceFlicker var(--surface-dur) steps(4,end) infinite;
+}
+@keyframes surfaceFlicker{
+  0%,100%{opacity:calc(var(--surface) * .55);transform:translate3d(0,0,0)}
+  31%{opacity:calc(var(--surface) * 1.1);transform:translate3d(1px,0,0)}
+  32%{opacity:calc(var(--surface) * 2.25);transform:translate3d(-1px,1px,0)}
+  62%{opacity:calc(var(--surface) * .35)}
+  81%{opacity:calc(var(--surface) * 1.4);transform:translate3d(0,-1px,0)}
+}
+.archive-card img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#050403;
+  opacity:1;
+  filter:none;
+  transform:translate3d(0,0,0) scale(1.002);
+  backface-visibility:hidden;
+  transition:opacity .45s ease, transform .75s cubic-bezier(.16,1,.3,1);
+}
+.archive-card:hover,
+.archive-card:focus-within{
+  z-index:90;
+  opacity:1!important;
+}
+.archive-card:hover img,
+.archive-card:focus-within img{
+  transform:translate3d(0,0,0) scale(1.018);
+}
+.burst{
+  position:absolute;
+  inset:0;
+  z-index:50;
+  pointer-events:none;
+  overflow:hidden;
+}
+.burst-line{
+  position:absolute;
+  left:0;
+  right:0;
+  height:1px;
+  top:var(--t);
+  opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(231,222,201,.22),transparent);
+  transform:translate3d(var(--sx),0,0) scaleX(var(--scale));
+  animation:burstLine var(--dur) steps(3,end) infinite var(--delay);
+}
+@keyframes burstLine{
+  0%,91%,100%{opacity:0}
+  92%{opacity:.08;transform:translate3d(var(--sx),0,0) scaleX(.15)}
+  94%{opacity:.54;transform:translate3d(0,0,0) scaleX(var(--scale))}
+  96%{opacity:.16;transform:translate3d(calc(var(--sx) * -1),0,0) scaleX(.38)}
+}
+
+.mode-line{
+  position:absolute;
+  right:calc(var(--safe-r) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(13px,2vh,26px));
+  z-index:68;
+  color:rgba(222,214,198,.34);
+  font-size:10px;
+  line-height:1.35;
+  letter-spacing:.02em;
+  pointer-events:none;
+  text-align:right;
+}
+.sr{
+  position:absolute!important;
+  width:1px!important;height:1px!important;
+  padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;border:0!important;
+}
+
+@media(max-width:760px){
+  #root::after{inset:7px}
+  .old-grid{inset:12px;opacity:.24}
+  .wordmark{width:150vw;top:calc(var(--safe-t) + 2vh);opacity:.17}
+  h1{font-size:clamp(58px,22vw,116px)}
+  .archive-head{
+    left:calc(var(--safe-l) + 13px);
+    right:calc(var(--safe-r) + 13px);
+    bottom:calc(var(--safe-b) + 12px);
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  .archive-count{font-size:10px;line-height:1.35;text-align:left;max-width:260px}
+  .old-button{font-size:10px}
+  .back-home{min-height:31px;min-width:54px;padding:7px 10px 8px}
+  .archive-deck{display:none}
+  .mode-line{display:none}
+}
+@media(max-width:390px){
+  h1{font-size:clamp(54px,25vw,96px)}
+}
+@media(max-height:620px) and (orientation:landscape){
+  .archive-head{grid-template-columns:minmax(0,1fr) auto}
+  h1{font-size:clamp(46px,10vw,120px)}
+  .archive-count{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}
+  .noise-canvas{display:none}
+  .archive-card{animation:none!important;opacity:.86!important;filter:none!important}
+  .archive-card:nth-child(n+17){display:none}
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <canvas id="archiveCanvas" class="noise-canvas" aria-hidden="true"></canvas>
+  <div class="old-grid" aria-hidden="true"></div>
+  <img class="wordmark" src="./Stw_Logo.png" width="2048" height="343" alt="Springtime Wishes" decoding="async" fetchpriority="high">
+  <a class="old-button back-home" href="index.html">index</a>
+  <div class="archive-deck" aria-hidden="true">
+    <span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>
+    <span style="--i:5"></span><span style="--i:6"></span><span style="--i:7"></span><span style="--i:8"></span>
+    <span style="--i:9"></span><span style="--i:10"></span><span style="--i:11"></span><span style="--i:12"></span>
+  </div>
+
+  <main class="stage" id="archiveStage" aria-label="Springtime Wishes media archive"></main>
+  <div class="burst" id="burst" aria-hidden="true"></div>
+
+  <header class="archive-head">
+    <div>
+      <span class="kicker">springtime wishes</span>
+      <h1>archive</h1>
+    </div>
+    <p class="archive-count"><span id="archiveCount">.</span> media fragments / </p>
+  </header>
+
+  <div class="mode-line" id="modeLine" aria-hidden="true">rectilinear archive / image memory</div>
+  <div class="vignette" aria-hidden="true"></div>
+  <p class="sr">Springtime Wishes archive. Two hundred and four media fragments cycle through the field.</p>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const MEDIA = ["https://d2w9rnfcy7mm78.cloudfront.net/46809793/original_7d3a0ea224131d4fadc29759c18390a1.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809794/original_1e110923c278a42932d235a840d2ac18.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809795/original_6f1cfad2500859280d515cc847dd0343.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809796/original_cbf570618515158708aa1c8e9582620b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809797/original_0087b5c1d7770406ebff29bb9ae520d7.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809798/original_cb46b556815d59b58a5866b58bd23a46.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809799/original_d9e7eb853974505b0a7256ba8ab35052.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809800/original_3a9aaa3b3c07b268c6ad953d67fd92ec.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809801/original_5a0faa3ea21afd6f75a1804c9a73f927.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809802/original_c1b0c437b92961e079dd9de738bd4171.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809803/original_026d33e26601b7daf8bdebbfc336884f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809804/original_24a43a3021fbf971b6182a4f239a54f7.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809805/original_4e2de6c062c541319aac8f63d5642120.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809806/original_4c7b22966451fb724e78ed342294cf17.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809807/original_fe0b314ff0ad2143e4ffa596713b498d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809808/original_bc0d0d0330dccf6f2300df5136b2d84e.png","https://d2w9rnfcy7mm78.cloudfront.net/46809810/original_73fbddd9c15d1f04831a6676ccc6ac7f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809811/original_499314e5fffab5e989cc02ba4b0ea119.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809812/original_77a225cd9fbf14dfb91efdfcbdb345b8.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809813/original_9e98ed5ad0eddea9ad040d7def3084a9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809814/original_b0b4461143ca96dbd18d290e299ea948.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809815/original_4502c9d8ab821baae007b97bde2cd86a.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809816/original_b37a0205b5232cbf7055825cf35db282.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809817/original_349c0e37da2ac012ecee1a36fbb20bf9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809818/original_6378384c54932848744f8216ea7b323c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809819/original_6d1f3dd52215248b280e60a9cbe4425b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809820/original_2c92a88db0a03b14850ff75e1a149cb7.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809821/original_b34f3582b9b502a074ab95cab3bb9dfe.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809822/original_3e91adccbca826d1307862e1d523bba4.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809823/original_44d5d30fdbffbc6fe4939a1ee48e883c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809825/original_ddc9b531d4de0f7d3919e147f5b4f295.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809824/original_f21b29844c9c63cd844275342ebce5a2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809826/original_c7354d457079a928a85d5d96ef86bbeb.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809827/original_cc64aca6574adc080d299e1eb404b5f0.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809828/original_c568912214acf04be664907c8c213785.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809829/original_503035f9ad03e905bccfc24b4845c07b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809830/original_f3022b1a66a2ab515893989b4c08b8c0.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809831/original_c2b37f3e76537b1942c58ef77126cf5f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809833/original_d03054c6dc7d73649a4eb0c1055020d6.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809832/original_6688b1c47a8f2e65983017dbabdf8377.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809834/original_9162736df3b8769139c5d44ef2854031.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809835/original_7e2bed4dafd2347e5315fa7180d1e35d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809836/original_f4dbe3caaeee31125950e4c101fc857b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809837/original_d7f8ddf26d327c262a71e35b376bec03.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809838/original_c52bce7e0fcdeec0982bc328c563832c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809839/original_22f56a08634bf5e504ef30bd460592af.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809840/original_1ca5ada591dffbd4c2fc9c08fa9b8621.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809841/original_3db1bd83ffe9c1edc67d103b757da824.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46809842/original_5a7d48cb328d856509c275402463998b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810118/original_777981b417ce141a7da071d2a9a3a852.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810119/original_8140f477a268c309315543977e736cd5.png","https://d2w9rnfcy7mm78.cloudfront.net/46810120/original_74ab45f813f185b981d0765f3cf4c30a.png","https://d2w9rnfcy7mm78.cloudfront.net/46810121/original_aeab242ff3c7a0c0d605304037ad038c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810122/original_16263599bab29eafac1c9114bbe7895f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810123/original_8adc31f377c9df7e0c1e3fe35e9c6b9b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810124/original_156c49c4e0f8251bcc666b57514c71a5.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810125/original_6ce28359ef21b0c5999070ec5d99df88.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810126/original_8ad1a507459d5890d4ce1d4d74bcb33f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810179/original_0dd322108df34144029774044b8ab6a7.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810180/original_b6e7d8ea5dadf411d4b479f085d9ab0e.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810181/original_6820d0caca4f22400ab7adeee7044f45.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810182/original_e6f0fefed7ec75fbc049cada88b66161.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810183/original_57d7db35ea59244f16fc85588b75896b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810184/original_a6789d14b65010399b12618fec8757dc.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810185/original_674bf017aa9073970b111297dd31f2f7.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810186/original_3aeb2bef38b536f6ee7f15a66b2841ce.png","https://d2w9rnfcy7mm78.cloudfront.net/46810187/original_e02753e49abf6a4fb68a53326e180ea5.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810188/original_b0fb71d0a441054e320a3ff0a41d7d7e.png","https://d2w9rnfcy7mm78.cloudfront.net/46810189/original_fd8c02aca845b7ab17f264459dfe4833.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810215/original_324f8fe07462223ea2c22996213b22f2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810216/original_343a859f34399f67f016c66c56ae89eb.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810217/original_81cfb055cbe0430ff383b4f1c9c7b77d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810218/original_020c4d23c801c0da16becb1f4a4b31aa.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810219/original_4541b399f113b6db52f633bf6d1d6b53.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810220/original_55e80b3571f9f2576f0e65bf69df884e.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810221/original_570bfea24972e7561d427d6b994f420c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810222/original_2820501f7776df2d76debf78a80088b8.png","https://d2w9rnfcy7mm78.cloudfront.net/46810223/original_c4e94c0e0759840df00e0cebaeb254e4.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810224/original_2933ec72097bfafcd7319490ea970c93.png","https://d2w9rnfcy7mm78.cloudfront.net/46810225/original_d4174c7f0352f823f0d706031097f5b4.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810226/original_fd4531c241b2b1834988debe00d7ad47.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810227/original_6ef773ae944a397af5a9e084ffe1401d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810228/original_97e55801fcd6eca72be277990d1a2e57.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810229/original_fd3c267958cf39ef42bc777902861ff4.png","https://d2w9rnfcy7mm78.cloudfront.net/46810230/original_53a52e57bf7c7d3e3aceb584e521dcd4.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810283/original_939103b61ac674b658d40dab94e247c5.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810284/original_5d0e76098341e58bf9d5f137c077d162.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810288/original_18c8c12196c36d5dd207679520c92d8d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810286/original_9d06058623225295c339d3e24ab210ee.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810285/original_24f39030e9d2c73422bb1d612fb2af31.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810289/original_66ae67b694414d2673c47e000b8eb5b8.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810290/original_923efc06f78b3eafe34104d59db14707.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810287/original_fcb09cecc1e03e6c1dc9ac0a5060a538.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810291/original_6d1e2244aa29d32afa9746fca71e64b8.png","https://d2w9rnfcy7mm78.cloudfront.net/46810292/original_375d51d091312ba01feb1a6cd58357eb.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810293/original_3e6caa3a31dfc64570c98a59f951c126.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810294/original_16d62e14286831b6258a626303efc45f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810295/original_8f3dec0f6d9fe33297fd166f4c30e6aa.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810296/original_f56e2cbcfe19e850b47bb109526bd382.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810297/original_034136050bc1a2cd266440abc446170c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810298/original_327b587511997ad95520b2355ed8e561.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810299/original_c40150b0b4469680d84854f06675a2b2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810300/original_0657fd908ef9deb75a868305520b2ab7.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810301/original_a9d4c3925e6ff1fdf0c97a3e06701462.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810302/original_556dd211dbe69e9bd4427f8cbf98ed1e.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810303/original_bd2d23bd2bfe1438a2d9acd69fa20d5e.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810304/original_f484110d2c4ce02b5f4d9765acd505a4.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810305/original_2c9f9b8d59ece38dbe880ec4ec33515d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810306/original_aa6754735d7279762cd9898fb1341a02.png","https://d2w9rnfcy7mm78.cloudfront.net/46810307/original_98e5b33d2a99e6c2665a9484a8b5f26b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810309/original_f928b13c8cae28790b5b838af6a8e733.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810310/original_6034683c542b69d5734ec59f44ea2497.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810311/original_93d3241f9146984fa854d61592d7a92d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810312/original_118a9833e9267ba640372f369051fe67.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810313/original_1d6ff3573b9d9273b9cf0c04e7410c3a.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810314/original_5f0b7626e88815b003e81479d863f6c9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810315/original_a37c4f22bc2a701425449a8b97f3b145.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810316/original_85034c812a2e498d54a1d669792b7f82.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810317/original_232c54e687534994283b6ddcc5bf3deb.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810318/original_b796c6063f332c2f780a562fd822061b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810319/original_27e1e1a6d4848b8e590eb995f3ec0323.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810320/original_8aac579fd547530f0bc05718b811817d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810322/original_1fcd2e2204fa6d2eb16c46033cab0eaf.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810323/original_8a00d258e3342bc434d63d5bac76618b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810324/original_4c522d9f835e63d656d21997491be966.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810325/original_f930e771391bfe3a591096473e218652.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810326/original_2387f871ad8e4b8122a5833bb7165d15.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810327/original_43eb42f196ee07c36c632474c1d8eb3d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810328/original_caebc002ce85d7bbd913d5ecc7efdace.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810329/original_98efa3154ca7a1133b01e81291304059.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810330/original_62c785a98b0cb365216cd6f7f50c7f39.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810331/original_ed3ded0939cb0e8df6e62797c3c3b8c9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810376/original_f76158de4a9c882dfa7b2e77a49985ac.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810377/original_d73a45946a7cd6aa894f663095cae7b9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810378/original_115dfc99900a0aee101dd285f41a7f3b.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810379/original_1477dc07703221f6e5d872b5fe17b7cc.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810380/original_74f8a3a22e15920190fdb2985d867b68.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810381/original_eb409e2db00aea7a133c02c02748d4ab.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810382/original_127568982b8379b869a335175fdddc91.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810383/original_77bd195d8c8eb8c20f5131be95970466.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810384/original_4295e2cd6bfb8cfcd8ebfc7653a3619e.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810385/original_b1dfe04c9c9f69776d45eb6f1934d6c5.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810386/original_fc3fde672a968f05246766974a90bc10.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810387/original_8799de4f4a89674a97d1bf6deda6d2c3.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810388/original_bcfe2faabe4fd8bcdcd1bbcef917d8c9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810389/original_1cea8fe5c63622d8113f4b89628fbb2a.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810390/original_52c4e5971468f9bed597d7b480c90d80.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810391/original_0948cb5c9f3b12ea2cd15f25a3639691.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810392/original_b7642aa45302033e10660e8bb92dd7d0.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810393/original_3937924fc0fad89e31672cce6ea18a28.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810394/original_6cfdb8f12eda3468afc18c44e5b99785.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810395/original_37e25280905692046ff84199321ec43a.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810396/original_5005228c14a27cae486024d45eda6800.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810397/original_a50cffe1bcfbd64a46509a1373fd152c.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810398/original_0ce567b5c2017c56414ab858fef19303.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810399/original_3bb5b99f9d1c9b0fdfb466a502e14cab.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810401/original_ad7567ff7f1c238a47f0d9484c28c51d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810402/original_e510c464b54bb9d424ca394e18c2f5b2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810404/original_97168ccd09da1693eee2c99b10e0a846.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810405/original_8cc8857638907fb82ed98aa4e344120e.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810406/original_f0532a7beb2ff4fa31a6fd51539894bf.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810407/original_0c52b4e84c2d5ee8519b96a182ca1a78.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810408/original_b25f0d1fd92ef4ebc363ec631201de3a.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810409/original_b46471000fe243d93cf187363d1916aa.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810410/original_632103a51f5e423f7d9e0259ccf92b60.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810411/original_6b16c9e8fbea76f1c7f784e5bd8119e8.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810412/original_052e75d29985d9c90b40c466bd43b2a6.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810413/original_cd62018cc5f96ce819f9aad31650bce5.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810414/original_e04040f74edbea6ed05757ab94b78867.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810415/original_fb58b06f374e89ac1ae3c466eb461e69.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810416/original_d3c6c180b98e15e6cd8b6f3c4f033db0.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810417/original_b570868181e54c08fe9f0d43cbf61575.png","https://d2w9rnfcy7mm78.cloudfront.net/46810418/original_9e838057e0a392130d58e1725663303d.png","https://d2w9rnfcy7mm78.cloudfront.net/46810419/original_1b5eea7c42826815a50e3c3394d1f6ed.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810420/original_34fb72cfc2f114d9bfa3cb67e071d793.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810421/original_7fa254f4f0c881ef26bb010da5f6d03f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810422/original_c15a47e6a4cf732dff542e8bb3fe3cac.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810423/original_7f95107128acf2f9c7500ed1308a74d2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810424/original_d204b06b4222d19ce5d2deaa99c5e6e2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810425/original_506e7e1530a8b02d13eab6995b30bcfe.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810426/original_436ee712cb71f9f21135ae64827a15bd.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810506/original_5fe0930fb403a611f301a76e7c8e95e0.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810507/original_76a6437da0257e77dcf38b0af9b719bb.png","https://d2w9rnfcy7mm78.cloudfront.net/46810508/original_10e66e673ddce1827db3e44aefbb2dec.png","https://d2w9rnfcy7mm78.cloudfront.net/46810510/original_08eb54fab2f858c41257d7f0a730c6bd.png","https://d2w9rnfcy7mm78.cloudfront.net/46810509/original_be9dcd503f39cc326265657a00261a10.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810511/original_13eaae03d094be45f3ccb9ab26d8ecd9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810512/original_1daa28679ea68bb9e702b90c0a4223c1.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810513/original_f8696110998e3d4ef38c98c925e7777d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810514/original_7bd52c244dcbd7479d1f18cfad928b0f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810515/original_e12cf1793bb70701a0d9b197270a7fe9.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810516/original_ca36d1e66b6bcac213590eb4372ce1bf.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810517/original_97a3239cc11d5a7f1d1ded0078855d3a.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810518/original_257cb060b7be1bfa4d1b59bc9d66cae2.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810519/original_56fe206537e072ec4f28473def962ad4.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810520/original_27b88203cceb6af7aa0084dbe5f53bf8.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810521/original_e5b17529bf8280b3f7d565764a9f275d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810522/original_70e547c37846d0f9ca9ff7712a559094.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810523/original_c5b8d4878655be4487bd9320a436c6fa.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810524/original_0448bc38c433cbc026141c641294166f.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810525/original_0bc4233af5e62f0f980e71e9d7a79c01.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810526/original_76b798df21ef26ca7fd540eee7e642fb.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810527/original_8b9d0b1d3b310738608c1be3b5a08a1d.jpeg","https://d2w9rnfcy7mm78.cloudfront.net/46810528/original_9534840149d74f39258cac3b3b269b60.jpeg"];
+  const body = document.body;
+  const root = document.getElementById("root");
+  const stage = document.getElementById("archiveStage");
+  const modeLine = document.getElementById("modeLine");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mem = navigator.deviceMemory || 8;
+  const cores = navigator.hardwareConcurrency || 8;
+  let lowPower = mem <= 4 || cores <= 4;
+  let small = innerWidth < 760;
+  let tablet = innerWidth < 1080;
+  let queue = [];
+  let q = 0;
+  let slots = [];
+  let liveTimers = [];
+  let swapTimer = 0;
+  let motionTick = 0;
+  let active = !document.hidden;
+  let pointerBoost = 0;
+  let mode = "field";
+
+  document.getElementById("archiveCount").textContent = MEDIA.length;
+
+  const rand = (min,max) => min + Math.random() * (max-min);
+  const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+
+  function shuffle() {
+    queue = MEDIA.map((url, i) => ({url, i}));
+    for (let i = queue.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [queue[i], queue[j]] = [queue[j], queue[i]];
+    }
+    q = 0;
+  }
+
+  function nextMedia() {
+    if (!queue.length || q >= queue.length) shuffle();
+    return queue[q++];
+  }
+
+  function slotCount() {
+    small = innerWidth < 760;
+    tablet = innerWidth < 1080;
+    lowPower = (navigator.deviceMemory || 8) <= 4 || (navigator.hardwareConcurrency || 8) <= 4;
+    if (reduced) return small ? 10 : 16;
+    if (lowPower) return small ? 10 : tablet ? 16 : 22;
+    if (small) return 14;
+    if (tablet) return 24;
+    return 34;
+  }
+
+  function geometry(card, seed = Math.random()) {
+    small = innerWidth < 760;
+    const front = Math.random() > (small ? .76 : .68);
+    const quiet = Math.random() > .72;
+    const wide = Math.random() > .78;
+    const w = small
+      ? rand(front ? 42 : 26, front ? 68 : 45)
+      : tablet
+        ? rand(front ? 24 : 12, front ? 42 : 25)
+        : rand(front ? 16 : 7.5, wide ? 31 : 18);
+    const xMax = 100 - w * .72;
+    const yMax = 100 - (w * (Math.random()>.5 ? .72 : .94)) * .36;
+    const x = rand(-8, Math.max(70, xMax));
+    const y = rand(small ? 6 : -4, Math.max(76, yMax));
+    const axis = Math.random() > .44 ? "x" : "y";
+    const travel = small ? rand(3,11) : rand(5, Math.random()>.7 ? 24 : 15);
+    const dur = lowPower ? rand(13,24) : rand(9,20);
+    const ar = pick(["4/5","3/4","1/1","5/4","4/3"]);
+    const z = front ? Math.floor(rand(38,58)) : quiet ? Math.floor(rand(4,12)) : Math.floor(rand(12,36));
+    const op = front ? rand(.86,1) : quiet ? rand(.14,.32) : rand(.46,.82);
+    card.dataset.axis = axis;
+    card.style.setProperty("--w", w.toFixed(2) + "vw");
+    card.style.setProperty("--x", x.toFixed(2) + "vw");
+    card.style.setProperty("--y", y.toFixed(2) + "vh");
+    card.style.setProperty("--travel", travel.toFixed(2) + (axis === "x" ? "vw" : "vh"));
+    card.style.setProperty("--dur", dur.toFixed(2) + "s");
+    card.style.setProperty("--delay", (-rand(0,dur)).toFixed(2) + "s");
+    card.style.setProperty("--ar", ar);
+    card.style.setProperty("--z", z);
+    card.style.setProperty("--op", op.toFixed(2));
+    card.style.setProperty("--surface", rand(.04, front ? .24 : .13).toFixed(3));
+    card.style.setProperty("--surface-dur", rand(5.5,14).toFixed(2) + "s");
+    card.classList.toggle("is-front", front);
+    card.classList.toggle("is-quiet", quiet && !front);
+  }
+
+  function setSrc(card, img, item, immediate=false) {
+    card.href = item.url;
+    card.setAttribute("aria-label", "open archive image " + String(item.i + 1).padStart(3,"0"));
+    card.dataset.n = String(item.i + 1).padStart(3,"0");
+    img.fetchPriority = item.i < 8 ? "high" : "low";
+    img.loading = item.i < 8 ? "eager" : "lazy";
+    if (immediate) {
+      img.src = item.url;
+      card.classList.add("is-live");
+      return;
+    }
+    card.classList.add("is-changing");
+    const next = new Image();
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      img.src = item.url;
+      requestAnimationFrame(() => {
+        card.classList.remove("is-changing");
+        card.classList.add("is-live");
+      });
+    };
+    next.onload = () => {
+      if (next.decode) next.decode().catch(()=>{}).finally(finish);
+      else finish();
+    };
+    next.onerror = finish;
+    next.decoding = "async";
+    next.src = item.url;
+    setTimeout(finish, 900);
+  }
+
+  function buildStage() {
+    liveTimers.forEach(clearTimeout);
+    liveTimers = [];
+    stage.textContent = "";
+    slots = [];
+    const count = slotCount();
+    const frag = document.createDocumentFragment();
+    if (!queue.length) shuffle();
+
+    for (let i=0; i<count; i++) {
+      const card = document.createElement("a");
+      card.className = "archive-card";
+      card.target = "_blank";
+      card.rel = "noopener";
+      const img = document.createElement("img");
+      img.alt = "";
+      img.decoding = "async";
+      card.appendChild(img);
+      geometry(card, i/count);
+      setSrc(card, img, nextMedia(), true);
+      frag.appendChild(card);
+      slots.push({card, img, i});
+    }
+    stage.appendChild(frag);
+    requestAnimationFrame(() => slots.forEach(s => s.card.classList.add("is-live")));
+
+    if (!reduced) {
+      slots.forEach((slot, i) => scheduleSwap(slot, 1200 + i * 95));
+      startGlobalPulse();
+    }
+  }
+
+  function scheduleSwap(slot, delay=0) {
+    const min = lowPower ? 5200 : small ? 3600 : 2500;
+    const max = lowPower ? 9800 : small ? 7200 : 5400;
+    const t = setTimeout(() => {
+      if (active) {
+        if (Math.random() > .26) geometry(slot.card);
+        setSrc(slot.card, slot.img, nextMedia(), false);
+      }
+      scheduleSwap(slot);
+    }, delay || rand(min,max));
+    liveTimers.push(t);
+  }
+
+  function startGlobalPulse() {
+    clearInterval(swapTimer);
+    swapTimer = setInterval(() => {
+      if (!active || !slots.length) return;
+      motionTick++;
+      const amount = lowPower ? 1 : small ? 1 : (Math.random() > .55 ? 2 : 1);
+      for (let i=0;i<amount;i++) {
+        const s = pick(slots);
+        if (s && Math.random() > .32) geometry(s.card);
+      }
+      if (motionTick % 5 === 0) {
+        mode = pick(["field","return","rupture","veil"]);
+        body.dataset.archiveMode = mode;
+        if (modeLine) modeLine.textContent = mode === "return" ? "rectilinear archive / return" : mode === "rupture" ? "rectilinear archive / rupture" : mode === "veil" ? "rectilinear archive / veil" : "rectilinear archive / image memory";
+      }
+      if (!lowPower && Math.random() > .58) {
+        const s = pick(slots);
+        s.card.classList.toggle("is-quiet", Math.random() > .55);
+      }
+    }, lowPower ? 1800 : 980);
+  }
+
+  function burstLines() {
+    const holder = document.getElementById("burst");
+    const count = lowPower ? 12 : 22;
+    const frag = document.createDocumentFragment();
+    for (let i=0;i<count;i++) {
+      const line = document.createElement("i");
+      line.className = "burst-line";
+      line.style.setProperty("--t", rand(0,100).toFixed(2) + "vh");
+      line.style.setProperty("--sx", rand(-35,35).toFixed(2) + "vw");
+      line.style.setProperty("--scale", rand(.18,1.08).toFixed(2));
+      line.style.setProperty("--dur", rand(3.7,9.2).toFixed(2) + "s");
+      line.style.setProperty("--delay", (-rand(0,8)).toFixed(2) + "s");
+      frag.appendChild(line);
+    }
+    holder.textContent = "";
+    holder.appendChild(frag);
+  }
+
+  function runNoise() {
+    const canvas = document.getElementById("archiveCanvas");
+    const ctx = canvas && canvas.getContext("2d", {alpha:true, desynchronized:true});
+    if (!ctx || reduced) return;
+    let W=0,H=0,dpr=1,raf=0,last=0,frame=0;
+    function resize() {
+      W = Math.max(1, innerWidth);
+      H = Math.max(1, innerHeight);
+      dpr = Math.min(lowPower ? .8 : 1.05, devicePixelRatio || 1);
+      canvas.width = Math.floor(W*dpr);
+      canvas.height = Math.floor(H*dpr);
+      canvas.style.width = W+"px";
+      canvas.style.height = H+"px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function draw(now) {
+      if (!active) return;
+      raf = requestAnimationFrame(draw);
+      const gap = lowPower ? 120 : 78;
+      if (now - last < gap) return;
+      last = now;
+      frame++;
+      const storm = .36 + Math.sin(frame*.047)*.18 + Math.sin(frame*.013)*.17 + pointerBoost;
+      ctx.clearRect(0,0,W,H);
+      ctx.globalCompositeOperation = "screen";
+      const grains = Math.floor((lowPower ? 110 : 280) * (.75 + storm));
+      for (let i=0;i<grains;i++) {
+        const x = Math.random()*W;
+        const y = Math.random()*H;
+        const a = Math.random() * (.012 + storm*.026);
+        ctx.fillStyle = `rgba(228,218,198,${a})`;
+        ctx.fillRect(x,y,1,1);
+      }
+      const strokes = Math.floor((lowPower ? 11 : 24) * (.55 + storm));
+      for (let j=0;j<strokes;j++) {
+        const horizontal = Math.random() > .38;
+        const a = .006 + Math.random()*.026*storm;
+        ctx.fillStyle = `rgba(226,216,194,${a})`;
+        if (horizontal) {
+          const y = Math.round(Math.random()*H);
+          ctx.fillRect(Math.random()*W*.03,y,W*(.08+Math.random()*.45),1);
+        } else {
+          const x = Math.round(Math.random()*W);
+          ctx.fillRect(x,Math.random()*H*.04,1,H*(.08+Math.random()*.34));
+        }
+      }
+    }
+    let r=0;
+    addEventListener("resize",()=>{clearTimeout(r);r=setTimeout(()=>{resize();buildStage();burstLines();},180)},{passive:true});
+    addEventListener("pointermove",e=>{
+      if (lowPower) return;
+      const x = Math.abs(e.clientX / innerWidth - .5);
+      const y = Math.abs(e.clientY / innerHeight - .5);
+      pointerBoost = Math.min(.26, (x+y)*.22);
+    },{passive:true});
+    document.addEventListener("visibilitychange",()=>{
+      active = !document.hidden;
+      body.classList.toggle("is-frozen", !active);
+      if (!active) cancelAnimationFrame(raf);
+      else { resize(); raf=requestAnimationFrame(draw); }
+    });
+    resize();
+    raf = requestAnimationFrame(draw);
+  }
+
+  shuffle();
+  buildStage();
+  burstLines();
+  runNoise();
+
+  document.addEventListener("visibilitychange",()=>{
+    active = !document.hidden;
+    body.classList.toggle("is-frozen", !active);
+  });
+})();
+</script>
+</body>
+</html>

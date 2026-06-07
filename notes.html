@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="description" content="Springtime Wishes — notes." />
+<title>springtime wishes — notes</title>
+<style>
+@font-face {
+  font-family:"Aktiv Grotesk";
+  src:url("./AktivGrotesk-Light.ttf") format("truetype");
+  font-weight:300;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face {
+  font-family:"Aktiv Grotesk";
+  src:url("./AktivGrotesk-Regular.ttf") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face {
+  font-family:"Aktiv Grotesk";
+  src:url("./AktivGrotesk-Medium.ttf") format("truetype");
+  font-weight:500;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face {
+  font-family:"LTC Metropolitan";
+  src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");
+  font-weight:400;
+  font-style:italic;
+  font-display:swap;
+}
+
+:root {
+  --black:#000;
+  --paper:#bdb6a7;
+  --paper2:#8b867b;
+  --pale:#d9d2c2;
+  --weak:rgba(211,203,187,.33);
+  --hair:rgba(214,205,188,.22);
+  --hair2:rgba(214,205,188,.11);
+  --brown:#19130f;
+  --ink:rgba(222,215,202,.84);
+  --font-sans:"Aktiv Grotesk", Arial, Helvetica, sans-serif;
+  --font-ital:"LTC Metropolitan", Georgia, "Times New Roman", serif;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+* { box-sizing:border-box; }
+html {
+  min-height:100%;
+  background:#000;
+  color:var(--ink);
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+body {
+  margin:0;
+  min-width:320px;
+  min-height:100dvh;
+  overflow-x:hidden;
+  overflow-y:auto;
+  background:#000;
+  color:var(--ink);
+  font-family:var(--font-sans);
+  cursor:crosshair;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  isolation:isolate;
+}
+a { color:inherit; text-decoration:none; }
+a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
+
+#root {
+  position:fixed;
+  inset:0;
+  z-index:-4;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 51% 14%, rgba(170,160,142,.13), transparent 29%),
+    radial-gradient(ellipse at 16% 76%, rgba(100,85,67,.23), transparent 36%),
+    radial-gradient(ellipse at 92% 39%, rgba(155,145,126,.07), transparent 31%),
+    linear-gradient(180deg,#000 0%,#030201 44%,#000 100%);
+}
+#root::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:90;
+  pointer-events:none;
+  opacity:.33;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.024) 0 1px, transparent 1px 3px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.93' numOctaves='3' type='fractalNoise' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.56'/%3E%3C/svg%3E");
+  background-size:100% 2px, 168px 168px;
+  mix-blend-mode:overlay;
+  animation:paperDrift 3.2s steps(3,end) infinite;
+}
+#root::after {
+  content:"";
+  position:absolute;
+  inset:9px;
+  z-index:65;
+  pointer-events:none;
+  border:1px solid rgba(207,197,178,.18);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.65),
+    inset 0 0 92px rgba(0,0,0,.76);
+  opacity:.74;
+}
+@keyframes paperDrift {
+  0% { transform:translate3d(0,0,0); }
+  33% { transform:translate3d(-1px,1px,0); }
+  66% { transform:translate3d(1px,-1px,0); }
+  100% { transform:translate3d(0,-1px,0); }
+}
+
+.field {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  opacity:.72;
+  mix-blend-mode:screen;
+}
+.old-grid {
+  position:absolute;
+  inset:16px;
+  z-index:2;
+  pointer-events:none;
+  opacity:.32;
+  background:
+    linear-gradient(90deg, transparent calc(25% - .5px), var(--hair2) calc(25% - .5px) calc(25% + .5px), transparent calc(25% + .5px)),
+    linear-gradient(90deg, transparent calc(50% - .5px), var(--hair2) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
+    linear-gradient(90deg, transparent calc(75% - .5px), var(--hair2) calc(75% - .5px) calc(75% + .5px), transparent calc(75% + .5px)),
+    linear-gradient(0deg, transparent calc(50% - .5px), var(--hair2) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(214,205,188,.034) 24px 25px);
+}
+.wordmark {
+  position:fixed;
+  left:50%;
+  top:clamp(7px,2.4vh,22px);
+  width:min(98vw,1740px);
+  height:auto;
+  z-index:2;
+  transform:translateX(-50%);
+  opacity:.22;
+  filter:grayscale(1) contrast(1.2) brightness(.7) blur(.15px) drop-shadow(0 0 18px rgba(220,211,194,.12));
+  mix-blend-mode:screen;
+  pointer-events:none;
+  animation:wordmarkAge 14s steps(2,end) infinite;
+}
+@keyframes wordmarkAge {
+  0%,100% { opacity:.18; transform:translateX(-50%) translateY(0) scale(1); }
+  22% { opacity:.26; transform:translateX(-50%) translateY(1px) scale(1.002); }
+  23% { opacity:.12; transform:translateX(calc(-50% + 2px)) translateY(0) scale(.999); }
+  24%,62% { opacity:.22; transform:translateX(-50%) translateY(0) scale(1); }
+  63% { opacity:.09; filter:grayscale(1) contrast(1.9) brightness(.52) blur(.5px); }
+  65% { opacity:.29; filter:grayscale(1) contrast(1.1) brightness(.78) blur(.05px); }
+}
+
+.index-button {
+  position:fixed;
+  left:calc(13px + env(safe-area-inset-left,0px));
+  top:calc(13px + var(--safe-top));
+  z-index:80;
+  display:inline-grid;
+  place-items:center;
+  min-height:34px;
+  min-width:74px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  line-height:1.18;
+  letter-spacing:.015em;
+  color:rgba(222,214,198,.74);
+  padding:8px 13px 9px;
+  background:
+    linear-gradient(180deg, rgba(24,19,14,.96), rgba(0,0,0,.98) 52%, rgba(16,12,9,.94)),
+    repeating-linear-gradient(90deg, rgba(225,213,190,.03) 0 1px, transparent 1px 6px);
+  border:1px solid rgba(210,198,174,.25);
+  clip-path:polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.15),
+    inset -1px -1px 0 rgba(0,0,0,.95),
+    inset 0 0 17px rgba(0,0,0,.72),
+    0 0 0 1px rgba(0,0,0,.94),
+    0 12px 30px rgba(0,0,0,.62);
+}
+.index-button::before {
+  content:"";
+  position:absolute;
+  inset:3px;
+  pointer-events:none;
+  border:1px solid rgba(213,201,177,.13);
+  clip-path:polygon(7px 0, calc(100% - 7px) 0, 100% 7px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 7px 100%, 0 calc(100% - 7px), 0 7px);
+  opacity:.7;
+}
+.index-button:hover { color:rgba(255,248,232,.95); filter:brightness(1.12); }
+.index-button:active { transform:translate(1px,1px); box-shadow:inset -1px -1px 0 rgba(235,224,199,.08), inset 1px 1px 0 rgba(0,0,0,.86); }
+
+main {
+  position:relative;
+  z-index:10;
+  min-height:100dvh;
+  padding:
+    calc(74px + var(--safe-top))
+    clamp(18px,4.2vw,72px)
+    calc(38px + var(--safe-bottom));
+  display:grid;
+  align-items:center;
+}
+.notes-shell {
+  width:min(1180px,100%);
+  margin-inline:auto;
+  display:grid;
+  grid-template-columns:minmax(128px,.34fr) minmax(0,1fr);
+  gap:clamp(20px,5.6vw,94px);
+  align-items:center;
+}
+.meta {
+  position:relative;
+  align-self:stretch;
+  min-height:420px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:8px 0;
+  color:rgba(222,214,198,.54);
+}
+.meta::before {
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  width:1px;
+  background:linear-gradient(180deg, transparent, rgba(218,208,188,.28), transparent);
+  opacity:.8;
+}
+.meta-kicker {
+  margin:0;
+  font-family:var(--font-sans);
+  font-size:11px;
+  line-height:1.24;
+  letter-spacing:.045em;
+  color:rgba(222,214,198,.62);
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+}
+.meta-title {
+  margin:0 0 0 -2px;
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(46px,8vw,132px);
+  line-height:.72;
+  letter-spacing:-.065em;
+  color:rgba(222,214,198,.26);
+  filter:blur(.1px);
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  text-shadow:0 0 16px rgba(218,208,190,.1);
+}
+.meta-code {
+  font-size:10px;
+  line-height:1.38;
+  letter-spacing:.04em;
+  opacity:.7;
+  max-width:120px;
+}
+
+.article-frame {
+  position:relative;
+  isolation:isolate;
+  padding:clamp(18px,4vw,54px);
+  background:
+    linear-gradient(180deg, rgba(16,12,9,.48), rgba(0,0,0,.62)),
+    repeating-linear-gradient(90deg, rgba(225,213,190,.018) 0 1px, transparent 1px 9px);
+  border:1px solid rgba(205,193,169,.18);
+  clip-path:polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.1),
+    inset -1px -1px 0 rgba(0,0,0,.8),
+    inset 0 0 46px rgba(0,0,0,.56),
+    0 18px 60px rgba(0,0,0,.52);
+}
+.article-frame::before,
+.article-frame::after {
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:5;
+}
+.article-frame::before {
+  inset:5px;
+  border:1px solid rgba(213,201,177,.1);
+  clip-path:polygon(11px 0, calc(100% - 11px) 0, 100% 11px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px), 0 11px);
+}
+.article-frame::after {
+  inset:0;
+  background:
+    linear-gradient(90deg, transparent 0 21%, rgba(222,214,198,.055) 21.15% 21.25%, transparent 21.4%),
+    linear-gradient(0deg, transparent 0 42%, rgba(222,214,198,.035) 42.15% 42.4%, transparent 42.55%),
+    radial-gradient(circle at var(--px,52%) var(--py,45%), rgba(220,210,190,.13), transparent 16%);
+  mix-blend-mode:screen;
+  opacity:.7;
+}
+.note-title {
+  position:relative;
+  z-index:6;
+  margin:0 0 clamp(18px,3vw,34px);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-size:clamp(58px,11vw,178px);
+  font-weight:400;
+  line-height:.68;
+  letter-spacing:-.075em;
+  color:rgba(226,218,202,.52);
+  filter:blur(.1px);
+}
+.note-title::before,
+.note-title::after {
+  content:attr(data-title);
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.14;
+  mix-blend-mode:screen;
+  clip-path:inset(0 0 58% 0);
+}
+.note-title::before { transform:translate3d(2px,-1px,0); color:rgba(245,238,220,.65); }
+.note-title::after { transform:translate3d(-2px,2px,0); clip-path:inset(49% 0 0 0); color:rgba(130,120,104,.72); }
+
+.note-body {
+  position:relative;
+  z-index:6;
+  max-width:820px;
+}
+.note-body p {
+  position:relative;
+  margin:0;
+  color:rgba(226,218,202,.78);
+  font-family:var(--font-sans);
+  font-weight:300;
+  font-size:clamp(19px,2.05vw,31px);
+  line-height:1.12;
+  letter-spacing:-.017em;
+  text-wrap:pretty;
+  contain:layout paint style;
+}
+.note-body p + p { margin-top:clamp(16px,2.3vw,28px); }
+.note-body p:first-child {
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-size:clamp(31px,4.6vw,74px);
+  line-height:.88;
+  letter-spacing:-.045em;
+  color:rgba(226,218,202,.62);
+}
+.note-body p::before,
+.note-body p::after {
+  content:attr(data-line);
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  color:rgba(226,218,202,.45);
+  mix-blend-mode:screen;
+  filter:blur(.35px);
+  text-shadow:0 0 10px rgba(226,218,202,.08);
+}
+.note-body p::before {
+  clip-path:inset(var(--cut-a,0%) 0 var(--cut-b,72%) 0);
+  transform:translate3d(1.5px,-.5px,0);
+  animation:inkRegistration 9s steps(2,end) infinite;
+  animation-delay:var(--delay,0s);
+}
+.note-body p::after {
+  clip-path:inset(var(--cut-c,62%) 0 var(--cut-d,0%) 0);
+  transform:translate3d(-1.5px,1px,0);
+  animation:inkRegistration 11s steps(2,end) infinite reverse;
+  animation-delay:var(--delay,0s);
+}
+.note-body p:hover::before,
+.note-body p:hover::after {
+  opacity:.2;
+}
+@keyframes inkRegistration {
+  0%, 74%, 100% { opacity:0; }
+  75% { opacity:.11; }
+  76%,80% { opacity:.24; }
+  81% { opacity:.05; }
+}
+
+.reading-lines {
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:.78;
+  mix-blend-mode:screen;
+}
+.reading-lines i {
+  position:absolute;
+  left:var(--l);
+  top:var(--t);
+  width:var(--w);
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(222,214,198,var(--o)), transparent);
+  transform:rotate(var(--r));
+  animation:lineBreathe var(--d) steps(4,end) infinite var(--delay);
+}
+@keyframes lineBreathe {
+  0%,100% { opacity:.06; transform:translateX(0) rotate(var(--r)); }
+  38% { opacity:.9; transform:translateX(1px) rotate(var(--r)); }
+  39% { opacity:.18; }
+  68% { opacity:.5; }
+}
+
+.marginalia {
+  position:fixed;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+.marginalia span {
+  position:absolute;
+  max-width:340px;
+  color:rgba(222,214,198,var(--alpha));
+  font-family:var(--font);
+  font-style:var(--style);
+  font-size:var(--size);
+  line-height:.92;
+  letter-spacing:var(--track);
+  transform:rotate(var(--rot));
+  opacity:1;
+  filter:blur(var(--blur));
+  clip-path:inset(var(--topcut) 0 var(--botcut) 0);
+  animation:stillCut var(--dur) steps(3,end) infinite var(--delay);
+}
+@keyframes stillCut {
+  0%,100% { opacity:.08; clip-path:inset(var(--topcut) 0 var(--botcut) 0); }
+  32% { opacity:var(--alpha); }
+  33% { opacity:.02; }
+  34%,70% { opacity:calc(var(--alpha) * .78); clip-path:inset(var(--botcut) 0 var(--topcut) 0); }
+}
+
+.vignette {
+  position:fixed;
+  inset:-5%;
+  z-index:50;
+  pointer-events:none;
+  box-shadow:inset 0 0 15vw 8vw #000;
+  opacity:.78;
+}
+.sr {
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  padding:0 !important;
+  margin:-1px !important;
+  overflow:hidden !important;
+  clip:rect(0,0,0,0) !important;
+  white-space:nowrap !important;
+  border:0 !important;
+}
+
+@media (max-width:900px) {
+  main {
+    padding:
+      calc(70px + var(--safe-top))
+      clamp(14px,4.8vw,28px)
+      calc(26px + var(--safe-bottom));
+    align-items:start;
+  }
+  .wordmark {
+    width:146vw;
+    opacity:.16;
+  }
+  .notes-shell {
+    display:block;
+  }
+  .meta {
+    min-height:0;
+    flex-direction:row;
+    align-items:end;
+    gap:14px;
+    margin:0 0 16px;
+    padding:0 0 12px;
+    border-bottom:1px solid rgba(214,205,188,.13);
+  }
+  .meta::before { display:none; }
+  .meta-kicker,
+  .meta-title {
+    writing-mode:horizontal-tb;
+    transform:none;
+  }
+  .meta-kicker {
+    max-width:170px;
+    font-size:10px;
+  }
+  .meta-title {
+    font-size:clamp(52px,18vw,92px);
+  }
+  .meta-code {
+    display:none;
+  }
+  .article-frame {
+    padding:clamp(16px,5vw,28px);
+  }
+  .note-body p {
+    font-size:clamp(17px,5.2vw,25px);
+    line-height:1.13;
+  }
+  .note-body p:first-child {
+    font-size:clamp(32px,10vw,56px);
+  }
+  .marginalia span:nth-child(n+10) {
+    display:none;
+  }
+}
+
+@media (max-height:620px) and (orientation:landscape) {
+  main {
+    padding-top:calc(58px + var(--safe-top));
+    align-items:start;
+  }
+  .notes-shell {
+    grid-template-columns:110px minmax(0,1fr);
+    gap:28px;
+    align-items:start;
+  }
+  .meta {
+    min-height:280px;
+  }
+  .note-title {
+    font-size:clamp(48px,8vw,110px);
+  }
+  .note-body p {
+    font-size:clamp(16px,2.2vw,22px);
+    line-height:1.12;
+  }
+  .note-body p:first-child {
+    font-size:clamp(26px,4vw,48px);
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after {
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition:none !important;
+  }
+  .field { display:none; }
+  .note-body p::before,
+  .note-body p::after { display:none; }
+  .marginalia span:nth-child(n+9) { display:none; }
+}
+</style>
+</head>
+<body>
+<div id="root" aria-hidden="true">
+  <canvas id="textField" class="field"></canvas>
+  <div class="old-grid"></div>
+</div>
+
+<img class="wordmark" src="./Stw_Logo.png" width="2048" height="343" alt="" decoding="async" fetchpriority="low" />
+<a class="index-button" href="index.html">index</a>
+
+<div id="marginalia" class="marginalia" aria-hidden="true"></div>
+
+<main>
+  <section class="notes-shell" aria-labelledby="notes-title">
+    <aside class="meta" aria-hidden="true">
+      <p class="meta-kicker">springtime wishes / notes</p>
+      <h1 class="meta-title">notes</h1>
+      <p class="meta-code">body<br>fabric<br>trace<br>evidence</p>
+    </aside>
+
+    <article class="article-frame">
+      <div class="reading-lines" id="readingLines" aria-hidden="true"></div>
+      <h2 class="note-title" id="notes-title" data-title="springtime wishes">springtime wishes</h2>
+      <div class="note-body">
+        <p>Springtime Wishes began from the feeling that clothing can remember.</p><p>I have always been drawn to garments that feel found, kept, inherited, or slightly unfinished. Pieces that carry something before they are worn. A raw edge, a loose tie, a button, a seam, a stain, or the way fabric falls can hold more than decoration. It can hold a trace.</p><p>The brand lives close to that idea. Clothing as something intimate, physical, and unresolved. Not fantasy, but evidence. Not perfection, but what remains.</p><p>Collection III — mortem[s] continues this language through the body after the image: the garment left behind, the object that stays, the silence that fabric can carry. The prototypes are part of this process. They are not final, but they already hold the first form of the collection.</p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<div class="vignette" aria-hidden="true"></div>
+<p class="sr">Springtime Wishes began from the feeling that clothing can remember.
+
+I have always been drawn to garments that feel found, kept, inherited, or slightly unfinished. Pieces that carry something before they are worn. A raw edge, a loose tie, a button, a seam, a stain, or the way fabric falls can hold more than decoration. It can hold a trace.
+
+The brand lives close to that idea. Clothing as something intimate, physical, and unresolved. Not fantasy, but evidence. Not perfection, but what remains.
+
+Collection III — mortem[s] continues this language through the body after the image: the garment left behind, the object that stays, the silence that fabric can carry. The prototypes are part of this process. They are not final, but they already hold the first form of the collection.</p>
+
+<script>
+(() => {
+  "use strict";
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const lowPower = navigator.deviceMemory && navigator.deviceMemory <= 4;
+  const smallScreen = window.matchMedia("(max-width: 700px)").matches;
+  const root = document.documentElement;
+  const phrases = ["clothing can remember", "found / kept / inherited", "slightly unfinished", "a raw edge", "a loose tie", "a button / a seam / a stain", "it can hold a trace", "not fantasy, but evidence", "not perfection", "what remains", "body after the image", "the garment left behind", "the object that stays", "the silence that fabric can carry", "not final", "first form of the collection"];
+
+  const rnd = (min, max) => min + Math.random() * (max - min);
+  const choose = arr => arr[Math.floor(Math.random() * arr.length)];
+
+  document.querySelectorAll(".note-body p").forEach((p, i) => {
+    const text = p.textContent.trim();
+    p.dataset.line = text;
+    p.style.setProperty("--delay", (-i * 1.7).toFixed(2) + "s");
+    p.style.setProperty("--cut-a", rnd(0, 34).toFixed(1) + "%");
+    p.style.setProperty("--cut-b", rnd(50, 82).toFixed(1) + "%");
+    p.style.setProperty("--cut-c", rnd(46, 78).toFixed(1) + "%");
+    p.style.setProperty("--cut-d", rnd(0, 25).toFixed(1) + "%");
+  });
+
+  function mountLines() {
+    const holder = document.getElementById("readingLines");
+    const count = smallScreen ? 16 : 28;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const line = document.createElement("i");
+      line.style.setProperty("--l", rnd(-8, 96).toFixed(2) + "%");
+      line.style.setProperty("--t", rnd(8, 94).toFixed(2) + "%");
+      line.style.setProperty("--w", rnd(18, 82).toFixed(2) + "%");
+      line.style.setProperty("--o", rnd(.05, .26).toFixed(3));
+      line.style.setProperty("--r", rnd(-1.4, 1.4).toFixed(2) + "deg");
+      line.style.setProperty("--d", rnd(5.5, 15).toFixed(2) + "s");
+      line.style.setProperty("--delay", rnd(-14, 0).toFixed(2) + "s");
+      frag.appendChild(line);
+    }
+    holder.appendChild(frag);
+  }
+
+  function mountMarginalia() {
+    const holder = document.getElementById("marginalia");
+    const count = reduced ? 8 : (smallScreen || lowPower ? 12 : 20);
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("span");
+      s.textContent = choose(phrases);
+      const edge = i % 4;
+      if (edge === 0) { s.style.left = rnd(2,18).toFixed(2)+"vw"; s.style.top = rnd(12,88).toFixed(2)+"vh"; }
+      if (edge === 1) { s.style.left = rnd(72,96).toFixed(2)+"vw"; s.style.top = rnd(10,86).toFixed(2)+"vh"; }
+      if (edge === 2) { s.style.left = rnd(12,86).toFixed(2)+"vw"; s.style.top = rnd(4,20).toFixed(2)+"vh"; }
+      if (edge === 3) { s.style.left = rnd(8,76).toFixed(2)+"vw"; s.style.top = rnd(78,96).toFixed(2)+"vh"; }
+      s.style.setProperty("--font", Math.random() > .44 ? "var(--font-ital)" : "var(--font-sans)");
+      s.style.setProperty("--style", Math.random() > .44 ? "italic" : "normal");
+      s.style.setProperty("--size", rnd(8, smallScreen ? 22 : 38).toFixed(2)+"px");
+      s.style.setProperty("--track", rnd(-.04,.12).toFixed(3)+"em");
+      s.style.setProperty("--alpha", rnd(.08,.34).toFixed(2));
+      s.style.setProperty("--blur", rnd(.1,1.6).toFixed(2)+"px");
+      s.style.setProperty("--rot", rnd(-4,4).toFixed(2)+"deg");
+      s.style.setProperty("--topcut", rnd(0,46).toFixed(1)+"%");
+      s.style.setProperty("--botcut", rnd(0,52).toFixed(1)+"%");
+      s.style.setProperty("--dur", rnd(9,22).toFixed(2)+"s");
+      s.style.setProperty("--delay", rnd(-22,0).toFixed(2)+"s");
+      frag.appendChild(s);
+    }
+    holder.appendChild(frag);
+  }
+
+  function runCanvas() {
+    const canvas = document.getElementById("textField");
+    if (!canvas || reduced) return;
+    const ctx = canvas.getContext("2d", { alpha:true, desynchronized:true });
+    let W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 1.15);
+    let frame = 0;
+    let running = true;
+    let pointerX = .52, pointerY = .45;
+    const glyphs = ["trace", "seam", "button", "raw edge", "memory", "evidence", "remains", "fabric", "body"];
+    const strokes = Array.from({ length: lowPower || smallScreen ? 28 : 44 }, (_, i) => ({
+      x: rnd(0, 1), y: rnd(0, 1), l: rnd(.08, .48), a: rnd(.018, .11),
+      r: rnd(-.05, .05), t: rnd(0, 1000), g: choose(glyphs)
+    }));
+
+    function size() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 1.15);
+      canvas.width = Math.max(1, Math.floor(W * dpr));
+      canvas.height = Math.max(1, Math.floor(H * dpr));
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function draw(ts) {
+      if (!running) return;
+      frame++;
+      if ((lowPower || smallScreen) && frame % 2) {
+        requestAnimationFrame(draw);
+        return;
+      }
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "rgba(0,0,0,.08)";
+      ctx.fillRect(0, 0, W, H);
+
+      const px = pointerX * W;
+      const py = pointerY * H;
+      root.style.setProperty("--px", (pointerX * 100).toFixed(2) + "%");
+      root.style.setProperty("--py", (pointerY * 100).toFixed(2) + "%");
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      ctx.lineWidth = 1;
+      ctx.font = "10px 'Aktiv Grotesk', Arial, sans-serif";
+      for (const s of strokes) {
+        const pulse = .5 + .5 * Math.sin(ts * .00018 + s.t);
+        const x = s.x * W + Math.sin(ts * .00009 + s.t) * 10;
+        const y = s.y * H + Math.cos(ts * .00007 + s.t) * 8;
+        const dist = Math.hypot(x - px, y - py) / Math.max(W, H);
+        const a = Math.min(.16, s.a + Math.max(0, .16 - dist) * .28);
+        ctx.strokeStyle = `rgba(220,210,190,${a * (.45 + pulse * .55)})`;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + s.l * W, y + s.r * H);
+        ctx.stroke();
+        if (pulse > .92 && dist < .33) {
+          ctx.fillStyle = `rgba(220,210,190,${a * .7})`;
+          ctx.fillText(s.g, x + 4, y - 4);
+        }
+      }
+
+      const grad = ctx.createRadialGradient(px, py, 0, px, py, Math.min(W,H) * .36);
+      grad.addColorStop(0, "rgba(222,214,198,.075)");
+      grad.addColorStop(.34, "rgba(222,214,198,.018)");
+      grad.addColorStop(1, "rgba(222,214,198,0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+
+      requestAnimationFrame(draw);
+    }
+
+    const setPointer = (x, y) => {
+      pointerX += (x / Math.max(1, W) - pointerX) * .35;
+      pointerY += (y / Math.max(1, H) - pointerY) * .35;
+    };
+
+    window.addEventListener("pointermove", e => setPointer(e.clientX, e.clientY), { passive:true });
+    window.addEventListener("touchstart", e => {
+      if (e.touches && e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive:true });
+    window.addEventListener("touchmove", e => {
+      if (e.touches && e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive:true });
+
+    let resizeTimer = 0;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(size, 120);
+    }, { passive:true });
+    document.addEventListener("visibilitychange", () => {
+      running = !document.hidden;
+      if (running) requestAnimationFrame(draw);
+    });
+
+    size();
+    requestAnimationFrame(draw);
+  }
+
+  mountLines();
+  mountMarginalia();
+  runCanvas();
+})();
+</script>
+</body>
+</html>
