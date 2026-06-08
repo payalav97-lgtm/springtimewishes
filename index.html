@@ -776,6 +776,165 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
   #svg-stable .svg-piece { opacity:.33; filter:none; }
   #svg-ash .svg-piece, #svg-cut .svg-piece, #svg-flash .svg-piece { display:none; }
 }
+
+/* maximum optimization pass: adaptive rendering without changing the system */
+body.is-frozen *{animation-play-state:paused!important}
+#root,.media-small,.sigil-field,.manifest-layer{contain:layout paint style}
+.media-fragment img{backface-visibility:hidden}
+@media (max-width:700px){
+  .field{opacity:.46}
+  #svg-cut,#svg-flash{display:none}
+  #sigil{filter:none}
+  .media-fragment::after{opacity:.22}
+  .text-cut:nth-of-type(n+13){display:none}
+  .media-fragment:nth-child(n+7){display:none}
+}
+@media (max-width:520px){
+  .field{opacity:.38}
+  .media-fragment:nth-child(n+6){display:none}
+}
+@media (max-height:480px) and (orientation:landscape){
+  #svg-cut,#svg-flash{display:none}
+  .field{opacity:.38}
+}
+
+
+/* mobile composition repair — keeps the complete wordmark and reconstructed mark inside the viewport */
+@media (max-width:700px) and (orientation:portrait){
+  html,body,#root{
+    height:100svh;
+    min-height:100svh;
+    max-height:100svh;
+  }
+
+  .wordmark{
+    width:calc(100vw - 22px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px));
+    max-width:640px;
+    left:50%;
+    top:calc(env(safe-area-inset-top,0px) + 48px);
+    opacity:.34;
+    transform:translateX(-50%);
+    object-fit:contain;
+  }
+
+  .sigil-field{
+    left:calc(env(safe-area-inset-left,0px) + 10px);
+    right:calc(env(safe-area-inset-right,0px) + 10px);
+    top:calc(env(safe-area-inset-top,0px) + clamp(104px,17svh,144px));
+    bottom:auto;
+    height:min(35svh, calc((100vw - 20px) * .49));
+    min-height:138px;
+    max-height:280px;
+    opacity:.86;
+    transform:translate3d(0,0,0);
+    overflow:visible;
+  }
+
+  .sigil-wrap{
+    inset:-7% -4%;
+    overflow:visible;
+    filter:drop-shadow(0 0 13px rgba(215,205,188,.11));
+  }
+
+  #sigil{
+    overflow:visible;
+    transform:scale(.94);
+    transform-origin:50% 50%;
+  }
+
+  #svg-cut,
+  #svg-flash{
+    display:block;
+  }
+
+  #svg-cut .svg-piece{
+    opacity:.24;
+    filter:none;
+    stroke-width:1.45;
+  }
+
+  #svg-flash .svg-piece{
+    stroke-width:.62;
+  }
+
+  #svg-ash .svg-piece{
+    stroke-width:1.18;
+  }
+
+  .manifest-full{
+    bottom:calc(136px + env(safe-area-inset-bottom,0px));
+  }
+}
+
+@media (max-width:520px) and (orientation:portrait){
+  .wordmark{
+    width:calc(100vw - 18px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px));
+    top:calc(env(safe-area-inset-top,0px) + 50px);
+    opacity:.33;
+  }
+
+  .sigil-field{
+    left:calc(env(safe-area-inset-left,0px) + 9px);
+    right:calc(env(safe-area-inset-right,0px) + 9px);
+    top:calc(env(safe-area-inset-top,0px) + clamp(110px,18svh,148px));
+    height:min(33svh, calc((100vw - 18px) * .50));
+    min-height:130px;
+  }
+
+  #sigil{
+    transform:scale(.92);
+  }
+}
+
+@media (max-width:390px) and (orientation:portrait){
+  .wordmark{
+    top:calc(env(safe-area-inset-top,0px) + 48px);
+  }
+
+  .sigil-field{
+    top:calc(env(safe-area-inset-top,0px) + clamp(108px,18.5svh,142px));
+    height:min(31svh, calc((100vw - 18px) * .51));
+    min-height:122px;
+  }
+
+  #sigil{
+    transform:scale(.90);
+  }
+}
+
+@media (max-height:480px) and (orientation:landscape){
+  .wordmark{
+    width:min(78vw, 880px);
+    left:56%;
+    top:calc(env(safe-area-inset-top,0px) + 6px);
+  }
+
+  .sigil-field{
+    left:14vw;
+    right:14vw;
+    top:14vh;
+    bottom:13vh;
+    height:auto;
+    opacity:.76;
+    overflow:visible;
+  }
+
+  .sigil-wrap,
+  #sigil{
+    overflow:visible;
+  }
+
+  #svg-cut,
+  #svg-flash{
+    display:block;
+  }
+
+  #svg-cut .svg-piece{
+    opacity:.18;
+    filter:none;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -857,41 +1016,62 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
   const choose = arr => arr[Math.floor(Math.random() * arr.length)];
 
   function mountSvg() {
-    const layers = ["svg-stable","svg-cut","svg-ash","svg-flash"].map(id => document.getElementById(id));
+    const layerIds = ["svg-stable","svg-cut","svg-ash","svg-flash"];
+    const smallScreen = window.matchMedia("(max-width:700px)").matches;
+    const coarse = window.matchMedia("(hover:none), (pointer:coarse)").matches;
+    const mem = navigator.deviceMemory || 4;
+    const cores = navigator.hardwareConcurrency || 4;
+    const lowPower = reduced || mem <= 3 || cores <= 3;
+
+    /*
+      Keep every SVG layer mounted on mobile.
+      The mobile problem was visual cropping / incomplete reconstruction, not the mark itself.
+      Performance is handled by CSS opacity/filter reduction and canvas/media throttling below.
+    */
+    const activeIds = reduced ? ["svg-stable"] : layerIds;
+    const layers = activeIds.map(id => document.getElementById(id)).filter(Boolean);
+    const fragments = new Map(layers.map(layer => [layer.id, document.createDocumentFragment()]));
+
     SVG_PATHS.forEach((d, i) => {
       layers.forEach((layer, li) => {
         const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
         p.setAttribute("d", d);
         p.classList.add("svg-piece");
-        p.style.setProperty("--x1", rnd(-46,46).toFixed(1) + "vw");
-        p.style.setProperty("--y1", rnd(-38,38).toFixed(1) + "vh");
-        p.style.setProperty("--x2", rnd(-8,8).toFixed(1) + "vw");
-        p.style.setProperty("--y2", rnd(-7,7).toFixed(1) + "vh");
-        p.style.setProperty("--x3", rnd(-25,25).toFixed(1) + "vw");
-        p.style.setProperty("--y3", rnd(-18,18).toFixed(1) + "vh");
-        p.style.setProperty("--r1", rnd(-22,22).toFixed(2) + "deg");
-        p.style.setProperty("--r2", rnd(-7,7).toFixed(2) + "deg");
-        p.style.setProperty("--r3", rnd(-14,14).toFixed(2) + "deg");
-        p.style.setProperty("--s1", rnd(.55,1.6).toFixed(2));
+
+        const len = Math.max(900, Math.min(5400, d.length * 1.34));
+        p.style.strokeDasharray = len.toFixed(0);
+        p.style.strokeDashoffset = len.toFixed(0);
+        p.style.setProperty("--len", len.toFixed(0));
+
+        p.style.setProperty("--x1", rnd(-42,42).toFixed(1) + "vw");
+        p.style.setProperty("--y1", rnd(-34,34).toFixed(1) + "vh");
+        p.style.setProperty("--x2", rnd(-7,7).toFixed(1) + "vw");
+        p.style.setProperty("--y2", rnd(-6,6).toFixed(1) + "vh");
+        p.style.setProperty("--x3", rnd(-22,22).toFixed(1) + "vw");
+        p.style.setProperty("--y3", rnd(-16,16).toFixed(1) + "vh");
+        p.style.setProperty("--r1", rnd(-20,20).toFixed(2) + "deg");
+        p.style.setProperty("--r2", rnd(-6,6).toFixed(2) + "deg");
+        p.style.setProperty("--r3", rnd(-12,12).toFixed(2) + "deg");
+        p.style.setProperty("--s1", rnd(.62,1.5).toFixed(2));
         p.style.animationDelay = (i * -.31 - li * .43).toFixed(2) + "s";
-        layer.appendChild(p);
-        requestAnimationFrame(() => {
-          try {
-            const len = p.getTotalLength();
-            p.style.strokeDasharray = len.toFixed(2);
-            p.style.strokeDashoffset = len.toFixed(2);
-            p.style.setProperty("--len", len.toFixed(2));
-          } catch(e) {
-            p.style.setProperty("--len", "1200");
-          }
-        });
+        fragments.get(layer.id).appendChild(p);
       });
     });
+
+    layers.forEach(layer => layer.appendChild(fragments.get(layer.id)));
   }
 
   function mountManifest() {
     const layer = document.getElementById("manifestLayer");
-    const count = matchMedia("(max-width:700px)").matches ? 18 : 30;
+    if (!layer) return;
+    const smallScreen = window.matchMedia("(max-width:700px)").matches;
+    const mem = navigator.deviceMemory || 4;
+    const cores = navigator.hardwareConcurrency || 4;
+    const lowPower = smallScreen || mem <= 4 || cores <= 4;
+    const count = reduced ? (smallScreen ? 7 : 10) : (smallScreen ? (lowPower ? 10 : 12) : (lowPower ? 16 : 24));
+    const cuts = [];
+
+    const frag = document.createDocumentFragment();
     for (let i=0; i<count; i++) {
       const span = document.createElement("span");
       const txt = choose(manifestPieces);
@@ -906,85 +1086,103 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
       span.style.setProperty("--weight", Math.random() > .72 ? "500" : "300");
       span.style.setProperty("--size", rnd(9, Math.random()>.72 ? 52 : 24).toFixed(2)+"px");
       span.style.setProperty("--track", rnd(-.06,.16).toFixed(3)+"em");
-      span.style.setProperty("--alpha", rnd(.14,.72).toFixed(2));
-      span.style.setProperty("--blur", rnd(.1,2.6).toFixed(2)+"px");
+      span.style.setProperty("--alpha", rnd(.14,.68).toFixed(2));
+      span.style.setProperty("--blur", rnd(.1,2.2).toFixed(2)+"px");
       span.style.setProperty("--rot", rnd(-3.2,3.2).toFixed(2)+"deg");
-      span.style.setProperty("--dur", rnd(7.5,18.5).toFixed(2)+"s");
+      span.style.setProperty("--dur", rnd(8.5,19.5).toFixed(2)+"s");
       span.style.setProperty("--delay", rnd(-18,0).toFixed(2)+"s");
-      span.style.setProperty("--sx", rnd(-8,8).toFixed(1)+"px");
+      span.style.setProperty("--sx", rnd(-7,7).toFixed(1)+"px");
       span.style.setProperty("--a", rnd(0,28).toFixed(1)+"%");
       span.style.setProperty("--b", rnd(0,36).toFixed(1)+"%");
       span.style.setProperty("--c", rnd(62,100).toFixed(1)+"%");
       span.style.setProperty("--d", rnd(58,100).toFixed(1)+"%");
-      layer.appendChild(span);
+      cuts.push(span);
+      frag.appendChild(span);
     }
+    layer.appendChild(frag);
 
-    if (!reduced) {
-      setInterval(() => {
-        if (document.hidden) return;
-        const cuts = layer.querySelectorAll(".text-cut");
-        for (let n=0; n<5; n++) {
-          const el = cuts[Math.floor(Math.random()*cuts.length)];
-          const txt = choose(manifestPieces);
-          const cut = Math.random() > .5 ? txt : txt.split("").filter((_,i)=> i%Math.ceil(rnd(2,4)) !== 0).join("");
-          el.textContent = cut;
-          el.dataset.text = cut;
-          el.style.setProperty("--left", rnd(5,95).toFixed(2)+"vw");
-          el.style.setProperty("--top", rnd(8,90).toFixed(2)+"vh");
-        }
-      }, 3100);
-    }
+    if (reduced) return;
+
+    let timer = 0;
+    const mutate = () => {
+      if (document.hidden || !cuts.length) return;
+      const nMax = lowPower ? 2 : 4;
+      for (let n=0; n<nMax; n++) {
+        const el = cuts[Math.floor(Math.random()*cuts.length)];
+        const txt = choose(manifestPieces);
+        const cut = Math.random() > .5 ? txt : txt.split("").filter((_,i)=> i%Math.ceil(rnd(2,4)) !== 0).join("");
+        el.textContent = cut;
+        el.dataset.text = cut;
+        el.style.setProperty("--left", rnd(5,95).toFixed(2)+"vw");
+        el.style.setProperty("--top", rnd(8,90).toFixed(2)+"vh");
+      }
+    };
+    timer = window.setInterval(mutate, lowPower ? 5200 : 3600);
+    window.addEventListener("pagehide", () => timer && clearInterval(timer), { once:true });
   }
 
   function mountSmallMedia() {
     const holder = document.getElementById("mediaSmall");
-    const smallScreen = matchMedia("(max-width:700px)").matches;
+    if (!holder) return;
+    const smallScreen = window.matchMedia("(max-width:700px)").matches;
     const mem = navigator.deviceMemory || 4;
     const cores = navigator.hardwareConcurrency || 4;
-    const lowPower = smallScreen || mem <= 3 || cores <= 4;
-    const slots = reduced ? (smallScreen ? 4 : 6) : (smallScreen ? (mem <= 3 ? 5 : 7) : (lowPower ? 9 : 12));
-    const used = new Set();
-    const timers = [];
+    const lowPower = smallScreen || mem <= 4 || cores <= 4;
+    const slots = reduced ? (smallScreen ? 3 : 5) : (smallScreen ? (mem <= 3 ? 4 : 5) : (lowPower ? 7 : 10));
 
-    function assign(wrap, img, slot, immediate=false) {
+    let queue = MEDIA.map((url, i) => ({ url, i }));
+    let q = 0;
+    const nodes = [];
+
+    function shuffleQueue() {
+      queue = MEDIA.map((url, i) => ({ url, i }));
+      for (let i = queue.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [queue[i], queue[j]] = [queue[j], queue[i]];
+      }
+      q = 0;
+    }
+
+    function nextItem() {
+      if (!queue.length || q >= queue.length) shuffleQueue();
+      return queue[q++];
+    }
+
+    function assign(node, slot, immediate=false) {
       if (document.hidden && !immediate) return;
-      let index = (slot * 5 + Math.floor(performance.now()/2600) + Math.floor(rnd(0, MEDIA.length))) % MEDIA.length;
-      let guard = 0;
-      while (used.has(index) && guard < MEDIA.length) {
-        index = (index + 1) % MEDIA.length;
-        guard++;
-      }
-      used.add(index);
-      setTimeout(() => used.delete(index), 4200);
-      if (img.dataset.srcIndex !== String(index)) {
-        img.dataset.srcIndex = String(index);
-        img.src = MEDIA[index];
+      const {wrap, img} = node;
+      const item = nextItem();
+
+      if (img.dataset.srcIndex !== String(item.i)) {
+        img.dataset.srcIndex = String(item.i);
+        img.src = item.url;
       }
 
-      const posSeed = (index + 1) * 997 + slot * 131;
+      const posSeed = (item.i + 1) * 997 + slot * 131;
       const left = 5 + ((posSeed * 17) % 90);
       const top = 8 + ((posSeed * 31) % 82);
-      const w = smallScreen ? rnd(44,105) : rnd(52, Math.random()>.72 ? 170 : 118);
+      const w = smallScreen ? rnd(42,92) : rnd(50, Math.random()>.72 ? 150 : 108);
       wrap.style.setProperty("--left", left.toFixed(2)+"vw");
       wrap.style.setProperty("--top", top.toFixed(2)+"vh");
       wrap.style.setProperty("--w", w.toFixed(1)+"px");
-      wrap.style.setProperty("--mw-mobile", rnd(42,92).toFixed(1)+"px");
+      wrap.style.setProperty("--mw-mobile", rnd(40,82).toFixed(1)+"px");
       wrap.style.setProperty("--ar", Math.random()>.55 ? "3/4" : "4/3");
-      wrap.style.setProperty("--rot", rnd(-3.4,3.4).toFixed(2)+"deg");
-      wrap.style.setProperty("--scale", rnd(.86,1.18).toFixed(2));
-      wrap.style.setProperty("--op", rnd(.34,.72).toFixed(2));
-      wrap.style.setProperty("--dur", rnd(8.5,15.5).toFixed(2)+"s");
+      wrap.style.setProperty("--rot", rnd(-3.2,3.2).toFixed(2)+"deg");
+      wrap.style.setProperty("--scale", rnd(.88,1.14).toFixed(2));
+      wrap.style.setProperty("--op", rnd(.30,.68).toFixed(2));
+      wrap.style.setProperty("--dur", rnd(9.5,17.5).toFixed(2)+"s");
       wrap.style.setProperty("--delay", immediate ? rnd(-8,0).toFixed(2)+"s" : "0s");
-      wrap.style.setProperty("--dx", rnd(-15,15).toFixed(1)+"px");
-      wrap.style.setProperty("--dy", rnd(-12,12).toFixed(1)+"px");
-      wrap.style.setProperty("--sx", rnd(-2.8,2.8).toFixed(1)+"px");
-      wrap.style.setProperty("--sy", rnd(-2.2,2.2).toFixed(1)+"px");
+      wrap.style.setProperty("--dx", rnd(-12,12).toFixed(1)+"px");
+      wrap.style.setProperty("--dy", rnd(-10,10).toFixed(1)+"px");
+      wrap.style.setProperty("--sx", rnd(-2.2,2.2).toFixed(1)+"px");
+      wrap.style.setProperty("--sy", rnd(-1.8,1.8).toFixed(1)+"px");
       wrap.style.setProperty("--c1", rnd(0,8).toFixed(1)+"%");
       wrap.style.setProperty("--c2", rnd(0,10).toFixed(1)+"%");
       wrap.style.setProperty("--c3", rnd(86,100).toFixed(1)+"%");
       wrap.style.setProperty("--c4", rnd(84,100).toFixed(1)+"%");
     }
 
+    shuffleQueue();
     const frag = document.createDocumentFragment();
     for (let i=0; i<slots; i++) {
       const wrap = document.createElement("figure");
@@ -996,39 +1194,53 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
       img.fetchPriority = "low";
       wrap.appendChild(img);
       frag.appendChild(wrap);
-      assign(wrap, img, i, true);
-      if (!reduced) {
-        const interval = rnd(5600, 9400);
-        timers.push(setInterval(() => assign(wrap, img, i), interval));
-      }
+      const node = {wrap, img};
+      nodes.push(node);
+      assign(node, i, true);
     }
     holder.appendChild(frag);
 
-    window.addEventListener("pagehide", () => timers.forEach(clearInterval), { once:true });
+    if (reduced) return;
+
+    let timer = 0;
+    let cursor = 0;
+    const cycle = () => {
+      if (!document.hidden && nodes.length) {
+        const changes = lowPower ? 1 : (Math.random() > .68 ? 2 : 1);
+        for (let i=0; i<changes; i++) {
+          const slot = cursor % nodes.length;
+          assign(nodes[slot], slot);
+          cursor++;
+        }
+      }
+      timer = window.setTimeout(cycle, lowPower ? 6200 : 4300);
+    };
+    timer = window.setTimeout(cycle, lowPower ? 5200 : 3500);
+    window.addEventListener("pagehide", () => timer && clearTimeout(timer), { once:true });
   }
 
   function runCanvas() {
     const canvas = document.getElementById("imageField");
-    const ctx = canvas.getContext("2d", { alpha:true, desynchronized:true });
-    if (!ctx) return;
+    const ctx = canvas && canvas.getContext("2d", { alpha:true, desynchronized:true });
+    if (!ctx || reduced) return;
 
     const loaded = [];
-    const smallScreen = matchMedia("(max-width:700px)").matches;
+    const smallScreen = window.matchMedia("(max-width:700px)").matches;
     const mem = navigator.deviceMemory || 4;
     const cores = navigator.hardwareConcurrency || 4;
-    const lowPower = smallScreen || mem <= 3 || cores <= 4;
-    const maxLoads = reduced ? 0 : (smallScreen ? (mem <= 3 ? 3 : 5) : (lowPower ? 6 : 8));
+    const lowPower = smallScreen || mem <= 4 || cores <= 4;
+    const maxLoads = smallScreen ? 0 : (lowPower ? 2 : 4);
     let dpr = 1;
-    let W = 0, H = 0, frame = 0, last = 0, raf = 0, resizeRAF = 0;
+    let W = 0, H = 0, frame = 0, last = 0, raf = 0, resizeTimer = 0;
     let visible = !document.hidden;
 
     function size() {
       W = Math.floor(window.innerWidth);
       H = Math.floor(window.innerHeight);
-      const raw = Math.min(lowPower ? 1 : 1.1, window.devicePixelRatio || 1);
-      const maxPixels = lowPower ? 1450000 : 2400000;
+      const raw = Math.min(lowPower ? .82 : 1, window.devicePixelRatio || 1);
+      const maxPixels = lowPower ? 760000 : 1500000;
       const fitted = Math.sqrt(maxPixels / Math.max(1, W * H));
-      dpr = Math.max(.75, Math.min(raw, fitted));
+      dpr = Math.max(.55, Math.min(raw, fitted));
       canvas.width = Math.max(1, Math.floor(W*dpr));
       canvas.height = Math.max(1, Math.floor(H*dpr));
       canvas.style.width = W + "px";
@@ -1039,17 +1251,15 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
     }
 
     function scheduleSize() {
-      if (resizeRAF) return;
-      resizeRAF = requestAnimationFrame(() => {
-        resizeRAF = 0;
-        size();
-      });
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(size, 140);
     }
 
     function loadStaggered() {
-      const spread = [0,3,6,9,12,16,21,27,31,4,14,24].filter(i => i < MEDIA.length);
+      if (!maxLoads) return;
+      const spread = [0,6,12,21,31,4,14,24].filter(i => i < MEDIA.length);
       spread.slice(0, maxLoads).forEach((mi, i) => {
-        setTimeout(() => {
+        window.setTimeout(() => {
           if (document.hidden) return;
           const img = new Image();
           img.decoding = "async";
@@ -1057,29 +1267,29 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
           img.fetchPriority = "low";
           img.onload = () => loaded.push(img);
           img.src = MEDIA[mi];
-        }, i * (lowPower ? 420 : 260));
+        }, i * (lowPower ? 620 : 380));
       });
     }
 
     function drawImageCuts(img, t, seed) {
       if (!img || !img.naturalWidth) return;
       const ratio = img.naturalHeight / img.naturalWidth || 1.25;
-      const baseW = Math.min(W * (smallScreen ? .23 : .18), smallScreen ? 140 : 230) * (1 + (seed % 3) * .18);
+      const baseW = Math.min(W * .14, 185) * (1 + (seed % 3) * .14);
       const baseH = baseW * ratio;
       const x = (Math.sin(t*.00017 + seed*2.1) * .5 + .5) * W;
       const y = (Math.cos(t*.00013 + seed*1.7) * .5 + .5) * H;
-      const slices = smallScreen || lowPower ? 3 : 4;
+      const slices = lowPower ? 2 : 3;
       ctx.save();
       ctx.translate(x, y);
-      ctx.rotate(Math.sin(t*.0003 + seed) * .018);
-      ctx.globalAlpha = smallScreen ? .105 : .125;
-      ctx.filter = "grayscale(1) contrast(1.28) brightness(.88) blur(.08px)";
+      ctx.rotate(Math.sin(t*.0003 + seed) * .014);
+      ctx.globalAlpha = .10;
+      ctx.filter = "grayscale(1) contrast(1.22) brightness(.88)";
       ctx.globalCompositeOperation = "screen";
       for (let i=0; i<slices; i++) {
         const sh = img.naturalHeight / slices;
         const dy = (i/slices) * baseH - baseH/2;
-        const off = Math.sin(t*.001 + i*2.2 + seed) * (smallScreen ? 5 : 9);
-        ctx.drawImage(img, 0, sh*i, img.naturalWidth, sh*.74, -baseW/2 + off, dy, baseW, baseH/slices);
+        const off = Math.sin(t*.001 + i*2.2 + seed) * 6;
+        ctx.drawImage(img, 0, sh*i, img.naturalWidth, sh*.72, -baseW/2 + off, dy, baseW, baseH/slices);
       }
       ctx.restore();
     }
@@ -1089,8 +1299,8 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
       ctx.save();
       ctx.globalCompositeOperation = "screen";
       ctx.font = (smallScreen ? "10px" : "11px") + " Aktiv Grotesk, Arial, sans-serif";
-      ctx.fillStyle = "rgba(216,207,188,.10)";
-      const n = smallScreen || lowPower ? 5 : 9;
+      ctx.fillStyle = "rgba(216,207,188,.09)";
+      const n = lowPower ? 4 : 7;
       for (let i=0; i<n; i++) {
         const x = ((Math.sin(t*.00009 + i*3.7) * .5 + .5) * W);
         const y = ((Math.cos(t*.00011 + i*2.3) * .5 + .5) * H);
@@ -1105,31 +1315,31 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
         return;
       }
       raf = requestAnimationFrame(draw);
-      if (t - last < (lowPower ? 66 : 45)) return;
+      if (t - last < (lowPower ? 130 : 82)) return;
       last = t;
       frame++;
       ctx.clearRect(0,0,W,H);
 
       const grad = ctx.createRadialGradient(W*.48, H*.42, 10, W*.48, H*.42, Math.max(W,H)*.72);
-      grad.addColorStop(0,"rgba(160,146,121,.11)");
-      grad.addColorStop(.32,"rgba(80,65,48,.06)");
+      grad.addColorStop(0,"rgba(160,146,121,.09)");
+      grad.addColorStop(.32,"rgba(80,65,48,.045)");
       grad.addColorStop(1,"rgba(0,0,0,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0,0,W,H);
 
-      const n = Math.min(loaded.length, smallScreen || lowPower ? 2 : 3);
+      const n = Math.min(loaded.length, lowPower ? 1 : 2);
       for (let i=0; i<n; i++) {
         const img = loaded[(frame + i*3) % Math.max(1, loaded.length)];
         drawImageCuts(img, t + i*131, i);
       }
 
-      if (frame % 3 === 0) drawType(t);
+      if (frame % 2 === 0) drawType(t);
 
       ctx.save();
-      ctx.globalAlpha = .04;
+      ctx.globalAlpha = lowPower ? .025 : .035;
       ctx.globalCompositeOperation = "overlay";
       ctx.fillStyle = "rgba(255,255,255,.7)";
-      for (let y=(frame%29); y<H; y+=31) ctx.fillRect(0, y, W, 1);
+      for (let y=(frame%35); y<H; y+=37) ctx.fillRect(0, y, W, 1);
       ctx.restore();
     }
 
@@ -1149,7 +1359,10 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
     size();
     window.addEventListener("resize", scheduleSize, { passive:true });
     if (window.visualViewport) window.visualViewport.addEventListener("resize", scheduleSize, { passive:true });
-    document.addEventListener("visibilitychange", () => document.hidden ? stop() : start(), { passive:true });
+    document.addEventListener("visibilitychange", () => {
+      document.body.classList.toggle("is-frozen", document.hidden);
+      document.hidden ? stop() : start();
+    }, { passive:true });
     window.addEventListener("pagehide", stop, { once:true });
     loadStaggered();
     start();
@@ -1157,26 +1370,35 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
 
   function pointerDrift() {
     const field = document.getElementById("sigilField");
-    if (!field || reduced || matchMedia("(hover:none), (pointer:coarse)").matches) return;
+    if (!field || reduced || window.matchMedia("(hover:none), (pointer:coarse)").matches) return;
     let tx = 0, ty = 0, x = 0, y = 0, raf = 0, visible = !document.hidden;
+    let lastMove = 0;
     window.addEventListener("pointermove", e => {
+      const now = performance.now();
+      if (now - lastMove < 42) return;
+      lastMove = now;
       tx = (e.clientX / window.innerWidth - .5) * 14;
       ty = (e.clientY / window.innerHeight - .5) * 10;
+      if (!raf && visible) raf = requestAnimationFrame(loop);
     }, { passive:true });
     const loop = () => {
       if (!visible) { raf = 0; return; }
-      x += (tx - x) * .045;
-      y += (ty - y) * .045;
+      x += (tx - x) * .055;
+      y += (ty - y) * .055;
       field.style.setProperty("--mx", x.toFixed(2)+"px");
       field.style.setProperty("--my", y.toFixed(2)+"px");
+      if (Math.abs(tx - x) < .02 && Math.abs(ty - y) < .02) {
+        raf = 0;
+        return;
+      }
       raf = requestAnimationFrame(loop);
     };
     document.addEventListener("visibilitychange", () => {
       visible = !document.hidden;
+      document.body.classList.toggle("is-frozen", document.hidden);
       if (visible && !raf) raf = requestAnimationFrame(loop);
     }, { passive:true });
     window.addEventListener("pagehide", () => raf && cancelAnimationFrame(raf), { once:true });
-    raf = requestAnimationFrame(loop);
   }
 
   mountSvg();

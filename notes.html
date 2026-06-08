@@ -73,6 +73,7 @@ body {
   text-rendering:geometricPrecision;
   isolation:isolate;
 }
+body.is-frozen * { animation-play-state:paused!important; }
 a { color:inherit; text-decoration:none; }
 a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
 
@@ -99,7 +100,7 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
     url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.93' numOctaves='3' type='fractalNoise' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.56'/%3E%3C/svg%3E");
   background-size:100% 2px, 168px 168px;
   mix-blend-mode:overlay;
-  animation:paperDrift 3.2s steps(3,end) infinite;
+  animation:paperDrift 5.8s steps(3,end) infinite;
 }
 #root::after {
   content:"";
@@ -126,7 +127,7 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
   width:100%;
   height:100%;
   z-index:1;
-  opacity:.72;
+  opacity:.56;
   mix-blend-mode:screen;
 }
 .old-grid {
@@ -154,7 +155,7 @@ a:focus-visible { outline:1px dotted var(--pale); outline-offset:4px; }
   filter:grayscale(1) contrast(1.2) brightness(.7) blur(.15px) drop-shadow(0 0 18px rgba(220,211,194,.12));
   mix-blend-mode:screen;
   pointer-events:none;
-  animation:wordmarkAge 14s steps(2,end) infinite;
+  animation:wordmarkAge 18s steps(2,end) infinite;
 }
 @keyframes wordmarkAge {
   0%,100% { opacity:.18; transform:translateX(-50%) translateY(0) scale(1); }
@@ -408,6 +409,7 @@ main {
   mix-blend-mode:screen;
 }
 .reading-lines i {
+  contain:paint style;
   position:absolute;
   left:var(--l);
   top:var(--t);
@@ -432,6 +434,7 @@ main {
   mix-blend-mode:screen;
 }
 .marginalia span {
+  contain:paint style;
   position:absolute;
   max-width:340px;
   color:rgba(222,214,198,var(--alpha));
@@ -523,9 +526,12 @@ main {
   .note-body p:first-child {
     font-size:clamp(32px,10vw,56px);
   }
-  .marginalia span:nth-child(n+10) {
+  .marginalia span:nth-child(n+9) {
     display:none;
   }
+
+  .field { opacity:.38; }
+  .reading-lines i:nth-child(n+11) { display:none; }
 }
 
 @media (max-height:620px) and (orientation:landscape) {
@@ -609,13 +615,26 @@ Collection III — mortem[s] continues this language through the body after the 
   "use strict";
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const lowPower = navigator.deviceMemory && navigator.deviceMemory <= 4;
-  const smallScreen = window.matchMedia("(max-width: 700px)").matches;
+  const mqSmall = window.matchMedia("(max-width: 700px)");
+  const mem = navigator.deviceMemory || 8;
+  const cores = navigator.hardwareConcurrency || 8;
+  let smallScreen = mqSmall.matches;
+  let lowPower = smallScreen || mem <= 4 || cores <= 4;
+  let active = !document.hidden;
+
   const root = document.documentElement;
-  const phrases = ["clothing can remember", "found / kept / inherited", "slightly unfinished", "a raw edge", "a loose tie", "a button / a seam / a stain", "it can hold a trace", "not fantasy, but evidence", "not perfection", "what remains", "body after the image", "the garment left behind", "the object that stays", "the silence that fabric can carry", "not final", "first form of the collection"];
+  const body = document.body;
+  const phrases = [
+    "clothing can remember", "found / kept / inherited", "slightly unfinished",
+    "a raw edge", "a loose tie", "a button / a seam / a stain",
+    "it can hold a trace", "not fantasy, but evidence", "not perfection",
+    "what remains", "body after the image", "the garment left behind",
+    "the object that stays", "the silence that fabric can carry",
+    "not final", "first form of the collection"
+  ];
 
   const rnd = (min, max) => min + Math.random() * (max - min);
-  const choose = arr => arr[Math.floor(Math.random() * arr.length)];
+  const choose = arr => arr[(Math.random() * arr.length) | 0];
 
   document.querySelectorAll(".note-body p").forEach((p, i) => {
     const text = p.textContent.trim();
@@ -629,17 +648,19 @@ Collection III — mortem[s] continues this language through the body after the 
 
   function mountLines() {
     const holder = document.getElementById("readingLines");
-    const count = smallScreen ? 16 : 28;
+    if (!holder) return;
+    holder.textContent = "";
+    const count = reduced ? 6 : (lowPower ? 10 : 18);
     const frag = document.createDocumentFragment();
     for (let i = 0; i < count; i++) {
       const line = document.createElement("i");
       line.style.setProperty("--l", rnd(-8, 96).toFixed(2) + "%");
       line.style.setProperty("--t", rnd(8, 94).toFixed(2) + "%");
       line.style.setProperty("--w", rnd(18, 82).toFixed(2) + "%");
-      line.style.setProperty("--o", rnd(.05, .26).toFixed(3));
-      line.style.setProperty("--r", rnd(-1.4, 1.4).toFixed(2) + "deg");
-      line.style.setProperty("--d", rnd(5.5, 15).toFixed(2) + "s");
-      line.style.setProperty("--delay", rnd(-14, 0).toFixed(2) + "s");
+      line.style.setProperty("--o", rnd(.05, .24).toFixed(3));
+      line.style.setProperty("--r", rnd(-1.2, 1.2).toFixed(2) + "deg");
+      line.style.setProperty("--d", rnd(7.5, 18).toFixed(2) + "s");
+      line.style.setProperty("--delay", rnd(-16, 0).toFixed(2) + "s");
       frag.appendChild(line);
     }
     holder.appendChild(frag);
@@ -647,7 +668,9 @@ Collection III — mortem[s] continues this language through the body after the 
 
   function mountMarginalia() {
     const holder = document.getElementById("marginalia");
-    const count = reduced ? 8 : (smallScreen || lowPower ? 12 : 20);
+    if (!holder) return;
+    holder.textContent = "";
+    const count = reduced ? 6 : (lowPower ? 8 : 14);
     const frag = document.createDocumentFragment();
     for (let i = 0; i < count; i++) {
       const s = document.createElement("span");
@@ -659,15 +682,15 @@ Collection III — mortem[s] continues this language through the body after the 
       if (edge === 3) { s.style.left = rnd(8,76).toFixed(2)+"vw"; s.style.top = rnd(78,96).toFixed(2)+"vh"; }
       s.style.setProperty("--font", Math.random() > .44 ? "var(--font-ital)" : "var(--font-sans)");
       s.style.setProperty("--style", Math.random() > .44 ? "italic" : "normal");
-      s.style.setProperty("--size", rnd(8, smallScreen ? 22 : 38).toFixed(2)+"px");
-      s.style.setProperty("--track", rnd(-.04,.12).toFixed(3)+"em");
-      s.style.setProperty("--alpha", rnd(.08,.34).toFixed(2));
-      s.style.setProperty("--blur", rnd(.1,1.6).toFixed(2)+"px");
-      s.style.setProperty("--rot", rnd(-4,4).toFixed(2)+"deg");
+      s.style.setProperty("--size", rnd(8, smallScreen ? 20 : 34).toFixed(2)+"px");
+      s.style.setProperty("--track", rnd(-.04,.1).toFixed(3)+"em");
+      s.style.setProperty("--alpha", rnd(.08,.3).toFixed(2));
+      s.style.setProperty("--blur", rnd(.05, lowPower ? .65 : 1.1).toFixed(2)+"px");
+      s.style.setProperty("--rot", rnd(-3.4,3.4).toFixed(2)+"deg");
       s.style.setProperty("--topcut", rnd(0,46).toFixed(1)+"%");
       s.style.setProperty("--botcut", rnd(0,52).toFixed(1)+"%");
-      s.style.setProperty("--dur", rnd(9,22).toFixed(2)+"s");
-      s.style.setProperty("--delay", rnd(-22,0).toFixed(2)+"s");
+      s.style.setProperty("--dur", rnd(12,26).toFixed(2)+"s");
+      s.style.setProperty("--delay", rnd(-24,0).toFixed(2)+"s");
       frag.appendChild(s);
     }
     holder.appendChild(frag);
@@ -676,102 +699,148 @@ Collection III — mortem[s] continues this language through the body after the 
   function runCanvas() {
     const canvas = document.getElementById("textField");
     if (!canvas || reduced) return;
+
     const ctx = canvas.getContext("2d", { alpha:true, desynchronized:true });
-    let W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 1.15);
-    let frame = 0;
-    let running = true;
+    if (!ctx) return;
+
+    let W = 1, H = 1, dpr = 1, raf = 0, last = 0, font = "";
     let pointerX = .52, pointerY = .45;
+    let pendingPointer = false;
     const glyphs = ["trace", "seam", "button", "raw edge", "memory", "evidence", "remains", "fabric", "body"];
-    const strokes = Array.from({ length: lowPower || smallScreen ? 28 : 44 }, (_, i) => ({
-      x: rnd(0, 1), y: rnd(0, 1), l: rnd(.08, .48), a: rnd(.018, .11),
-      r: rnd(-.05, .05), t: rnd(0, 1000), g: choose(glyphs)
-    }));
+    let strokes = [];
+
+    function rebuildStrokes() {
+      smallScreen = mqSmall.matches;
+      lowPower = smallScreen || mem <= 4 || cores <= 4;
+      const count = lowPower ? 14 : 26;
+      strokes = Array.from({ length: count }, () => ({
+        x: rnd(0, 1),
+        y: rnd(0, 1),
+        l: rnd(.08, .46),
+        a: rnd(.014, .08),
+        r: rnd(-.045, .045),
+        t: rnd(0, 1000),
+        g: choose(glyphs)
+      }));
+    }
 
     function size() {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 1.15);
+      W = Math.max(1, window.innerWidth);
+      H = Math.max(1, window.innerHeight);
+      smallScreen = mqSmall.matches;
+      lowPower = smallScreen || mem <= 4 || cores <= 4;
+      dpr = Math.min(window.devicePixelRatio || 1, lowPower ? .62 : .86);
       canvas.width = Math.max(1, Math.floor(W * dpr));
       canvas.height = Math.max(1, Math.floor(H * dpr));
       canvas.style.width = W + "px";
       canvas.style.height = H + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      font = smallScreen ? "9px 'Aktiv Grotesk', Arial, sans-serif" : "10px 'Aktiv Grotesk', Arial, sans-serif";
+      rebuildStrokes();
+    }
+
+    function commitPointer() {
+      pendingPointer = false;
+      root.style.setProperty("--px", (pointerX * 100).toFixed(2) + "%");
+      root.style.setProperty("--py", (pointerY * 100).toFixed(2) + "%");
+    }
+
+    function setPointer(x, y) {
+      pointerX += (x / Math.max(1, W) - pointerX) * .28;
+      pointerY += (y / Math.max(1, H) - pointerY) * .28;
+      if (!pendingPointer) {
+        pendingPointer = true;
+        requestAnimationFrame(commitPointer);
+      }
     }
 
     function draw(ts) {
-      if (!running) return;
-      frame++;
-      if ((lowPower || smallScreen) && frame % 2) {
-        requestAnimationFrame(draw);
-        return;
-      }
-      ctx.clearRect(0, 0, W, H);
-      ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = "rgba(0,0,0,.08)";
-      ctx.fillRect(0, 0, W, H);
+      raf = 0;
+      if (!active || reduced) return;
 
-      const px = pointerX * W;
-      const py = pointerY * H;
-      root.style.setProperty("--px", (pointerX * 100).toFixed(2) + "%");
-      root.style.setProperty("--py", (pointerY * 100).toFixed(2) + "%");
+      const gap = lowPower ? 150 : 96;
+      if (ts - last >= gap) {
+        last = ts;
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "screen";
+        ctx.lineWidth = 1;
+        ctx.font = font;
 
-      ctx.save();
-      ctx.globalCompositeOperation = "screen";
-      ctx.lineWidth = 1;
-      ctx.font = "10px 'Aktiv Grotesk', Arial, sans-serif";
-      for (const s of strokes) {
-        const pulse = .5 + .5 * Math.sin(ts * .00018 + s.t);
-        const x = s.x * W + Math.sin(ts * .00009 + s.t) * 10;
-        const y = s.y * H + Math.cos(ts * .00007 + s.t) * 8;
-        const dist = Math.hypot(x - px, y - py) / Math.max(W, H);
-        const a = Math.min(.16, s.a + Math.max(0, .16 - dist) * .28);
-        ctx.strokeStyle = `rgba(220,210,190,${a * (.45 + pulse * .55)})`;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + s.l * W, y + s.r * H);
-        ctx.stroke();
-        if (pulse > .92 && dist < .33) {
-          ctx.fillStyle = `rgba(220,210,190,${a * .7})`;
-          ctx.fillText(s.g, x + 4, y - 4);
+        const px = pointerX * W;
+        const py = pointerY * H;
+
+        for (let i = 0; i < strokes.length; i++) {
+          const s = strokes[i];
+          const pulse = .5 + .5 * Math.sin(ts * .00018 + s.t);
+          const x = s.x * W + Math.sin(ts * .00009 + s.t) * 9;
+          const y = s.y * H + Math.cos(ts * .00007 + s.t) * 7;
+          const dist = Math.hypot(x - px, y - py) / Math.max(W, H);
+          const a = Math.min(.13, s.a + Math.max(0, .15 - dist) * .18);
+          ctx.strokeStyle = "rgba(220,210,190," + (a * (.45 + pulse * .55)).toFixed(4) + ")";
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + s.l * W, y + s.r * H);
+          ctx.stroke();
+
+          if (!lowPower && pulse > .955 && dist < .31) {
+            ctx.fillStyle = "rgba(220,210,190," + (a * .62).toFixed(4) + ")";
+            ctx.fillText(s.g, x + 4, y - 4);
+          }
         }
+
+        const radius = Math.min(W, H) * (lowPower ? .28 : .34);
+        const grad = ctx.createRadialGradient(px, py, 0, px, py, radius);
+        grad.addColorStop(0, "rgba(222,214,198,.055)");
+        grad.addColorStop(.36, "rgba(222,214,198,.014)");
+        grad.addColorStop(1, "rgba(222,214,198,0)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
       }
 
-      const grad = ctx.createRadialGradient(px, py, 0, px, py, Math.min(W,H) * .36);
-      grad.addColorStop(0, "rgba(222,214,198,.075)");
-      grad.addColorStop(.34, "rgba(222,214,198,.018)");
-      grad.addColorStop(1, "rgba(222,214,198,0)");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-      ctx.restore();
-
-      requestAnimationFrame(draw);
+      raf = requestAnimationFrame(draw);
     }
 
-    const setPointer = (x, y) => {
-      pointerX += (x / Math.max(1, W) - pointerX) * .35;
-      pointerY += (y / Math.max(1, H) - pointerY) * .35;
-    };
+    function start() {
+      if (!raf && active && !reduced) raf = requestAnimationFrame(draw);
+    }
 
-    window.addEventListener("pointermove", e => setPointer(e.clientX, e.clientY), { passive:true });
-    window.addEventListener("touchstart", e => {
-      if (e.touches && e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive:true });
-    window.addEventListener("touchmove", e => {
-      if (e.touches && e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY);
+    function stop() {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+    }
+
+    window.addEventListener("pointermove", e => {
+      if (active) setPointer(e.clientX, e.clientY);
     }, { passive:true });
 
     let resizeTimer = 0;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(size, 120);
+      resizeTimer = setTimeout(() => {
+        size();
+        mountLines();
+        mountMarginalia();
+      }, 180);
     }, { passive:true });
+
     document.addEventListener("visibilitychange", () => {
-      running = !document.hidden;
-      if (running) requestAnimationFrame(draw);
+      active = !document.hidden;
+      body.classList.toggle("is-frozen", !active);
+      if (active) {
+        size();
+        last = 0;
+        start();
+      } else {
+        stop();
+      }
     });
 
+    window.addEventListener("pagehide", () => { active = false; stop(); }, { passive:true });
+    window.addEventListener("pageshow", () => { active = !document.hidden; if (active) { size(); start(); } }, { passive:true });
+
     size();
-    requestAnimationFrame(draw);
+    commitPointer();
+    start();
   }
 
   mountLines();
