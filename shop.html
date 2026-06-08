@@ -1,5 +1,1314 @@
-      <figure class="archive-item" data-n="46" data-original="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBR58HmXHKdarg9D-tcaZlZ_gCadZVV19RQ&s" style="--span:5;--ar:6/5;--x:0px;--y:0px;--pulseX:0px;--pulseY:0px;--op:0.95;--delay:3.98s;">
-        <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBR58HmXHKdarg9D-tcaZlZ_gCadZVV19RQ&s" target="_blank" rel="noopener" aria-label="open archive image 46">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBR58HmXHKdarg9D-tcaZlZ_gCadZVV19RQ&s" alt="" loading="lazy" decoding="async" fetchpriority="low" sizes="(max-width:700px) 92vw, (max-width:1100px) 46vw, 24vw">
-        </a>
-      </figure>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Springtime Wishes — available garments, private requests, and archive pieces.">
+<title>shop / springtime wishes</title>
+<style>
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"LTC Metropolitan";src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  --bg:#010101;
+  --soil:#060403;
+  --ink:rgba(232,224,210,.82);
+  --ink2:rgba(232,224,210,.56);
+  --ink3:rgba(232,224,210,.32);
+  --hair:rgba(232,224,210,.12);
+  --hair2:rgba(232,224,210,.06);
+  --blood:#38140f;
+  --rust:#6e3a22;
+  --bone:#d8cfbd;
+  --moss:#182012;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-r:env(safe-area-inset-right,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px);
+  --mx:50%;
+  --my:50%;
+}
+*{box-sizing:border-box}
+html{
+  margin:0;
+  min-height:100%;
+  background:#000;
+  color:var(--ink);
+  scroll-behavior:smooth;
+}
+body{
+  margin:0;
+  min-height:100%;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(155,130,98,.10),transparent 34vh),
+    radial-gradient(ellipse at 12% 28%,rgba(75,50,33,.17),transparent 36vw),
+    radial-gradient(ellipse at 88% 18%,rgba(82,30,20,.12),transparent 30vw),
+    linear-gradient(180deg,#000 0%,#050302 38%,#020101 100%);
+  color:var(--ink);
+  font-family:"Aktiv Grotesk",Arial,Helvetica,sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  text-rendering:geometricPrecision;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+body.is-frozen *{animation-play-state:paused!important}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+a:focus-visible,button:focus-visible{
+  outline:1px dotted rgba(242,236,226,.92);
+  outline-offset:5px;
+}
+::selection{background:rgba(242,236,226,.92);color:#000}
+
+#atmosphere{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  width:100%;
+  height:100%;
+  mix-blend-mode:screen;
+  opacity:.72;
+}
+.site{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  isolation:isolate;
+}
+.site::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:80;
+  pointer-events:none;
+  opacity:.24;
+  mix-blend-mode:overlay;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.82' numOctaves='3' type='fractalNoise' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+  background-size:100% 3px,180px 180px;
+  animation:grainMove 5.4s steps(4,end) infinite;
+}
+.site::after{
+  content:"";
+  position:fixed;
+  inset:8px;
+  z-index:79;
+  pointer-events:none;
+  border:1px solid rgba(232,224,210,.12);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.86), inset 0 0 130px rgba(0,0,0,.86);
+}
+@keyframes grainMove{
+  0%{transform:translate3d(0,0,0)}
+  33%{transform:translate3d(1px,-1px,0)}
+  66%{transform:translate3d(-1px,1px,0)}
+  100%{transform:translate3d(0,-1px,0)}
+}
+.mouse-bloom{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:.88;
+  background:
+    radial-gradient(circle at var(--mx) var(--my),rgba(232,224,210,.10),transparent 10%),
+    radial-gradient(circle at var(--mx) var(--my),rgba(91,42,25,.09),transparent 27%);
+}
+.wordmark{
+  position:fixed;
+  left:50%;
+  top:calc(var(--safe-t) + clamp(7px,2vh,19px));
+  z-index:16;
+  width:min(94vw,1380px);
+  height:auto;
+  transform:translateX(-50%);
+  opacity:.14;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  filter:grayscale(1) contrast(1.1) brightness(.68) blur(.05px) drop-shadow(0 0 20px rgba(220,210,196,.12));
+  animation:wordmarkBreath 15s steps(3,end) infinite;
+}
+@keyframes wordmarkBreath{
+  0%,100%{opacity:.13;transform:translateX(-50%) translateY(0)}
+  20%{opacity:.22;transform:translateX(calc(-50% + 1px)) translateY(1px)}
+  21%{opacity:.08}
+  58%{opacity:.17}
+  59%{filter:grayscale(1) contrast(1.45) brightness(.58) blur(.45px)}
+  62%{filter:grayscale(1) contrast(1.1) brightness(.68) blur(.05px)}
+}
+.old-button{
+  position:fixed;
+  z-index:95;
+  font-size:11px;
+  line-height:1.15;
+  letter-spacing:.015em;
+  color:rgba(232,224,210,.76);
+  background:
+    linear-gradient(180deg,rgba(25,19,14,.96),rgba(0,0,0,.985) 54%,rgba(16,12,9,.94)),
+    repeating-linear-gradient(90deg,rgba(232,224,210,.030) 0 1px,transparent 1px 7px);
+  border:1px solid rgba(232,224,210,.22);
+  clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px);
+  box-shadow:
+    inset 1px 1px 0 rgba(240,234,223,.12),
+    inset -1px -1px 0 rgba(0,0,0,.96),
+    inset 0 0 16px rgba(0,0,0,.72),
+    0 10px 30px rgba(0,0,0,.55);
+}
+.old-button::before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border:1px solid rgba(232,224,210,.11);
+  pointer-events:none;
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);
+}
+.old-button:hover{color:rgba(249,244,236,.96);filter:brightness(1.09)}
+.back-home{
+  left:calc(var(--safe-l) + clamp(12px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(11px,2vh,24px));
+  min-width:56px;
+  min-height:32px;
+  padding:8px 13px 9px;
+  display:grid;
+  place-items:center;
+}
+.availability{
+  right:calc(var(--safe-r) + clamp(12px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(11px,2vh,24px));
+  min-height:32px;
+  padding:8px 13px 9px;
+  pointer-events:none;
+  color:rgba(232,224,210,.48);
+}
+
+.hero{
+  min-height:100svh;
+  display:grid;
+  align-items:end;
+  padding:calc(var(--safe-t) + 96px) clamp(16px,4vw,58px) clamp(32px,7vh,78px);
+  position:relative;
+}
+.hero__inner{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(270px,.55fr);
+  gap:clamp(26px,7vw,112px);
+  align-items:end;
+  width:100%;
+}
+.kicker{
+  display:block;
+  margin:0 0 10px;
+  color:rgba(232,224,210,.34);
+  font-size:11px;
+  line-height:1.2;
+  letter-spacing:.025em;
+}
+h1{
+  margin:0;
+  font-family:"LTC Metropolitan",Georgia,"Times New Roman",serif;
+  font-style:italic;
+  font-weight:400;
+  color:rgba(233,225,211,.82);
+  font-size:clamp(68px,13vw,214px);
+  line-height:.70;
+  letter-spacing:-.075em;
+  text-shadow:0 0 22px rgba(221,211,196,.10),0 0 120px rgba(91,42,25,.08);
+  filter:blur(.08px);
+}
+.hero__statement{
+  align-self:end;
+  max-width:520px;
+  color:rgba(232,224,210,.62);
+}
+.hero__statement p{
+  margin:0;
+  font-family:"LTC Metropolitan",Georgia,serif;
+  font-style:italic;
+  font-size:clamp(24px,2.5vw,43px);
+  line-height:1.02;
+  letter-spacing:-.046em;
+  text-wrap:balance;
+}
+.hero__statement small{
+  display:block;
+  margin-top:20px;
+  color:rgba(232,224,210,.42);
+  font-size:10px;
+  line-height:1.65;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.scroll-cue{
+  position:absolute;
+  right:clamp(18px,4vw,58px);
+  bottom:clamp(22px,5vh,58px);
+  width:1px;
+  height:100px;
+  background:rgba(232,224,210,.14);
+  overflow:hidden;
+}
+.scroll-cue::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent,rgba(232,224,210,.76),transparent);
+  animation:fall 2.7s ease-in-out infinite;
+}
+@keyframes fall{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+
+.shop-shell{
+  position:relative;
+  padding:0 clamp(14px,3vw,48px) clamp(70px,9vh,120px);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(310px,390px);
+  gap:clamp(18px,3vw,38px);
+  align-items:start;
+}
+.shop-head{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,.36fr);
+  gap:clamp(22px,5vw,78px);
+  padding:0 0 clamp(22px,4vh,40px);
+  border-top:1px solid rgba(232,224,210,.12);
+  padding-top:clamp(22px,4vh,42px);
+}
+.shop-head h2{
+  margin:0;
+  font-family:"LTC Metropolitan",Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+  color:rgba(233,225,211,.78);
+  font-size:clamp(42px,8vw,136px);
+  line-height:.78;
+  letter-spacing:-.068em;
+}
+.shop-head p{
+  margin:0;
+  color:rgba(232,224,210,.48);
+  font-size:clamp(12px,1vw,14px);
+  line-height:1.55;
+  letter-spacing:.006em;
+  max-width:520px;
+}
+.piece-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:12px;
+  align-items:start;
+}
+.piece-card{
+  --delay:0s;
+  grid-column:span 4;
+  min-height:430px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(232,224,210,.12);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,0,0,.30)),
+    rgba(7,5,4,.74);
+  box-shadow:inset 0 0 80px rgba(0,0,0,.60),0 18px 60px rgba(0,0,0,.28);
+  isolation:isolate;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(28px);
+  filter:blur(8px);
+  transition:
+    opacity .9s ease,
+    transform .9s cubic-bezier(.16,1,.3,1),
+    filter .9s ease,
+    border-color .35s ease,
+    background .35s ease;
+  animation:cardBreath 8s ease-in-out infinite;
+  animation-delay:var(--delay);
+}
+.piece-card.in{opacity:1;transform:none;filter:blur(0)}
+.piece-card:nth-child(1){grid-column:span 7;min-height:620px}
+.piece-card:nth-child(2){grid-column:span 5;min-height:510px;margin-top:9vh}
+.piece-card:nth-child(3){grid-column:span 4;min-height:470px}
+.piece-card:nth-child(4){grid-column:span 4;min-height:570px;margin-top:-7vh}
+.piece-card:nth-child(5){grid-column:span 4;min-height:440px}
+.piece-card:nth-child(6){grid-column:span 6;min-height:520px}
+.piece-card:nth-child(7){grid-column:span 6;min-height:460px;margin-top:6vh}
+.piece-card:nth-child(8){grid-column:span 4;min-height:420px}
+.piece-card:nth-child(9){grid-column:span 8;min-height:560px}
+.piece-card:nth-child(10){grid-column:span 5;min-height:440px}
+.piece-card:nth-child(11){grid-column:span 7;min-height:500px;margin-top:5vh}
+.piece-card:nth-child(12){grid-column:span 12;min-height:560px}
+@keyframes cardBreath{
+  0%,100%{box-shadow:inset 0 0 78px rgba(0,0,0,.62),0 18px 60px rgba(0,0,0,.26)}
+  50%{box-shadow:inset 0 0 100px rgba(0,0,0,.72),0 22px 72px rgba(0,0,0,.34)}
+}
+.piece-card::before{
+  content:"";
+  position:absolute;
+  inset:-18%;
+  z-index:0;
+  pointer-events:none;
+  opacity:.68;
+  background:
+    radial-gradient(ellipse at var(--fx,50%) var(--fy,45%),rgba(232,224,210,.16),transparent 15%),
+    radial-gradient(ellipse at 50% 82%,rgba(90,38,22,.12),transparent 25%),
+    linear-gradient(120deg,transparent 0 43%,rgba(255,255,255,.035) 45%,transparent 48% 100%);
+  filter:blur(16px);
+  transform:translate3d(calc((var(--x,0) * .4px)),calc((var(--y,0) * .4px)),0);
+  transition:opacity .35s ease,transform .35s ease;
+}
+.piece-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  opacity:.42;
+  mix-blend-mode:screen;
+  background:
+    repeating-linear-gradient(90deg,rgba(232,224,210,.020) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(0deg,rgba(232,224,210,.014) 0 1px,transparent 1px 13px);
+}
+.piece-card:hover,.piece-card.is-active{
+  border-color:rgba(232,224,210,.36);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.026),rgba(0,0,0,.25)),
+    rgba(9,6,5,.84);
+}
+.piece-card:hover::before,.piece-card.is-active::before{opacity:.96}
+.piece-card__canvas{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  opacity:.94;
+}
+.piece-card__image{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.24;
+  filter:grayscale(1) contrast(1.15) brightness(.58) blur(.25px);
+  mix-blend-mode:screen;
+}
+.piece-card__veil{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.20),rgba(0,0,0,.15) 45%,rgba(0,0,0,.82)),
+    radial-gradient(ellipse at 50% 40%,transparent 0 34%,rgba(0,0,0,.36) 65%,rgba(0,0,0,.78) 100%);
+}
+.piece-card__meta{
+  position:absolute;
+  z-index:4;
+  left:14px;
+  right:14px;
+  top:13px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:rgba(232,224,210,.42);
+  font-size:9px;
+  line-height:1.25;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.piece-card__copy{
+  position:absolute;
+  z-index:5;
+  left:15px;
+  right:15px;
+  bottom:15px;
+  display:grid;
+  gap:10px;
+}
+.piece-card__copy h3{
+  margin:0;
+  color:rgba(236,229,216,.84);
+  font-family:"LTC Metropolitan",Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(31px,3.8vw,68px);
+  line-height:.80;
+  letter-spacing:-.066em;
+  text-shadow:0 0 24px rgba(232,224,210,.10);
+}
+.piece-card__copy p{
+  margin:0;
+  max-width:420px;
+  color:rgba(232,224,210,.50);
+  font-size:11px;
+  line-height:1.42;
+  letter-spacing:.018em;
+}
+.piece-card__actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:4px;
+}
+.piece-link,.piece-button{
+  min-height:31px;
+  display:inline-grid;
+  place-items:center;
+  padding:8px 10px;
+  color:rgba(232,224,210,.72);
+  background:rgba(0,0,0,.48);
+  border:1px solid rgba(232,224,210,.14);
+  font-size:10px;
+  line-height:1.1;
+  letter-spacing:.04em;
+  cursor:pointer;
+}
+.piece-link:hover,.piece-button:hover{color:rgba(249,244,236,.98);border-color:rgba(232,224,210,.32)}
+.status-dot{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.status-dot::before{
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:rgba(232,224,210,.54);
+  box-shadow:0 0 12px rgba(232,224,210,.16);
+}
+.status-dot[data-status="available"]::before{background:rgba(215,199,162,.72)}
+.status-dot[data-status="private request"]::before{background:rgba(130,86,54,.72)}
+.status-dot[data-status="archive request"]::before{background:rgba(120,132,102,.64)}
+
+.reliquary{
+  position:sticky;
+  top:calc(var(--safe-t) + 72px);
+  min-height:calc(100svh - var(--safe-t) - var(--safe-b) - 96px);
+  border:1px solid rgba(232,224,210,.13);
+  background:
+    linear-gradient(180deg,rgba(18,13,9,.82),rgba(0,0,0,.92)),
+    rgba(3,2,1,.92);
+  box-shadow:inset 0 0 90px rgba(0,0,0,.78),0 20px 70px rgba(0,0,0,.35);
+  overflow:hidden;
+  padding:18px;
+}
+.reliquary::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  pointer-events:none;
+  opacity:.82;
+  background:
+    radial-gradient(ellipse at 50% 18%,rgba(232,224,210,.12),transparent 17%),
+    radial-gradient(ellipse at 50% 62%,rgba(89,43,25,.16),transparent 22%),
+    repeating-linear-gradient(92deg,transparent 0 16px,rgba(232,224,210,.018) 17px 18px);
+  filter:blur(14px);
+}
+.reliquary > *{position:relative;z-index:1}
+.reliquary__label{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  color:rgba(232,224,210,.36);
+  font-size:9px;
+  line-height:1.35;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+  margin-bottom:clamp(18px,3vh,28px);
+}
+.reliquary h2{
+  margin:0;
+  color:rgba(236,229,216,.84);
+  font-family:"LTC Metropolitan",Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(46px,5vw,84px);
+  line-height:.82;
+  letter-spacing:-.07em;
+}
+.reliquary__text{
+  margin:18px 0 0;
+  color:rgba(232,224,210,.50);
+  font-size:13px;
+  line-height:1.48;
+}
+.reliquary__list{
+  display:grid;
+  margin:24px 0;
+  border-top:1px solid rgba(232,224,210,.12);
+}
+.reliquary__row{
+  display:grid;
+  grid-template-columns:88px 1fr;
+  gap:16px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(232,224,210,.07);
+  color:rgba(232,224,210,.46);
+  font-size:10px;
+  line-height:1.38;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.reliquary__row strong{
+  color:rgba(232,224,210,.80);
+  font-weight:300;
+  text-transform:none;
+  letter-spacing:.015em;
+}
+.reliquary__request{
+  display:grid;
+  gap:8px;
+  margin-top:auto;
+}
+.request-link{
+  min-height:38px;
+  display:grid;
+  place-items:center;
+  padding:11px 12px;
+  color:rgba(249,244,236,.90);
+  border:1px solid rgba(232,224,210,.22);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.030),rgba(0,0,0,.45)),
+    rgba(16,10,7,.80);
+  font-size:11px;
+  letter-spacing:.04em;
+}
+.request-link:hover{border-color:rgba(232,224,210,.42)}
+.reliquary__note{
+  color:rgba(232,224,210,.34);
+  font-size:10px;
+  line-height:1.45;
+}
+.archive-strip{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:clamp(18px,4vw,58px);
+  margin-top:clamp(38px,8vh,92px);
+  padding:clamp(22px,5vw,58px);
+  border:1px solid rgba(232,224,210,.13);
+  background:
+    radial-gradient(ellipse at 20% 40%,rgba(232,224,210,.10),transparent 20%),
+    radial-gradient(ellipse at 86% 70%,rgba(75,38,24,.13),transparent 26%),
+    rgba(2,1,1,.72);
+  overflow:hidden;
+  position:relative;
+}
+.archive-strip::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  opacity:.52;
+  background:repeating-linear-gradient(90deg,rgba(232,224,210,.024) 0 1px,transparent 1px 11px);
+  transform:rotate(-3deg);
+}
+.archive-strip > *{position:relative;z-index:1}
+.archive-strip h2{
+  margin:0;
+  font-family:"LTC Metropolitan",Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(45px,7vw,120px);
+  line-height:.78;
+  letter-spacing:-.07em;
+}
+.archive-strip p{
+  margin:0;
+  align-self:end;
+  color:rgba(232,224,210,.52);
+  font-size:clamp(13px,1.2vw,16px);
+  line-height:1.48;
+}
+.footer{
+  position:relative;
+  z-index:2;
+  padding:clamp(32px,6vw,72px) clamp(16px,4vw,58px) clamp(32px,6vw,72px);
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  border-top:1px solid rgba(232,224,210,.10);
+  color:rgba(232,224,210,.40);
+  font-size:10px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  line-height:1.7;
+}
+.footer a{color:rgba(232,224,210,.76);border-bottom:1px solid rgba(232,224,210,.22);padding-bottom:3px}
+
+@media(max-width:1120px){
+  .shop-shell{grid-template-columns:1fr}
+  .reliquary{position:relative;top:auto;min-height:0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(260px,.58fr);gap:24px;align-items:start}
+  .reliquary__list{margin:0}
+  .piece-card{grid-column:span 6}
+  .piece-card:nth-child(n){margin-top:0}
+  .piece-card:nth-child(1),.piece-card:nth-child(9),.piece-card:nth-child(12){grid-column:span 12}
+  .piece-card:nth-child(2),.piece-card:nth-child(3),.piece-card:nth-child(4),.piece-card:nth-child(5),.piece-card:nth-child(6),.piece-card:nth-child(7),.piece-card:nth-child(8),.piece-card:nth-child(10),.piece-card:nth-child(11){grid-column:span 6}
+}
+@media(max-width:760px){
+  body{cursor:default}
+  .wordmark{width:92vw;top:calc(var(--safe-t) + 8px);opacity:.18}
+  .availability{display:none}
+  .back-home{font-size:10px;min-height:30px;padding:7px 10px 8px}
+  .hero{
+    min-height:86svh;
+    padding:calc(var(--safe-t) + 86px) 13px 34px;
+  }
+  .hero__inner{grid-template-columns:1fr;gap:22px}
+  h1{font-size:clamp(62px,22vw,118px)}
+  .hero__statement p{font-size:clamp(25px,8vw,42px)}
+  .scroll-cue{display:none}
+  .shop-shell{padding:0 11px 60px}
+  .shop-head{grid-template-columns:1fr;gap:14px}
+  .shop-head h2{font-size:clamp(46px,15vw,92px)}
+  .piece-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  .piece-card,.piece-card:nth-child(n){
+    grid-column:auto;
+    min-height:430px;
+    margin-top:0;
+  }
+  .piece-card:nth-child(1),.piece-card:nth-child(9),.piece-card:nth-child(12){min-height:520px}
+  .piece-card__copy{left:12px;right:12px;bottom:12px}
+  .piece-card__meta{left:12px;right:12px;top:12px}
+  .piece-card__actions{gap:6px}
+  .piece-link,.piece-button{min-height:34px}
+  .reliquary{
+    display:block;
+    padding:14px;
+  }
+  .reliquary h2{font-size:clamp(44px,15vw,72px)}
+  .reliquary__label{margin-bottom:15px}
+  .archive-strip{grid-template-columns:1fr;padding:20px;margin-top:48px}
+  .footer{grid-template-columns:1fr}
+}
+@media(max-width:430px){
+  .piece-card,.piece-card:nth-child(n){min-height:395px}
+  .piece-card:nth-child(1),.piece-card:nth-child(9),.piece-card:nth-child(12){min-height:470px}
+  .piece-card__copy h3{font-size:clamp(34px,12vw,54px)}
+  .piece-card__copy p{font-size:10px}
+  .piece-card__actions{display:grid;grid-template-columns:1fr 1fr}
+}
+@media(max-height:520px) and (orientation:landscape){
+  .hero{min-height:100svh;padding-top:70px;padding-bottom:24px}
+  h1{font-size:clamp(48px,17vh,86px)}
+  .hero__statement p{font-size:clamp(22px,7vh,36px)}
+  .hero__statement small{display:none}
+  .wordmark{width:72vw;left:58%;opacity:.13}
+}
+@media(hover:none) and (pointer:coarse){
+  .old-button:hover,.piece-link:hover,.piece-button:hover,.request-link:hover{filter:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+  #atmosphere{opacity:.38}
+  .piece-card{opacity:1;transform:none;filter:none}
+}
+</style>
+</head>
+<body>
+<canvas id="atmosphere" aria-hidden="true"></canvas>
+<main class="site" id="top">
+  <div class="mouse-bloom" aria-hidden="true"></div>
+  <img class="wordmark" src="./Stw_Logo.png" width="2048" height="343" alt="Springtime Wishes" decoding="async" fetchpriority="high">
+  <a class="old-button back-home" href="index.html">index</a>
+  <div class="old-button availability" aria-hidden="true">available / request</div>
+
+  <section class="hero" aria-labelledby="shopTitle">
+    <div class="hero__inner">
+      <div>
+        <span class="kicker">springtime wishes / available relics</span>
+        <h1 id="shopTitle">shop</h1>
+      </div>
+      <div class="hero__statement">
+        <p>available garments, private requests, archive pieces, and soft armor for the body that returns through shadow.</p>
+        <small>Each garment is treated as a living record. For purchase, fitting, or archive inquiry, enter through request.</small>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
+
+  <section class="shop-shell" aria-labelledby="availableTitle">
+    <header class="shop-head">
+      <h2 id="availableTitle">available forms</h2>
+      <p>Not a catalogue. A reliquary of garments and possible garments. Select a piece to read its state, material behavior, body relation, and request path.</p>
+    </header>
+
+    <div class="piece-grid" id="pieceGrid" aria-label="available garments and private requests"></div>
+
+    <aside class="reliquary" id="reliquary" aria-live="polite">
+      <div>
+        <div class="reliquary__label"><span>selected relic</span><span id="selectedIndex">001</span></div>
+        <h2 id="selectedTitle">night breeze</h2>
+        <p class="reliquary__text" id="selectedText">A suspended top-form held between purple dusk, grey veil, and soft pressure. Built for request, fitting, and slow apparition.</p>
+      </div>
+      <div>
+        <div class="reliquary__list">
+          <div class="reliquary__row"><span>state</span><strong id="selectedState">available</strong></div>
+          <div class="reliquary__row"><span>type</span><strong id="selectedType">top</strong></div>
+          <div class="reliquary__row"><span>material</span><strong id="selectedMaterial">mesh, ribbon, hand-worked edge</strong></div>
+          <div class="reliquary__row"><span>body</span><strong id="selectedBody">shoulder / chest / veil tension</strong></div>
+          <div class="reliquary__row"><span>request</span><strong id="selectedRequest">private fitting or purchase inquiry</strong></div>
+        </div>
+        <div class="reliquary__request">
+          <a class="request-link" id="selectedContact" href="contact.html#private-request">enter request</a>
+          <span class="reliquary__note">Availability, measurements, fittings, and custom variations are confirmed privately.</span>
+        </div>
+      </div>
+    </aside>
+
+    <section class="archive-strip" aria-label="private requests">
+      <h2>private requests</h2>
+      <p>For sizing, custom color, archive retrieval, or showroom appointment: select a piece and enter request. The shop remains quiet; the garment continues privately.</p>
+    </section>
+  </section>
+
+  <footer class="footer">
+    <span>springtime wishes / garments that remember</span>
+    <span><a href="archive.html">archive</a> · <a href="notes.html">notes</a> · <a href="contact.html">contact</a></span>
+  </footer>
+  <p class="sr">Springtime Wishes shop is a garment page with selectable pieces, archive requests, private fitting links.</p>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarse = window.matchMedia("(hover:none), (pointer:coarse)").matches;
+  const mem = navigator.deviceMemory || 4;
+  const cores = navigator.hardwareConcurrency || 4;
+  const lowPower = coarse || mem <= 4 || cores <= 4 || innerWidth < 760;
+
+  const root = document.documentElement;
+  const body = document.body;
+  const bgCanvas = document.getElementById("atmosphere");
+  const bg = bgCanvas.getContext("2d", { alpha: true, desynchronized: true });
+  const grid = document.getElementById("pieceGrid");
+
+  const selected = {
+    index: document.getElementById("selectedIndex"),
+    title: document.getElementById("selectedTitle"),
+    text: document.getElementById("selectedText"),
+    state: document.getElementById("selectedState"),
+    type: document.getElementById("selectedType"),
+    material: document.getElementById("selectedMaterial"),
+    body: document.getElementById("selectedBody"),
+    request: document.getElementById("selectedRequest"),
+    contact: document.getElementById("selectedContact")
+  };
+
+  const archiveImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBR58HmXHKdarg9D-tcaZlZ_gCadZVV19RQ&s";
+
+  const pieces = [
+    {
+      name:"night breeze", type:"top", state:"available", specimen:"001",
+      material:"mesh, ribbon, hand-worked edge", body:"shoulder / chest / veil tension",
+      request:"private fitting or purchase inquiry",
+      note:"A suspended top-form held between purple dusk, grey veil, and soft pressure. Built for request, fitting, and slow apparition.",
+      signal:"purple / grey", form:"top", media:archiveImage
+    },
+    {
+      name:"mystery pond", type:"skirt", state:"available", specimen:"002",
+      material:"dark sheer layers, soft lining, tied waist", body:"waist / hip / lower shadow",
+      request:"purchase or custom length",
+      note:"A lower-body reflection. Its movement is slow, pond-like, and deliberately unstable at the hem.",
+      signal:"nude / black", form:"skirt"
+    },
+    {
+      name:"moss", type:"dress", state:"archive request", specimen:"003",
+      material:"washed cotton, soft dye residue, repaired seam", body:"torso / shoulder / softened fall",
+      request:"archive retrieval only",
+      note:"A remembered dress-form, soft at the edge. It behaves like vegetation returning through cloth.",
+      signal:"soft residue", form:"dress"
+    },
+    {
+      name:"little wish", type:"dress", state:"available", specimen:"004",
+      material:"pale cotton, translucent layer, delicate closure", body:"small frame / chest / hem",
+      request:"purchase or private variation",
+      note:"A small apparition in blue-white light. It does not perform innocence; it keeps a sharper memory.",
+      signal:"blue / white", form:"dress"
+    },
+    {
+      name:"garden of joy", type:"skirt", state:"private request", specimen:"005",
+      material:"charcoal mesh, black cotton, gathered pressure", body:"waist / walking shadow / garden edge",
+      request:"made to order",
+      note:"A dark garden without sweetness. Built as a skirt that opens and closes like a low night plant.",
+      signal:"charcoal / black", form:"skirt"
+    },
+    {
+      name:"among webs", type:"skirt", state:"private request", specimen:"006",
+      material:"thread web, sheer support, irregular tie points", body:"waist / side body / caught motion",
+      request:"custom request",
+      note:"A body caught gently. The web is not decoration; it is a structure for holding desire at a distance.",
+      signal:"web structure", form:"web"
+    },
+    {
+      name:"fragment", type:"top", state:"available", specimen:"007",
+      material:"silver trace, mesh panel, stitched residue", body:"chest / collar / reflected cut",
+      request:"purchase inquiry",
+      note:"A reflected cut that never resolves into a clean object. Worn like a piece of delayed light.",
+      signal:"silver", form:"top"
+    },
+    {
+      name:"shield", type:"dress", state:"private request", specimen:"008",
+      material:"dense cotton, structured panel, soft armor seam", body:"torso / protection / long fall",
+      request:"made to measure",
+      note:"A dress as soft armor. It protects by remaining tender, heavy, and severe.",
+      signal:"soft armor", form:"armor"
+    },
+    {
+      name:"veiled thorn", type:"veil", state:"available", specimen:"009",
+      material:"transparent veil, thorn stitch, narrow tie", body:"head / face / shoulder shadow",
+      request:"purchase or color request",
+      note:"A veil that does not hide the body; it delays it. The edge holds a thin thorn record.",
+      signal:"veil / thorn", form:"veil"
+    },
+    {
+      name:"mourning sleeve", type:"sleeve study", state:"private request", specimen:"010",
+      material:"gauze, elastic seam, dark residue dye", body:"arm / wrist / held gesture",
+      request:"single or pair request",
+      note:"A sleeve-study for the arm as witness. It carries pressure where the gesture refuses to leave.",
+      signal:"arm / relic", form:"sleeve"
+    },
+    {
+      name:"stain relic", type:"panel", state:"archive request", specimen:"011",
+      material:"oxidized cotton, stain field, thread ghost", body:"panel / lining / evidence",
+      request:"archive inquiry",
+      note:"A material fragment held as evidence. It is closer to a record than a garment.",
+      signal:"oxidized cloth", form:"panel"
+    },
+    {
+      name:"spring under ash", type:"custom garment", state:"private request", specimen:"012",
+      material:"selected after fitting, shadow dye, seam ritual", body:"built from measurement and wish",
+      request:"private commission",
+      note:"A commission path for a garment made from request, body, memory, and dark return. Spring appears under ash.",
+      signal:"commission", form:"commission"
+    }
+  ];
+
+  let bw = 1, bh = 1, dpr = 1, raf = 0, last = 0, frame = 0;
+  let targetFPS = reduced ? 8 : lowPower ? 22 : 32;
+  const pointer = { x:.5, y:.5, tx:.5, ty:.5 };
+  let active = 0;
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  function noise(seed){
+    const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453123;
+    return x - Math.floor(x);
+  }
+
+  function resizeBg(){
+    dpr = Math.min(devicePixelRatio || 1, lowPower ? 1.25 : 1.7);
+    bw = Math.floor(innerWidth * dpr);
+    bh = Math.floor(innerHeight * dpr);
+    bgCanvas.width = bw;
+    bgCanvas.height = bh;
+    bgCanvas.style.width = innerWidth + "px";
+    bgCanvas.style.height = innerHeight + "px";
+  }
+
+  function drawAtmosphere(t){
+    bg.clearRect(0, 0, bw, bh);
+    const scale = bw / Math.max(1, innerWidth);
+    const cx = pointer.x * bw;
+    const cy = pointer.y * bh;
+
+    const grad = bg.createRadialGradient(cx, cy, 0, cx, cy, Math.max(bw, bh) * .42);
+    grad.addColorStop(0, "rgba(230,220,205,.075)");
+    grad.addColorStop(.22, "rgba(90,43,25,.040)");
+    grad.addColorStop(1, "rgba(0,0,0,0)");
+    bg.fillStyle = grad;
+    bg.fillRect(0,0,bw,bh);
+
+    const threadCount = lowPower ? 34 : 68;
+    bg.lineWidth = Math.max(.5, scale * .55);
+    for(let i=0;i<threadCount;i++){
+      const y = (noise(i*11) * bh + Math.sin(t*.00016 + i)*bh*.035) % bh;
+      const x = noise(i*19) * bw;
+      const len = bw * (.10 + noise(i*7)*.36);
+      const a = .025 + noise(i*5)*.04;
+      bg.strokeStyle = i % 8 === 0 ? `rgba(134,73,44,${a})` : `rgba(226,216,198,${a})`;
+      bg.beginPath();
+      bg.moveTo(x, y);
+      bg.bezierCurveTo(x+len*.25, y+Math.sin(i+t*.0005)*12*scale, x+len*.72, y-Math.cos(i)*8*scale, x+len, y+Math.sin(i)*10*scale);
+      bg.stroke();
+    }
+
+    const dust = lowPower ? 70 : 150;
+    for(let i=0;i<dust;i++){
+      const x = (noise(i*29 + frame*.2) * bw + Math.sin(t*.00023+i)*20*scale) % bw;
+      const y = (noise(i*41 + frame*.17) * bh + Math.cos(t*.00020+i)*18*scale) % bh;
+      const s = (i % 13 === 0 ? 1.7 : 1) * scale;
+      const a = .018 + noise(i*37)*.055;
+      bg.fillStyle = i % 9 === 0 ? `rgba(119,68,42,${a})` : `rgba(226,216,198,${a})`;
+      bg.fillRect(x, y, s, s);
+    }
+  }
+
+  function createCards(){
+    const fragment = document.createDocumentFragment();
+    pieces.forEach((piece, i) => {
+      const article = document.createElement("article");
+      article.className = "piece-card";
+      article.tabIndex = 0;
+      article.dataset.index = String(i);
+      article.style.setProperty("--delay", `${(i % 6) * -.85}s`);
+      article.innerHTML = `
+        ${piece.media ? `<img class="piece-card__image" src="${piece.media}" alt="" loading="lazy" decoding="async">` : ""}
+        <canvas class="piece-card__canvas" aria-hidden="true"></canvas>
+        <div class="piece-card__veil" aria-hidden="true"></div>
+        <div class="piece-card__meta">
+          <span>${piece.specimen}</span>
+          <span class="status-dot" data-status="${piece.state}">${piece.state}</span>
+        </div>
+        <div class="piece-card__copy">
+          <h3>${piece.name}</h3>
+          <p>${piece.signal} — ${piece.note}</p>
+          <div class="piece-card__actions">
+            <button class="piece-button" type="button" data-select="${i}">read piece</button>
+            <a class="piece-link" href="contact.html#private-request" data-request="${i}">request</a>
+          </div>
+        </div>
+      `;
+      fragment.appendChild(article);
+    });
+    grid.appendChild(fragment);
+  }
+
+  function drawCardCanvas(canvas, piece, index){
+    const rect = canvas.getBoundingClientRect();
+    const scale = Math.min(devicePixelRatio || 1, lowPower ? 1.1 : 1.55);
+    const w = Math.max(220, Math.floor(rect.width * scale));
+    const h = Math.max(300, Math.floor(rect.height * scale));
+    if(canvas.width !== w || canvas.height !== h){
+      canvas.width = w;
+      canvas.height = h;
+    }
+    const c = canvas.getContext("2d", { alpha:true });
+    c.clearRect(0,0,w,h);
+    c.imageSmoothingEnabled = true;
+
+    const bgGrad = c.createRadialGradient(w*.5,h*.38,0,w*.5,h*.42,Math.max(w,h)*.68);
+    bgGrad.addColorStop(0, index % 3 === 0 ? "rgba(128,83,55,.23)" : index % 3 === 1 ? "rgba(67,79,54,.16)" : "rgba(160,146,119,.12)");
+    bgGrad.addColorStop(.42,"rgba(19,12,8,.38)");
+    bgGrad.addColorStop(1,"rgba(0,0,0,.92)");
+    c.fillStyle = bgGrad;
+    c.fillRect(0,0,w,h);
+
+    const seed = index + 1;
+    c.globalCompositeOperation = "screen";
+    for(let k=0;k<28;k++){
+      const x = noise(seed*100 + k) * w;
+      const y = noise(seed*133 + k) * h;
+      const rw = w * (.08 + noise(seed*17+k)*.22);
+      const rh = h * (.018 + noise(seed*23+k)*.08);
+      c.save();
+      c.translate(x,y);
+      c.rotate((noise(seed*31+k)-.5)*Math.PI*.25);
+      c.fillStyle = k % 7 === 0 ? "rgba(132,73,43,.045)" : "rgba(226,216,198,.035)";
+      c.fillRect(-rw/2,-rh/2,rw,rh);
+      c.restore();
+    }
+    c.globalCompositeOperation = "source-over";
+
+    drawGarment(c, w, h, piece.form, seed);
+
+    c.globalCompositeOperation = "screen";
+    for(let k=0;k<90;k++){
+      const x = noise(seed*331 + k*3) * w;
+      const y = noise(seed*277 + k*7) * h;
+      const a = .025 + noise(seed*19+k)*.055;
+      c.fillStyle = k % 11 === 0 ? `rgba(126,65,40,${a})` : `rgba(230,220,205,${a})`;
+      c.fillRect(x,y,Math.max(1,scale*.8),Math.max(1,scale*.8));
+    }
+    c.globalCompositeOperation = "source-over";
+  }
+
+  function drawGarment(c, w, h, form, seed){
+    const cx = w * (.50 + (noise(seed*91)-.5)*.04);
+    const top = h * (.18 + noise(seed*7)*.05);
+    const bottom = h * (.73 + noise(seed*9)*.10);
+    const shoulder = w * (.13 + noise(seed*11)*.08);
+    const waist = w * (.07 + noise(seed*13)*.05);
+    const hem = w * (.16 + noise(seed*17)*.15);
+
+    const fill = c.createLinearGradient(cx, top, cx, bottom);
+    fill.addColorStop(0, "rgba(230,220,205,.06)");
+    fill.addColorStop(.35, "rgba(177,151,116,.16)");
+    fill.addColorStop(.72, "rgba(80,47,31,.22)");
+    fill.addColorStop(1, "rgba(0,0,0,.34)");
+
+    c.save();
+    c.globalCompositeOperation = "screen";
+    c.fillStyle = fill;
+    c.strokeStyle = "rgba(232,224,210,.28)";
+    c.lineWidth = Math.max(1, w * .0022);
+
+    function pathDress(){
+      c.beginPath();
+      c.moveTo(cx, top);
+      c.bezierCurveTo(cx-shoulder*.40, top+h*.07, cx-shoulder, top+h*.10, cx-shoulder*1.06, top+h*.18);
+      c.bezierCurveTo(cx-shoulder*.86, h*.42, cx-waist, h*.48, cx-waist*1.18, h*.54);
+      c.bezierCurveTo(cx-hem*.78, h*.66, cx-hem, bottom-h*.02, cx-hem*1.06, bottom);
+      c.lineTo(cx+hem*1.06,bottom);
+      c.bezierCurveTo(cx+hem, bottom-h*.02, cx+hem*.78, h*.66, cx+waist*1.18, h*.54);
+      c.bezierCurveTo(cx+waist, h*.48, cx+shoulder*.86, h*.42, cx+shoulder*1.06, top+h*.18);
+      c.bezierCurveTo(cx+shoulder, top+h*.10, cx+shoulder*.40, top+h*.07, cx, top);
+      c.closePath();
+    }
+
+    function pathSkirt(){
+      c.beginPath();
+      c.moveTo(cx-waist, h*.32);
+      c.lineTo(cx+waist, h*.32);
+      c.bezierCurveTo(cx+hem*.66, h*.45, cx+hem*.90, h*.64, cx+hem*1.10, bottom);
+      c.lineTo(cx-hem*1.10, bottom);
+      c.bezierCurveTo(cx-hem*.90, h*.64, cx-hem*.66, h*.45, cx-waist, h*.32);
+      c.closePath();
+    }
+
+    function pathTop(){
+      c.beginPath();
+      c.moveTo(cx, top+h*.02);
+      c.bezierCurveTo(cx-shoulder*.62, top+h*.07, cx-shoulder*1.2, top+h*.13, cx-shoulder*.9, h*.38);
+      c.bezierCurveTo(cx-waist*.65, h*.49, cx-waist*.7, h*.57, cx-waist*1.1, h*.63);
+      c.lineTo(cx+waist*1.1,h*.63);
+      c.bezierCurveTo(cx+waist*.7, h*.57, cx+waist*.65, h*.49, cx+shoulder*.9, h*.38);
+      c.bezierCurveTo(cx+shoulder*1.2, top+h*.13, cx+shoulder*.62, top+h*.07, cx, top+h*.02);
+      c.closePath();
+    }
+
+    if(form === "skirt") pathSkirt();
+    else if(form === "top") pathTop();
+    else if(form === "veil"){
+      c.beginPath();
+      c.moveTo(cx, top);
+      c.bezierCurveTo(cx-w*.19, h*.22, cx-w*.24, h*.45, cx-w*.18, bottom);
+      c.bezierCurveTo(cx-w*.05, bottom+h*.03, cx+w*.05, bottom+h*.03, cx+w*.18, bottom);
+      c.bezierCurveTo(cx+w*.24, h*.45, cx+w*.19, h*.22, cx, top);
+      c.closePath();
+    } else if(form === "sleeve"){
+      c.beginPath();
+      c.moveTo(cx-w*.08, top);
+      c.bezierCurveTo(cx-w*.18, h*.32, cx-w*.11, h*.52, cx-w*.16, bottom);
+      c.bezierCurveTo(cx-w*.06, bottom+h*.03, cx+w*.10, bottom, cx+w*.13, bottom-h*.02);
+      c.bezierCurveTo(cx+w*.07, h*.52, cx+w*.18, h*.30, cx+w*.07, top);
+      c.closePath();
+    } else if(form === "web"){
+      pathSkirt();
+    } else if(form === "panel"){
+      c.beginPath();
+      c.moveTo(cx-w*.16, top+h*.04);
+      c.lineTo(cx+w*.12, top);
+      c.lineTo(cx+w*.18, bottom);
+      c.lineTo(cx-w*.20, bottom-h*.04);
+      c.closePath();
+    } else if(form === "armor"){
+      pathDress();
+    } else if(form === "commission"){
+      pathDress();
+    } else {
+      pathDress();
+    }
+
+    c.fill();
+    c.stroke();
+
+    const lines = form === "web" ? 20 : form === "commission" ? 18 : 10;
+    c.lineWidth = Math.max(1, w*.0013);
+    for(let i=0;i<lines;i++){
+      const p = i / Math.max(1, lines-1);
+      const x1 = cx - lerp(shoulder*.8, hem*.9, p) + Math.sin(seed+i)*w*.025;
+      const x2 = cx + lerp(shoulder*.8, hem*.9, p) + Math.cos(seed+i)*w*.025;
+      const y = lerp(top+h*.10, bottom-h*.04, p);
+      c.strokeStyle = form === "web" ? "rgba(232,224,210,.18)" : "rgba(232,224,210,.075)";
+      c.beginPath();
+      c.moveTo(x1,y);
+      c.bezierCurveTo(cx-w*.06,y+h*.02,cx+w*.06,y-h*.02,x2,y+Math.sin(i)*h*.012);
+      c.stroke();
+    }
+
+    if(form === "web"){
+      for(let i=0;i<14;i++){
+        const a = (Math.PI*2/14)*i;
+        c.strokeStyle = "rgba(232,224,210,.12)";
+        c.beginPath();
+        c.moveTo(cx,h*.47);
+        c.lineTo(cx + Math.cos(a)*hem*.95, h*.47 + Math.sin(a)*h*.23);
+        c.stroke();
+      }
+    }
+
+    if(form === "armor" || form === "commission"){
+      c.strokeStyle = "rgba(232,224,210,.18)";
+      c.beginPath();
+      c.moveTo(cx,top+h*.06);
+      c.lineTo(cx,bottom-h*.05);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(cx-shoulder*.62,h*.38);
+      c.lineTo(cx+shoulder*.62,h*.38);
+      c.stroke();
+    }
+
+    c.restore();
+  }
+
+  function redrawAllCards(){
+    document.querySelectorAll(".piece-card").forEach(card => {
+      const index = Number(card.dataset.index);
+      const canvas = card.querySelector("canvas");
+      drawCardCanvas(canvas, pieces[index], index);
+    });
+  }
+
+  function selectPiece(index, fromUser = true){
+    active = clamp(index, 0, pieces.length - 1);
+    const piece = pieces[active];
+    document.querySelectorAll(".piece-card").forEach(card => {
+      card.classList.toggle("is-active", Number(card.dataset.index) === active);
+    });
+    selected.index.textContent = piece.specimen;
+    selected.title.textContent = piece.name;
+    selected.text.textContent = piece.note;
+    selected.state.textContent = piece.state;
+    selected.type.textContent = piece.type;
+    selected.material.textContent = piece.material;
+    selected.body.textContent = piece.body;
+    selected.request.textContent = piece.request;
+    selected.contact.href = `contact.html#private-request-${encodeURIComponent(piece.name.replace(/\s+/g,"-").toLowerCase())}`;
+    if(fromUser && innerWidth < 1120){
+      document.getElementById("reliquary").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "nearest" });
+    }
+  }
+
+  function bindCards(){
+    grid.addEventListener("click", event => {
+      const card = event.target.closest(".piece-card");
+      if(!card) return;
+      if(event.target.closest("a")) return;
+      selectPiece(Number(card.dataset.index));
+    });
+    grid.addEventListener("mouseover", event => {
+      const card = event.target.closest(".piece-card");
+      if(card) selectPiece(Number(card.dataset.index), false);
+    });
+    grid.addEventListener("focusin", event => {
+      const card = event.target.closest(".piece-card");
+      if(card) selectPiece(Number(card.dataset.index), false);
+    });
+    grid.addEventListener("pointermove", event => {
+      const card = event.target.closest(".piece-card");
+      if(!card) return;
+      const rect = card.getBoundingClientRect();
+      const x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+      const y = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+      card.style.setProperty("--fx", `${(x*100).toFixed(2)}%`);
+      card.style.setProperty("--fy", `${(y*100).toFixed(2)}%`);
+      card.style.setProperty("--x", ((x-.5)*12).toFixed(2));
+      card.style.setProperty("--y", ((y-.5)*12).toFixed(2));
+    }, { passive:true });
+  }
+
+  function bindReveal(){
+    const cards = document.querySelectorAll(".piece-card");
+    if(!("IntersectionObserver" in window)){
+      cards.forEach(card => card.classList.add("in"));
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("in");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold:.08, rootMargin:"8% 0px" });
+    cards.forEach(card => observer.observe(card));
+  }
+
+  function loop(t){
+    if(document.hidden){
+      raf = requestAnimationFrame(loop);
+      return;
+    }
+    if(t - last < 1000 / targetFPS){
+      raf = requestAnimationFrame(loop);
+      return;
+    }
+    last = t;
+    frame++;
+    pointer.x = lerp(pointer.x, pointer.tx, .08);
+    pointer.y = lerp(pointer.y, pointer.ty, .08);
+    if(!reduced) drawAtmosphere(t);
+    raf = requestAnimationFrame(loop);
+  }
+
+  function setPointer(x,y){
+    pointer.tx = clamp(x / Math.max(1, innerWidth), 0, 1);
+    pointer.ty = clamp(y / Math.max(1, innerHeight), 0, 1);
+    root.style.setProperty("--mx", (pointer.tx * 100).toFixed(2) + "%");
+    root.style.setProperty("--my", (pointer.ty * 100).toFixed(2) + "%");
+  }
+
+  function init(){
+    createCards();
+    bindCards();
+    bindReveal();
+    resizeBg();
+    redrawAllCards();
+    selectPiece(0, false);
+    setPointer(innerWidth*.5, innerHeight*.45);
+    if(reduced) drawAtmosphere(0);
+    raf = requestAnimationFrame(loop);
+  }
+
+  let resizeRaf = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      resizeBg();
+      redrawAllCards();
+    });
+  }, { passive:true });
+
+  window.addEventListener("mousemove", e => setPointer(e.clientX, e.clientY), { passive:true });
+  window.addEventListener("touchstart", e => {
+    const t = e.touches[0];
+    if(t) setPointer(t.clientX, t.clientY);
+  }, { passive:true });
+  window.addEventListener("touchmove", e => {
+    const t = e.touches[0];
+    if(t) setPointer(t.clientX, t.clientY);
+  }, { passive:true });
+
+  document.addEventListener("visibilitychange", () => {
+    body.classList.toggle("is-frozen", document.hidden);
+    if(!document.hidden){
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(loop);
+    }
+  });
+  window.addEventListener("pagehide", () => body.classList.add("is-frozen"), { passive:true });
+  window.addEventListener("pageshow", () => {
+    body.classList.remove("is-frozen");
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(loop);
+  }, { passive:true });
+
+  init();
+})();
+</script>
+</body>
+</html>
