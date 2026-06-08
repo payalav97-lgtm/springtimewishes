@@ -1,0 +1,1979 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Springtime Wishes — a dark material archive of stains, seams, residue, pressure, oxidation, and evidence left in cloth.">
+  <title>stain archive / springtime wishes</title>
+  <style>
+    @font-face{
+      font-family:"Aktiv";
+      src:url("./AktivGrotesk-Light.ttf") format("truetype");
+      font-weight:300;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Aktiv";
+      src:url("./AktivGrotesk-Regular.ttf") format("truetype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Aktiv";
+      src:url("./AktivGrotesk-Medium.ttf") format("truetype");
+      font-weight:500;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Metropolitan";
+      src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");
+      font-weight:400;
+      font-style:italic;
+      font-display:swap;
+    }
+
+    :root{
+      --black:#020201;
+      --charcoal:#070605;
+      --cloth:#0d0a08;
+      --umber:#2a1710;
+      --rust:#7a3b22;
+      --oldblood:#3f1812;
+      --bone:#ded4bf;
+      --ash:#a69b89;
+      --weak:#746c60;
+      --line:rgba(222,212,191,.16);
+      --line2:rgba(222,212,191,.08);
+      --field-x:50%;
+      --field-y:50%;
+      --pad:clamp(16px,2.6vw,38px);
+      --sans:"Aktiv", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --serif:"Metropolitan", Georgia, "Times New Roman", serif;
+      --mono:"Aktiv", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    *{box-sizing:border-box}
+    html{
+      height:100%;
+      background:#000;
+      color:var(--bone);
+      -webkit-text-size-adjust:100%;
+    }
+    body{
+      margin:0;
+      min-height:100svh;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 46% 30%, rgba(88,50,32,.16), transparent 32vw),
+        radial-gradient(circle at 80% 74%, rgba(222,212,191,.055), transparent 30vw),
+        radial-gradient(circle at 12% 88%, rgba(71,25,17,.22), transparent 36vw),
+        linear-gradient(180deg, #010101 0%, #070504 44%, #020201 100%);
+      font-family:var(--sans);
+      color:var(--bone);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:geometricPrecision;
+      isolation:isolate;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-18%;
+      z-index:4;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at var(--field-x) var(--field-y), rgba(232,219,193,.105), transparent 0 11%, rgba(0,0,0,0) 18%),
+        radial-gradient(ellipse at 47% 55%, rgba(255,245,220,.035), transparent 32%),
+        repeating-linear-gradient(91deg, rgba(255,246,226,.018) 0 1px, transparent 1px 17px),
+        repeating-linear-gradient(2deg, rgba(255,246,226,.012) 0 1px, transparent 1px 23px);
+      mix-blend-mode:screen;
+      opacity:.52;
+      filter:blur(18px);
+      transform:translate3d(0,0,0);
+      transition:opacity .5s ease;
+    }
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:50;
+      pointer-events:none;
+      opacity:.22;
+      mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E");
+      background-size:180px 180px;
+      animation:grain 1.7s steps(2,end) infinite;
+    }
+    body.hide-text .field-caption{opacity:0}
+    body.hide-text .archive-title,
+    body.hide-text .statement{opacity:.18}
+    body.panel-open .param-panel{opacity:1;visibility:visible;transform:translate3d(0,0,0)}
+    body.detail-muted .detail-pane{opacity:.2}
+
+    @keyframes grain{
+      0%{transform:translate3d(0,0,0)}
+      25%{transform:translate3d(-1.2%,.7%,0)}
+      50%{transform:translate3d(.8%,-1%,0)}
+      75%{transform:translate3d(-.5%,-.6%,0)}
+      100%{transform:translate3d(1%,.5%,0)}
+    }
+
+    ::selection{background:rgba(222,212,191,.84);color:#060403}
+
+    a,button,input{font:inherit}
+    a{color:inherit;text-decoration:none}
+    button{border:0;background:none;color:inherit;padding:0;cursor:pointer}
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible{
+      outline:1px solid rgba(230,218,194,.72);
+      outline-offset:4px;
+    }
+
+    .visually-hidden{
+      position:absolute!important;
+      width:1px!important;
+      height:1px!important;
+      overflow:hidden!important;
+      clip:rect(0 0 0 0)!important;
+      white-space:nowrap!important;
+      border:0!important;
+      padding:0!important;
+      margin:-1px!important;
+    }
+
+    .surface-canvas,
+    .dust-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      display:block;
+      pointer-events:none;
+    }
+    .surface-canvas{z-index:1;background:#020201}
+    .dust-canvas{
+      z-index:3;
+      mix-blend-mode:screen;
+      opacity:.78;
+    }
+
+    .room{
+      position:relative;
+      z-index:6;
+      width:100vw;
+      min-height:100svh;
+      overflow:hidden;
+    }
+
+    .topbar{
+      position:fixed;
+      z-index:30;
+      top:0;
+      left:0;
+      right:0;
+      display:grid;
+      grid-template-columns:auto minmax(120px,1fr) auto;
+      align-items:start;
+      gap:16px;
+      padding:calc(14px + env(safe-area-inset-top)) calc(var(--pad) + env(safe-area-inset-right)) 18px calc(var(--pad) + env(safe-area-inset-left));
+      background:linear-gradient(180deg, rgba(0,0,0,.70), rgba(0,0,0,.18) 64%, transparent);
+      pointer-events:none;
+    }
+
+    .index-link,
+    .param-toggle,
+    .state-chip{
+      pointer-events:auto;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:36px;
+      border:1px solid rgba(222,212,191,.14);
+      border-radius:999px;
+      padding:10px 13px 9px;
+      background:rgba(5,4,3,.34);
+      color:rgba(222,212,191,.68);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.18em;
+      line-height:1;
+      text-transform:uppercase;
+      transition:color .35s ease,border-color .35s ease,background .35s ease,filter .35s ease;
+    }
+    .index-link:hover,
+    .param-toggle:hover,
+    .state-chip:hover{
+      color:rgba(244,235,214,.95);
+      border-color:rgba(222,212,191,.34);
+      background:rgba(32,22,16,.55);
+      filter:blur(.1px);
+    }
+
+    .ghost-logo{
+      pointer-events:none;
+      justify-self:center;
+      display:grid;
+      place-items:start center;
+      min-height:40px;
+      opacity:.32;
+      filter:grayscale(1) contrast(125%) blur(.18px) drop-shadow(0 0 32px rgba(222,212,191,.12));
+      mix-blend-mode:screen;
+    }
+    .ghost-logo img{
+      width:clamp(102px,13vw,210px);
+      max-height:58px;
+      object-fit:contain;
+      opacity:.74;
+    }
+    .ghost-logo span{
+      display:none;
+      font-family:var(--serif);
+      font-style:italic;
+      font-size:clamp(18px,2vw,34px);
+      letter-spacing:-.05em;
+      color:rgba(222,212,191,.72);
+      text-align:center;
+    }
+    .ghost-logo.logo-missing span{display:block}
+    .ghost-logo.logo-missing img{display:none}
+
+    .top-actions{
+      justify-self:end;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      pointer-events:auto;
+    }
+    .state-chip{
+      display:none;
+      color:rgba(177,160,131,.64);
+      border-color:rgba(177,160,131,.12);
+    }
+    .state-chip.is-visible{display:inline-flex}
+
+    .archive-intro{
+      position:fixed;
+      z-index:15;
+      top:clamp(86px,14vh,140px);
+      left:calc(var(--pad) + env(safe-area-inset-left));
+      width:min(520px,calc(100vw - var(--pad) * 2));
+      pointer-events:none;
+      transition:opacity .45s ease, filter .45s ease;
+    }
+    .eyebrow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin:0 0 14px;
+      color:rgba(222,212,191,.42);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+    .eyebrow::before{
+      content:"";
+      width:38px;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(222,212,191,.45));
+    }
+    .archive-title{
+      margin:0;
+      max-width:420px;
+      color:rgba(228,218,197,.90);
+      font-family:var(--serif);
+      font-size:clamp(54px,8.8vw,146px);
+      font-style:italic;
+      font-weight:400;
+      letter-spacing:-.095em;
+      line-height:.76;
+      text-shadow:0 0 18px rgba(222,212,191,.14), 0 0 96px rgba(125,65,38,.16);
+      filter:blur(.12px);
+      transition:opacity .4s ease;
+    }
+    .statement{
+      max-width:360px;
+      margin:22px 0 0;
+      color:rgba(222,212,191,.68);
+      font-family:var(--sans);
+      font-weight:300;
+      font-size:clamp(14px,1.25vw,18px);
+      letter-spacing:.02em;
+      line-height:1.45;
+      transition:opacity .4s ease;
+    }
+
+    .ledger{
+      position:fixed;
+      z-index:20;
+      left:calc(var(--pad) + env(safe-area-inset-left));
+      bottom:calc(var(--pad) + env(safe-area-inset-bottom));
+      width:min(420px,calc(100vw - var(--pad) * 2));
+      border:1px solid rgba(222,212,191,.16);
+      background:
+        radial-gradient(circle at 0 0, rgba(115,58,35,.18), transparent 42%),
+        linear-gradient(180deg, rgba(14,10,8,.72), rgba(4,3,2,.58));
+      box-shadow:0 24px 80px rgba(0,0,0,.54), inset 0 0 70px rgba(222,212,191,.025);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      padding:17px 17px 15px;
+      color:rgba(222,212,191,.74);
+      transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .45s ease;
+    }
+    .ledger::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border:1px solid rgba(0,0,0,.42);
+    }
+    .ledger__top{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:start;
+      margin-bottom:14px;
+    }
+    .ledger__id{
+      color:rgba(222,212,191,.45);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+    .hold-btn{
+      border-bottom:1px solid rgba(222,212,191,.18);
+      color:rgba(222,212,191,.45);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.16em;
+      line-height:1.1;
+      text-transform:uppercase;
+      padding-bottom:4px;
+    }
+    .hold-btn.is-held{color:rgba(230,218,194,.88);border-color:rgba(230,218,194,.52)}
+    .ledger h2{
+      margin:0 0 15px;
+      color:rgba(230,218,194,.90);
+      font-family:var(--serif);
+      font-style:italic;
+      font-weight:400;
+      font-size:clamp(30px,4.2vw,56px);
+      letter-spacing:-.07em;
+      line-height:.86;
+    }
+    .ledger__grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      border-top:1px solid rgba(222,212,191,.10);
+      border-left:1px solid rgba(222,212,191,.08);
+      margin:0 0 14px;
+    }
+    .ledger__grid div{
+      min-height:50px;
+      padding:10px 10px 9px;
+      border-right:1px solid rgba(222,212,191,.08);
+      border-bottom:1px solid rgba(222,212,191,.08);
+    }
+    .ledger__grid dt{
+      margin:0 0 5px;
+      color:rgba(222,212,191,.36);
+      font-family:var(--mono);
+      font-size:9px;
+      letter-spacing:.17em;
+      text-transform:uppercase;
+    }
+    .ledger__grid dd{
+      margin:0;
+      color:rgba(222,212,191,.72);
+      font-family:var(--mono);
+      font-size:11px;
+      letter-spacing:.07em;
+      line-height:1.25;
+      text-transform:uppercase;
+    }
+    .ledger__note{
+      margin:0;
+      color:rgba(222,212,191,.78);
+      font-family:var(--sans);
+      font-weight:300;
+      font-size:14px;
+      letter-spacing:.01em;
+      line-height:1.42;
+    }
+    .ledger__witness{
+      display:block;
+      margin-top:12px;
+      color:rgba(156,135,109,.74);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.14em;
+      line-height:1.45;
+      text-transform:uppercase;
+    }
+
+    .detail-pane{
+      position:fixed;
+      z-index:18;
+      right:calc(var(--pad) + env(safe-area-inset-right));
+      bottom:calc(var(--pad) + env(safe-area-inset-bottom));
+      width:min(300px,28vw);
+      min-width:230px;
+      border:1px solid rgba(222,212,191,.13);
+      background:rgba(5,4,3,.46);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      box-shadow:0 26px 72px rgba(0,0,0,.48), inset 0 0 52px rgba(222,212,191,.02);
+      overflow:hidden;
+      pointer-events:none;
+      transition:opacity .45s ease, transform .45s cubic-bezier(.16,1,.3,1);
+    }
+    .detail-pane canvas{
+      display:block;
+      width:100%;
+      height:180px;
+      background:#050403;
+    }
+    .detail-pane__meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px 12px;
+      border-top:1px solid rgba(222,212,191,.08);
+      color:rgba(222,212,191,.42);
+      font-family:var(--mono);
+      font-size:9px;
+      letter-spacing:.16em;
+      line-height:1.4;
+      text-transform:uppercase;
+    }
+
+    .field-caption{
+      position:fixed;
+      z-index:14;
+      right:calc(var(--pad) + env(safe-area-inset-right));
+      top:calc(94px + env(safe-area-inset-top));
+      display:grid;
+      gap:8px;
+      width:min(310px,28vw);
+      color:rgba(222,212,191,.34);
+      font-family:var(--mono);
+      font-size:9px;
+      letter-spacing:.16em;
+      line-height:1.55;
+      text-transform:uppercase;
+      pointer-events:none;
+      transition:opacity .35s ease;
+    }
+    .field-caption b{
+      color:rgba(222,212,191,.62);
+      font-weight:400;
+    }
+
+    .hotspot-layer{
+      position:fixed;
+      inset:0;
+      z-index:13;
+      pointer-events:none;
+    }
+    .stain-hotspot{
+      position:absolute;
+      left:calc(var(--x) * 1%);
+      top:calc(var(--y) * 1%);
+      width:var(--s);
+      height:var(--s);
+      min-width:38px;
+      min-height:38px;
+      transform:translate(-50%,-50%) rotate(var(--r));
+      border:1px solid transparent;
+      border-radius:47% 53% 58% 42% / 44% 57% 43% 56%;
+      background:transparent;
+      pointer-events:auto;
+      opacity:.001;
+      transition:opacity .25s ease, border-color .25s ease, box-shadow .25s ease, border-radius .4s ease;
+    }
+    .stain-hotspot:hover,
+    .stain-hotspot:focus-visible,
+    .stain-hotspot.is-active{
+      opacity:1;
+      border-color:rgba(222,212,191,.24);
+      box-shadow:0 0 0 1px rgba(0,0,0,.36), 0 0 26px rgba(222,212,191,.10), inset 0 0 34px rgba(117,58,36,.10);
+    }
+    .stain-hotspot:focus-visible{
+      outline:1px solid rgba(222,212,191,.78);
+      outline-offset:5px;
+    }
+
+    .param-panel{
+      position:fixed;
+      z-index:40;
+      top:calc(62px + env(safe-area-inset-top));
+      right:calc(var(--pad) + env(safe-area-inset-right));
+      width:min(372px,calc(100vw - var(--pad) * 2));
+      max-height:calc(100svh - 96px);
+      overflow:auto;
+      overscroll-behavior:contain;
+      padding:16px;
+      border:1px solid rgba(222,212,191,.16);
+      background:
+        radial-gradient(circle at 100% 0, rgba(120,62,38,.17), transparent 44%),
+        linear-gradient(180deg, rgba(10,8,6,.89), rgba(3,3,2,.80));
+      box-shadow:0 30px 86px rgba(0,0,0,.62), inset 0 0 60px rgba(222,212,191,.018);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      opacity:0;
+      visibility:hidden;
+      transform:translate3d(0,-10px,0);
+      transition:opacity .28s ease,visibility .28s ease,transform .28s cubic-bezier(.16,1,.3,1);
+    }
+    .param-panel h2{
+      margin:0 0 4px;
+      color:rgba(230,218,194,.88);
+      font-family:var(--serif);
+      font-style:italic;
+      font-weight:400;
+      font-size:34px;
+      letter-spacing:-.06em;
+      line-height:.9;
+    }
+    .param-panel p{
+      margin:0 0 16px;
+      color:rgba(222,212,191,.44);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.13em;
+      line-height:1.5;
+      text-transform:uppercase;
+    }
+    .control-list{
+      display:grid;
+      gap:11px;
+      margin:0 0 15px;
+    }
+    .control{
+      display:grid;
+      grid-template-columns:96px 1fr 34px;
+      gap:10px;
+      align-items:center;
+      color:rgba(222,212,191,.62);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .control output{
+      text-align:right;
+      color:rgba(222,212,191,.42);
+      font-variant-numeric:tabular-nums;
+    }
+    .control input[type="range"]{
+      width:100%;
+      accent-color:#a98b66;
+    }
+    .control input[type="range"]::-webkit-slider-runnable-track{
+      height:2px;
+      background:rgba(222,212,191,.16);
+    }
+    .control input[type="range"]::-webkit-slider-thumb{
+      margin-top:-6px;
+    }
+    .panel-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+    .panel-actions button{
+      min-height:38px;
+      border:1px solid rgba(222,212,191,.13);
+      background:rgba(222,212,191,.035);
+      color:rgba(222,212,191,.62);
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.13em;
+      line-height:1.1;
+      text-transform:uppercase;
+      transition:background .25s ease,color .25s ease,border-color .25s ease;
+    }
+    .panel-actions button:hover{
+      background:rgba(86,47,31,.28);
+      color:rgba(230,218,194,.9);
+      border-color:rgba(222,212,191,.28);
+    }
+
+    .status-line{
+      margin-top:12px;
+      color:rgba(222,212,191,.34);
+      font-family:var(--mono);
+      font-size:9px;
+      letter-spacing:.14em;
+      line-height:1.45;
+      text-transform:uppercase;
+    }
+
+    @media (max-width:900px){
+      body{overflow:hidden}
+      body::before{opacity:.42;filter:blur(14px)}
+      .topbar{
+        grid-template-columns:auto 1fr auto;
+        gap:10px;
+        padding-left:calc(14px + env(safe-area-inset-left));
+        padding-right:calc(14px + env(safe-area-inset-right));
+      }
+      .index-link,
+      .param-toggle{
+        min-height:34px;
+        padding:9px 10px 8px;
+        font-size:9px;
+        letter-spacing:.14em;
+      }
+      .state-chip{display:none!important}
+      .ghost-logo{opacity:.22}
+      .ghost-logo img{width:112px;max-height:44px}
+      .archive-intro{
+        top:calc(78px + env(safe-area-inset-top));
+        left:calc(16px + env(safe-area-inset-left));
+        width:calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right));
+      }
+      .archive-title{
+        max-width:270px;
+        font-size:clamp(44px,16vw,80px);
+        line-height:.79;
+      }
+      .statement{
+        max-width:245px;
+        margin-top:14px;
+        font-size:13px;
+        line-height:1.35;
+      }
+      .field-caption{
+        display:none;
+      }
+      .ledger{
+        left:calc(12px + env(safe-area-inset-left));
+        right:calc(12px + env(safe-area-inset-right));
+        bottom:calc(12px + env(safe-area-inset-bottom));
+        width:auto;
+        max-height:42svh;
+        overflow:auto;
+        padding:13px;
+      }
+      .ledger h2{
+        font-size:clamp(28px,9vw,44px);
+        margin-bottom:11px;
+      }
+      .ledger__top{margin-bottom:10px}
+      .ledger__grid{
+        grid-template-columns:1fr 1fr;
+        margin-bottom:10px;
+      }
+      .ledger__grid div{min-height:42px;padding:8px}
+      .ledger__grid dt{font-size:8px;margin-bottom:4px}
+      .ledger__grid dd{font-size:9px}
+      .ledger__note{font-size:12.5px}
+      .detail-pane{
+        display:none;
+      }
+      .param-panel{
+        top:calc(58px + env(safe-area-inset-top));
+        right:calc(12px + env(safe-area-inset-right));
+        left:calc(12px + env(safe-area-inset-left));
+        width:auto;
+        max-height:calc(100svh - 76px - env(safe-area-inset-top));
+        padding:14px;
+      }
+      .control{
+        grid-template-columns:86px 1fr 28px;
+        gap:8px;
+        font-size:9px;
+      }
+      .panel-actions{grid-template-columns:1fr 1fr}
+      .stain-hotspot{
+        min-width:44px;
+        min-height:44px;
+      }
+    }
+
+    @media (max-width:520px){
+      .ledger__grid{grid-template-columns:1fr 1fr}
+      .ledger__witness{display:none}
+      .param-panel h2{font-size:30px}
+      .panel-actions button{font-size:9px}
+    }
+
+    @media (orientation:landscape) and (max-height:520px){
+      .archive-intro{
+        top:72px;
+        width:300px;
+      }
+      .archive-title{font-size:52px}
+      .statement{display:none}
+      .ledger{
+        left:auto;
+        right:12px;
+        width:360px;
+        max-height:calc(100svh - 86px);
+      }
+      .param-panel{max-height:calc(100svh - 72px)}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation-duration:.001ms!important;
+        animation-iteration-count:1!important;
+        scroll-behavior:auto!important;
+        transition-duration:.001ms!important;
+      }
+      body::after{animation:none!important}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="surfaceCanvas" class="surface-canvas" aria-hidden="true"></canvas>
+  <canvas id="dustCanvas" class="dust-canvas" aria-hidden="true"></canvas>
+
+  <div class="room" id="room">
+    <header class="topbar" aria-label="stain archive header">
+      <a class="index-link" href="index.html" aria-label="return to Springtime Wishes index">index</a>
+
+      <div class="ghost-logo" id="ghostLogo" aria-hidden="true">
+        <img src="./Stw_Logo.png" alt="" decoding="async" onerror="this.closest('.ghost-logo').classList.add('logo-missing')">
+        <span>springtime wishes</span>
+      </div>
+
+      <div class="top-actions">
+        <span class="state-chip" id="stateChip" aria-live="polite">state held</span>
+        <button class="param-toggle" id="paramToggle" type="button" aria-expanded="false" aria-controls="paramPanel">parameters</button>
+      </div>
+    </header>
+
+    <main id="main" aria-labelledby="pageTitle">
+      <section class="archive-intro" aria-label="stain archive introduction">
+        <p class="eyebrow">material room / process evidence</p>
+        <h1 class="archive-title" id="pageTitle">stain archive</h1>
+        <p class="statement">surface as witness. fabric as memory. an archive of stains, seams, residue, and evidence left in cloth.</p>
+      </section>
+
+      <p class="field-caption" aria-hidden="true">
+        <b>examine the surface</b>
+        hover, touch, or focus a stain cluster. each mark opens a process note, a garment relation, a residue state, or a fragment retained by cloth.
+      </p>
+
+      <section class="ledger" id="ledger" aria-live="polite" aria-label="selected stain ledger">
+        <div class="ledger__top">
+          <div class="ledger__id" id="entryId">stn-000</div>
+          <button class="hold-btn" id="holdBtn" type="button" aria-pressed="false">hold note</button>
+        </div>
+        <h2 id="entryTitle">surface witness</h2>
+        <dl class="ledger__grid">
+          <div>
+            <dt>material</dt>
+            <dd id="entryMaterial">washed cotton</dd>
+          </div>
+          <div>
+            <dt>relation</dt>
+            <dd id="entryRelation">seam</dd>
+          </div>
+          <div>
+            <dt>residue</dt>
+            <dd id="entryResidue">oxidation</dd>
+          </div>
+          <div>
+            <dt>status</dt>
+            <dd id="entryStatus">retained</dd>
+          </div>
+        </dl>
+        <p class="ledger__note" id="entryNote">the stain held after the body was gone.</p>
+        <span class="ledger__witness" id="entryWitness">archive witness / pressure kept in cloth</span>
+      </section>
+
+      <aside class="detail-pane" id="detailPane" aria-hidden="true">
+        <canvas id="detailCanvas"></canvas>
+        <div class="detail-pane__meta">
+          <span>local detail</span>
+          <span id="detailMeta">x:00 / y:00</span>
+        </div>
+      </aside>
+
+      <div class="hotspot-layer" id="hotspotLayer" aria-label="interactive stain clusters"></div>
+
+      <section class="param-panel" id="paramPanel" aria-label="archive parameters">
+        <h2>field parameters</h2>
+        <p>dark instrument for density, bleed, thread, pressure, notation, and dust.</p>
+
+        <div class="control-list" id="controlList">
+          <label class="control">
+            <span>density</span>
+            <input type="range" min="0.25" max="1" step="0.01" data-param="density">
+            <output data-output="density">0.72</output>
+          </label>
+          <label class="control">
+            <span>bleed</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="bleed">
+            <output data-output="bleed">0.68</output>
+          </label>
+          <label class="control">
+            <span>oxidation</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="oxidation">
+            <output data-output="oxidation">0.76</output>
+          </label>
+          <label class="control">
+            <span>thread</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="thread">
+            <output data-output="thread">0.66</output>
+          </label>
+          <label class="control">
+            <span>displace</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="displacement">
+            <output data-output="displacement">0.52</output>
+          </label>
+          <label class="control">
+            <span>dust</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="dust">
+            <output data-output="dust">0.58</output>
+          </label>
+          <label class="control">
+            <span>focus</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="focus">
+            <output data-output="focus">0.74</output>
+          </label>
+          <label class="control">
+            <span>notation</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="notation">
+            <output data-output="notation">0.56</output>
+          </label>
+          <label class="control">
+            <span>speed</span>
+            <input type="range" min="0" max="1" step="0.01" data-param="speed">
+            <output data-output="speed">0.32</output>
+          </label>
+          <label class="control">
+            <span>scale</span>
+            <input type="range" min="0.5" max="1" step="0.01" data-param="scale">
+            <output data-output="scale">0.86</output>
+          </label>
+        </div>
+
+        <div class="panel-actions">
+          <button type="button" id="deepenBtn">deepen field</button>
+          <button type="button" id="stillBtn">still</button>
+          <button type="button" id="randomBtn">random trace</button>
+          <button type="button" id="copyBtn">copy state</button>
+          <button type="button" id="resetBtn">reset</button>
+          <button type="button" id="hideTextBtn">hide text</button>
+        </div>
+        <div class="status-line" id="statusLine">seed held in url hash / archive state can be restored.</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+  (() => {
+    "use strict";
+
+    const doc = document;
+    const root = doc.documentElement;
+    const body = doc.body;
+
+    const surfaceCanvas = doc.getElementById("surfaceCanvas");
+    const dustCanvas = doc.getElementById("dustCanvas");
+    const detailCanvas = doc.getElementById("detailCanvas");
+    const hotspotLayer = doc.getElementById("hotspotLayer");
+
+    const sctx = surfaceCanvas.getContext("2d", { alpha: false });
+    const dctx = dustCanvas.getContext("2d", { alpha: true });
+    const detailCtx = detailCanvas.getContext("2d", { alpha: false });
+
+    const paramToggle = doc.getElementById("paramToggle");
+    const paramPanel = doc.getElementById("paramPanel");
+    const stateChip = doc.getElementById("stateChip");
+    const holdBtn = doc.getElementById("holdBtn");
+    const deepenBtn = doc.getElementById("deepenBtn");
+    const stillBtn = doc.getElementById("stillBtn");
+    const randomBtn = doc.getElementById("randomBtn");
+    const copyBtn = doc.getElementById("copyBtn");
+    const resetBtn = doc.getElementById("resetBtn");
+    const hideTextBtn = doc.getElementById("hideTextBtn");
+    const statusLine = doc.getElementById("statusLine");
+
+    const entryEls = {
+      id: doc.getElementById("entryId"),
+      title: doc.getElementById("entryTitle"),
+      material: doc.getElementById("entryMaterial"),
+      relation: doc.getElementById("entryRelation"),
+      residue: doc.getElementById("entryResidue"),
+      status: doc.getElementById("entryStatus"),
+      note: doc.getElementById("entryNote"),
+      witness: doc.getElementById("entryWitness"),
+      detail: doc.getElementById("detailMeta")
+    };
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const lowPower = coarsePointer || window.innerWidth < 760 || (navigator.deviceMemory && navigator.deviceMemory <= 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+
+    const controls = Array.from(doc.querySelectorAll("[data-param]"));
+    const outputs = new Map(Array.from(doc.querySelectorAll("[data-output]")).map((el) => [el.dataset.output, el]));
+
+    const defaults = {
+      seed: 4317,
+      density: lowPower ? 0.54 : 0.72,
+      bleed: 0.68,
+      oxidation: 0.76,
+      thread: lowPower ? 0.50 : 0.66,
+      displacement: lowPower ? 0.36 : 0.52,
+      dust: lowPower ? 0.34 : 0.58,
+      focus: 0.74,
+      notation: lowPower ? 0.42 : 0.56,
+      speed: reduceMotion.matches ? 0.02 : 0.32,
+      scale: lowPower ? 0.66 : 0.86
+    };
+
+    const titles = [
+      "seam witness","bodice residue","hem abrasion","retained bloom",
+      "fold evidence","closure trace","pressure field","washed remainder",
+      "oxidized edge","lining memory","sleeve record","thread ghost",
+      "starch shadow","veil stain","unfinished mark","side panel trace",
+      "body oil note","dye bloom index","frayed register","cloth remainder"
+    ];
+
+    const notes = [
+      "the stain held after the body was gone.",
+      "evidence remained close to the seam.",
+      "pressure collected at the fold.",
+      "the material softened but did not disappear.",
+      "a residue line survived the wash.",
+      "thread remained where the closure failed.",
+      "what darkened the cloth was not removed.",
+      "the mark continued past the visible form.",
+      "the surface kept the shape longer than the body did.",
+      "the garment registered contact as shadow.",
+      "oxidation moved slowly through the edge.",
+      "the seam received pressure before language.",
+      "a dull bloom opened where the cloth was handled.",
+      "the abrasion repeats the gesture of dressing.",
+      "the panel kept a weak map of contact."
+    ];
+
+    const materials = [
+      "washed cotton","linen","silk blend","gauze","treated voile",
+      "dull satin","oxidized lace","light wool","unfinished poplin",
+      "sheer organza","cotton voile","wool gauze","washed satin"
+    ];
+
+    const relations = [
+      "sleeve","bodice","hem","corset panel","skirt front",
+      "closure","lining","shoulder seam","side panel","veil edge",
+      "waistline","inner facing","button path","folded panel"
+    ];
+
+    const statuses = [
+      "archived","incomplete","retained","unresolved","unstable",
+      "recovered","partial","latent","softened","suspended"
+    ];
+
+    const residues = [
+      "oxidation","body oil","dye bloom","pressure mark","wet trace",
+      "seam drag","abrasion","starch ghost","wash shadow","rust bleed",
+      "thread dust","handling residue","fold darkening"
+    ];
+
+    const witnesses = [
+      "archive witness / pressure kept in cloth",
+      "material retained / body absent",
+      "record trace / unresolved edge",
+      "notation weak / residue stable",
+      "garment memory / not fully visible",
+      "field sample / seam adjacent",
+      "surface index / recovered after wash",
+      "cloth evidence / delayed apparition",
+      "mark present / form withdrawn",
+      "fiber held / contact displaced"
+    ];
+
+    const microtexts = [
+      "trace held at seam","pressure near waistline","oxidation present",
+      "recovered after wash","thread remained","bodice edge","hem memory",
+      "not final","archive witness","material retained","stain index",
+      "softened after wear","seam drag","residue unresolved","cloth kept it",
+      "fold pressure","body absent","edge darkened","wash did not clear",
+      "fiber retained","lining note","veil witness","abrasion field"
+    ];
+
+    let params = readState();
+    let stains = [];
+    let seams = [];
+    let particles = [];
+    let activeId = 0;
+    let held = false;
+    let hideText = false;
+    let pointer = { x: window.innerWidth * 0.52, y: window.innerHeight * 0.46, active: false };
+    let size = { w: 1, h: 1, dpr: 1 };
+    let raf = 0;
+    let lastFrame = 0;
+    let redrawQueued = false;
+    let generateTimer = 0;
+    let wasPaused = false;
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+    function lerp(a, b, t){ return a + (b - a) * t; }
+    function ease(t){ return t * t * (3 - 2 * t); }
+
+    function seedHash(str){
+      let h = 2166136261 >>> 0;
+      for(let i = 0; i < str.length; i += 1){
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function mulberry32(a){
+      return function(){
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function rnd(rng, a, b){ return a + (b - a) * rng(); }
+    function int(rng, a, b){ return Math.floor(rnd(rng, a, b + 1)); }
+    function choose(rng, arr){ return arr[Math.floor(rng() * arr.length) % arr.length]; }
+    function pad(n, l){ return String(n).padStart(l, "0"); }
+
+    function readState(){
+      const state = { ...defaults };
+      const raw = window.location.hash ? window.location.hash.slice(1) : "";
+      const search = new URLSearchParams(raw);
+      Object.keys(defaults).forEach((key) => {
+        if(!search.has(key)) return;
+        const value = key === "seed" ? parseInt(search.get(key), 10) : parseFloat(search.get(key));
+        if(Number.isFinite(value)){
+          state[key] = key === "seed" ? Math.max(1, value) : clamp(value, key === "scale" ? 0.5 : 0, 1);
+        }
+      });
+      if(search.has("selected")){
+        activeId = Math.max(0, parseInt(search.get("selected"), 10) || 0);
+      }
+      hideText = search.get("text") === "0";
+      if(hideText) body.classList.add("hide-text");
+      return state;
+    }
+
+    function stateHash(){
+      const search = new URLSearchParams();
+      search.set("seed", String(params.seed));
+      ["density","bleed","oxidation","thread","displacement","dust","focus","notation","speed","scale"].forEach((key) => {
+        search.set(key, Number(params[key]).toFixed(2));
+      });
+      search.set("selected", String(activeId));
+      search.set("text", hideText ? "0" : "1");
+      return "#" + search.toString();
+    }
+
+    function replaceHash(){
+      const next = window.location.pathname + window.location.search + stateHash();
+      window.history.replaceState(null, "", next);
+    }
+
+    function entryFor(rng, index){
+      const title = choose(rng, titles);
+      const material = choose(rng, materials);
+      const relation = choose(rng, relations);
+      const residue = choose(rng, residues);
+      const status = choose(rng, statuses);
+      const note = choose(rng, notes);
+      const witness = choose(rng, witnesses);
+      const section = ((params.seed % 97) + index * 7) % 100;
+      return {
+        id: "stn-" + pad(section, 3) + "." + pad(index + 1, 2),
+        title,
+        material,
+        relation,
+        residue,
+        status,
+        note,
+        witness
+      };
+    }
+
+    function generateArchive(){
+      const baseSeed = seedHash([
+        params.seed,
+        params.density.toFixed(2),
+        params.thread.toFixed(2),
+        params.notation.toFixed(2)
+      ].join("/"));
+      const rng = mulberry32(baseSeed);
+      const stainCount = Math.round(lerp(lowPower ? 18 : 28, lowPower ? 42 : 70, params.density));
+      const seamCount = Math.round(lerp(lowPower ? 3 : 5, lowPower ? 8 : 13, params.thread));
+
+      stains = [];
+      seams = [];
+
+      const anchors = [
+        { x:.26, y:.34 }, { x:.62, y:.26 }, { x:.72, y:.62 },
+        { x:.38, y:.72 }, { x:.49, y:.48 }
+      ];
+
+      for(let i = 0; i < stainCount; i += 1){
+        const localRng = mulberry32(baseSeed + i * 8909 + 131);
+        const near = anchors[i % anchors.length];
+        const clustered = localRng() > 0.38;
+        const x = clamp((clustered ? near.x + rnd(localRng, -.18, .18) : localRng()) * 100, 5, 95);
+        const y = clamp((clustered ? near.y + rnd(localRng, -.20, .20) : localRng()) * 100, 7, 93);
+        const scaleClass = localRng();
+        const base = scaleClass > .86 ? rnd(localRng, 118, 210) : scaleClass > .50 ? rnd(localRng, 66, 132) : rnd(localRng, 28, 82);
+        const pointCount = int(localRng, 16, 34);
+        const points = [];
+        let drift = rnd(localRng, -0.22, 0.22);
+        for(let p = 0; p < pointCount; p += 1){
+          const angle = (Math.PI * 2 * p) / pointCount;
+          drift = lerp(drift, rnd(localRng, -0.35, 0.35), 0.38);
+          const tooth = Math.sin(angle * int(localRng, 2, 7) + rnd(localRng, 0, 4)) * rnd(localRng, .025, .13);
+          points.push({
+            a: angle,
+            r: clamp(0.62 + localRng() * 0.56 + drift * .28 + tooth, .34, 1.38)
+          });
+        }
+        stains.push({
+          id: i,
+          x,
+          y,
+          size: base,
+          rx: rnd(localRng, .66, 1.84),
+          ry: rnd(localRng, .52, 1.45),
+          rot: rnd(localRng, -Math.PI, Math.PI),
+          alpha: rnd(localRng, .26, .74),
+          halo: rnd(localRng, .28, .96),
+          ring: rnd(localRng, .18, .90),
+          abrasion: rnd(localRng, .12, .84),
+          drag: rnd(localRng, -1, 1),
+          threadBias: localRng(),
+          micro: choose(localRng, microtexts) + " " + pad(i + 1, 2),
+          entry: entryFor(localRng, i),
+          points
+        });
+      }
+
+      for(let i = 0; i < seamCount; i += 1){
+        const localRng = mulberry32(baseSeed + i * 3779 + 971);
+        const vertical = localRng() > .46;
+        const start = vertical
+          ? { x:rnd(localRng, 8, 92), y:rnd(localRng, -8, 18) }
+          : { x:rnd(localRng, -8, 18), y:rnd(localRng, 8, 92) };
+        const end = vertical
+          ? { x:start.x + rnd(localRng, -18, 18), y:rnd(localRng, 82, 110) }
+          : { x:rnd(localRng, 82, 110), y:start.y + rnd(localRng, -18, 18) };
+        seams.push({
+          start,
+          c1:{ x:rnd(localRng, 10, 90), y:rnd(localRng, 4, 96) },
+          c2:{ x:rnd(localRng, 10, 90), y:rnd(localRng, 4, 96) },
+          end,
+          width:rnd(localRng, .45, 1.28),
+          alpha:rnd(localRng, .10, .42),
+          broken:localRng() > .56,
+          stitch:rnd(localRng, 9, 22),
+          offset:rnd(localRng, -12, 12)
+        });
+      }
+
+      createParticles(baseSeed);
+      activeId = clamp(activeId, 0, stains.length - 1);
+      held = false;
+      renderHotspots();
+      setActive(activeId, { keepHold:false, updateHash:false });
+      syncControls();
+      resizeCanvases();
+      replaceHash();
+    }
+
+    function createParticles(baseSeed){
+      const rng = mulberry32(baseSeed + 90701);
+      const count = Math.round(lerp(lowPower ? 32 : 70, lowPower ? 120 : 260, params.dust));
+      particles = Array.from({ length: count }, (_, i) => ({
+        x: rng(),
+        y: rng(),
+        z: rnd(rng, .25, 1.15),
+        a: rnd(rng, .035, .26),
+        l: rnd(rng, .4, 2.8),
+        drift: rnd(rng, -1, 1),
+        phase: rnd(rng, 0, Math.PI * 2),
+        seed: i + rng() * 1000
+      }));
+    }
+
+    function syncControls(){
+      controls.forEach((input) => {
+        const key = input.dataset.param;
+        input.value = params[key];
+        if(outputs.has(key)) outputs.get(key).textContent = Number(params[key]).toFixed(2);
+      });
+      hideTextBtn.textContent = hideText ? "show text" : "hide text";
+      stillBtn.textContent = params.speed <= 0.02 ? "breathe" : "still";
+      holdBtn.classList.toggle("is-held", held);
+      holdBtn.setAttribute("aria-pressed", String(held));
+      stateChip.classList.toggle("is-visible", held);
+    }
+
+    function setCanvasSize(canvas, ctx, alpha){
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const maxDpr = lowPower ? 1.15 : 1.75;
+      const dpr = Math.max(.5, Math.min(window.devicePixelRatio || 1, maxDpr) * params.scale);
+      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.height = Math.max(1, Math.floor(h * dpr));
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if(!alpha){
+        ctx.fillStyle = "#020201";
+        ctx.fillRect(0, 0, w, h);
+      }
+      return { w, h, dpr };
+    }
+
+    function resizeDetailCanvas(){
+      const rect = detailCanvas.getBoundingClientRect();
+      const dpr = Math.max(.5, Math.min(window.devicePixelRatio || 1, lowPower ? 1.1 : 1.5) * params.scale);
+      const w = Math.max(1, Math.floor(rect.width || 300));
+      const h = Math.max(1, Math.floor(rect.height || 180));
+      detailCanvas.width = Math.floor(w * dpr);
+      detailCanvas.height = Math.floor(h * dpr);
+      detailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function resizeCanvases(){
+      size = setCanvasSize(surfaceCanvas, sctx, false);
+      setCanvasSize(dustCanvas, dctx, true);
+      resizeDetailCanvas();
+      updateHotspotPositions();
+      drawSurface();
+      drawDetail();
+      drawDust(performance.now());
+    }
+
+    function drawBackground(ctx, w, h){
+      const rng = mulberry32(seedHash("background/" + params.seed));
+      ctx.fillStyle = "#020201";
+      ctx.fillRect(0, 0, w, h);
+
+      let g = ctx.createRadialGradient(w * .48, h * .52, 0, w * .48, h * .52, Math.max(w, h) * .75);
+      g.addColorStop(0, "rgba(31,21,15,0.96)");
+      g.addColorStop(.34, "rgba(10,8,6,0.98)");
+      g.addColorStop(1, "rgba(0,0,0,1)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+
+      for(let i = 0; i < 11; i += 1){
+        const x = rnd(rng, -w * .1, w * 1.1);
+        const y = rnd(rng, -h * .1, h * 1.1);
+        const rw = rnd(rng, w * .10, w * .52);
+        const rh = rnd(rng, h * .08, h * .42);
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, Math.max(rw, rh));
+        grad.addColorStop(0, "rgba(103,54,34," + rnd(rng, .025, .095) + ")");
+        grad.addColorStop(.56, "rgba(68,38,27," + rnd(rng, .010, .038) + ")");
+        grad.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rnd(rng, -Math.PI, Math.PI));
+        ctx.scale(1, rh / Math.max(1, rw));
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(0, 0, rw, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      const scars = Math.round(lerp(90, lowPower ? 180 : 320, params.displacement));
+      for(let i = 0; i < scars; i += 1){
+        const x = rnd(rng, 0, w);
+        const y = rnd(rng, 0, h);
+        const len = rnd(rng, 12, w * .12);
+        const a = rnd(rng, -0.36, 0.36) + (rng() > .5 ? Math.PI / 2 : 0);
+        ctx.strokeStyle = "rgba(229,215,190," + rnd(rng, .008, .044) + ")";
+        ctx.lineWidth = rnd(rng, .2, .75);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(
+          x + Math.cos(a) * len * .35 + rnd(rng, -12, 12),
+          y + Math.sin(a) * len * .35 + rnd(rng, -10, 10),
+          x + Math.cos(a) * len * .72 + rnd(rng, -12, 12),
+          y + Math.sin(a) * len * .72 + rnd(rng, -10, 10),
+          x + Math.cos(a) * len,
+          y + Math.sin(a) * len
+        );
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalCompositeOperation = "multiply";
+      for(let i = 0; i < 8; i += 1){
+        const x = rnd(rng, -w * .15, w * 1.1);
+        const y = rnd(rng, h * -.1, h * 1.1);
+        const len = rnd(rng, h * .5, h * 1.3);
+        ctx.strokeStyle = "rgba(0,0,0," + rnd(rng, .16, .38) + ")";
+        ctx.lineWidth = rnd(rng, 18, 74);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(
+          x + rnd(rng, -w * .15, w * .15),
+          y + len * .28,
+          x + rnd(rng, -w * .12, w * .18),
+          y + len * .72,
+          x + rnd(rng, -w * .12, w * .12),
+          y + len
+        );
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      ctx.lineWidth = .35;
+      for(let i = 0; i < Math.round((w * h) / (lowPower ? 11800 : 7200)); i += 1){
+        const x = rnd(rng, 0, w);
+        const y = rnd(rng, 0, h);
+        const l = rnd(rng, 1, 7);
+        ctx.strokeStyle = "rgba(222,212,191," + rnd(rng, .009, .038) + ")";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + rnd(rng, -l, l), y + rnd(rng, -l, l));
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function blobPath(ctx, stain, scale){
+      const pts = stain.points;
+      const first = pts[0];
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(first.a) * first.r * stain.size * scale, Math.sin(first.a) * first.r * stain.size * scale);
+      for(let i = 0; i < pts.length; i += 1){
+        const cur = pts[i];
+        const next = pts[(i + 1) % pts.length];
+        const x1 = Math.cos(cur.a) * cur.r * stain.size * scale;
+        const y1 = Math.sin(cur.a) * cur.r * stain.size * scale;
+        const x2 = Math.cos(next.a) * next.r * stain.size * scale;
+        const y2 = Math.sin(next.a) * next.r * stain.size * scale;
+        ctx.quadraticCurveTo(x1, y1, (x1 + x2) * .5, (y1 + y2) * .5);
+      }
+      ctx.closePath();
+    }
+
+    function drawStain(ctx, stain, w, h, active, detailMode){
+      const s = Math.max(18, stain.size * Math.min(w, h) / 860);
+      const x = detailMode ? w * .5 : (stain.x / 100) * w;
+      const y = detailMode ? h * .52 : (stain.y / 100) * h;
+      const bleed = params.bleed;
+      const oxidation = params.oxidation;
+      const focusBoost = active ? params.focus : 0;
+      const alpha = clamp(stain.alpha * (active ? 1.3 : 1), .08, .9);
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(stain.rot + (detailMode ? .08 : 0));
+      ctx.scale(stain.rx * (detailMode ? 1.15 : 1), stain.ry * (detailMode ? 1.15 : 1));
+
+      ctx.globalCompositeOperation = "screen";
+      ctx.shadowColor = "rgba(92,42,26,.48)";
+      ctx.shadowBlur = (12 + s * .15) * oxidation;
+      ctx.filter = "blur(" + (detailMode ? 4 : (5 + bleed * 13 - focusBoost * 8)) + "px)";
+      blobPath(ctx, stain, 1.52 + bleed * .35);
+      ctx.fillStyle = "rgba(122,59,34," + (0.10 + stain.halo * oxidation * .22) + ")";
+      ctx.fill();
+
+      ctx.filter = "blur(" + (detailMode ? 2 : (2.2 + bleed * 7 - focusBoost * 3.5)) + "px)";
+      blobPath(ctx, stain, 1.10 + bleed * .22);
+      const grad = ctx.createRadialGradient(-s * .12, -s * .08, s * .08, 0, 0, s * 1.2);
+      grad.addColorStop(0, "rgba(218,189,142," + (.055 + alpha * .10) + ")");
+      grad.addColorStop(.36, "rgba(99,47,31," + (.18 + alpha * .18) + ")");
+      grad.addColorStop(.72, "rgba(46,20,14," + (.16 + alpha * .12) + ")");
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.globalCompositeOperation = "multiply";
+      ctx.filter = "blur(" + (detailMode ? 1.5 : (1.4 + bleed * 3.5)) + "px)";
+      blobPath(ctx, stain, .82);
+      ctx.fillStyle = "rgba(7,3,2," + (.18 + alpha * .34) + ")";
+      ctx.fill();
+
+      ctx.globalCompositeOperation = "screen";
+      ctx.filter = "blur(" + (active ? .12 : .7) + "px)";
+      ctx.lineWidth = Math.max(.5, (active ? 1.15 : .72) / Math.max(stain.rx, stain.ry));
+      ctx.strokeStyle = "rgba(224,177,119," + (.06 + stain.ring * oxidation * (active ? .34 : .18)) + ")";
+      blobPath(ctx, stain, 1.00 + bleed * .06);
+      ctx.stroke();
+
+      if(stain.abrasion > .2){
+        const rng = mulberry32(seedHash(params.seed + "/abrasion/" + stain.id));
+        ctx.globalCompositeOperation = "screen";
+        ctx.filter = "blur(.12px)";
+        ctx.lineWidth = Math.max(.3, .55 / Math.max(stain.rx, stain.ry));
+        for(let i = 0; i < Math.round(lerp(3, 14, stain.abrasion)); i += 1){
+          const yy = rnd(rng, -s * .72, s * .72);
+          const len = rnd(rng, s * .18, s * 1.2);
+          const xx = rnd(rng, -s * .55, s * .35);
+          ctx.strokeStyle = "rgba(226,215,191," + rnd(rng, .025, active ? .13 : .07) + ")";
+          ctx.beginPath();
+          ctx.moveTo(xx, yy);
+          ctx.bezierCurveTo(xx + len * .28, yy + rnd(rng, -5, 5), xx + len * .74, yy + rnd(rng, -9, 9), xx + len, yy + rnd(rng, -5, 5));
+          ctx.stroke();
+        }
+      }
+
+      if(active){
+        ctx.globalCompositeOperation = "screen";
+        ctx.filter = "blur(0px)";
+        ctx.lineWidth = Math.max(.55, 1.05 / Math.max(stain.rx, stain.ry));
+        ctx.strokeStyle = "rgba(235,221,193,.38)";
+        blobPath(ctx, stain, 1.12);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawSeam(ctx, seam, w, h, index){
+      const p0 = { x: seam.start.x / 100 * w, y: seam.start.y / 100 * h };
+      const p1 = { x: seam.c1.x / 100 * w, y: seam.c1.y / 100 * h };
+      const p2 = { x: seam.c2.x / 100 * w, y: seam.c2.y / 100 * h };
+      const p3 = { x: seam.end.x / 100 * w, y: seam.end.y / 100 * h };
+      const intensity = params.thread;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.shadowBlur = 12 * intensity;
+      ctx.shadowColor = "rgba(222,212,191,.10)";
+      ctx.strokeStyle = "rgba(222,212,191," + (seam.alpha * intensity) + ")";
+      ctx.lineWidth = seam.width;
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+      ctx.stroke();
+
+      ctx.shadowBlur = 0;
+      ctx.setLineDash(seam.broken ? [7, 9, 1, 12] : [2, 10]);
+      ctx.strokeStyle = "rgba(226,214,190," + (seam.alpha * .62 * intensity) + ")";
+      ctx.lineWidth = .58;
+      ctx.beginPath();
+      ctx.moveTo(p0.x + seam.offset * .2, p0.y);
+      ctx.bezierCurveTo(p1.x + seam.offset, p1.y, p2.x - seam.offset, p2.y, p3.x + seam.offset * .2, p3.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const stitchCount = Math.round(lerp(12, 52, intensity));
+      for(let i = 0; i < stitchCount; i += 1){
+        const t = (i + .5) / stitchCount;
+        const pt = cubicPoint(p0, p1, p2, p3, t);
+        const prev = cubicPoint(p0, p1, p2, p3, clamp(t - .01, 0, 1));
+        const next = cubicPoint(p0, p1, p2, p3, clamp(t + .01, 0, 1));
+        const angle = Math.atan2(next.y - prev.y, next.x - prev.x) + Math.PI / 2;
+        const l = (seam.stitch * (i % 5 === 0 ? 1.35 : 1)) * (lowPower ? .72 : 1);
+        if(seam.broken && i % 7 === 0) continue;
+        ctx.strokeStyle = "rgba(222,212,191," + (seam.alpha * .72 * intensity) + ")";
+        ctx.lineWidth = .42 + seam.width * .18;
+        ctx.beginPath();
+        ctx.moveTo(pt.x - Math.cos(angle) * l * .5, pt.y - Math.sin(angle) * l * .5);
+        ctx.lineTo(pt.x + Math.cos(angle) * l * .5, pt.y + Math.sin(angle) * l * .5);
+        ctx.stroke();
+      }
+
+      if(index % 3 === 0){
+        const rng = mulberry32(seedHash(params.seed + "/loose/" + index));
+        for(let j = 0; j < 7; j += 1){
+          const t = rnd(rng, .1, .9);
+          const pt = cubicPoint(p0, p1, p2, p3, t);
+          const curl = rnd(rng, 14, 72);
+          ctx.strokeStyle = "rgba(222,212,191," + rnd(rng, .035, .12) * intensity + ")";
+          ctx.lineWidth = rnd(rng, .25, .7);
+          ctx.beginPath();
+          ctx.moveTo(pt.x, pt.y);
+          ctx.bezierCurveTo(
+            pt.x + rnd(rng, -curl, curl),
+            pt.y + rnd(rng, -curl, curl),
+            pt.x + rnd(rng, -curl, curl),
+            pt.y + rnd(rng, -curl, curl),
+            pt.x + rnd(rng, -curl, curl),
+            pt.y + rnd(rng, -curl, curl)
+          );
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
+
+    function cubicPoint(p0, p1, p2, p3, t){
+      const mt = 1 - t;
+      return {
+        x: mt * mt * mt * p0.x + 3 * mt * mt * t * p1.x + 3 * mt * t * t * p2.x + t * t * t * p3.x,
+        y: mt * mt * mt * p0.y + 3 * mt * mt * t * p1.y + 3 * mt * t * t * p2.y + t * t * t * p3.y
+      };
+    }
+
+    function drawAnnotations(ctx, w, h){
+      if(hideText) return;
+      const rng = mulberry32(seedHash(params.seed + "/annotations"));
+      const count = Math.round(lerp(lowPower ? 9 : 18, lowPower ? 24 : 42, params.notation));
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      ctx.textBaseline = "middle";
+      for(let i = 0; i < count; i += 1){
+        const stain = stains[(i * 5 + int(rng, 0, stains.length - 1)) % stains.length];
+        const x = (stain.x / 100) * w + rnd(rng, -stain.size * .7, stain.size * .7);
+        const y = (stain.y / 100) * h + rnd(rng, -stain.size * .6, stain.size * .6);
+        const active = stain.id === activeId;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rnd(rng, -0.24, 0.24));
+        ctx.font = (active ? "10px " : "9px ") + "Aktiv, ui-monospace, monospace";
+        ctx.letterSpacing = "1px";
+        ctx.fillStyle = "rgba(222,212,191," + (active ? .58 : rnd(rng, .10, .30) * params.notation) + ")";
+        ctx.filter = rng() > .62 && !active ? "blur(.65px)" : "blur(0px)";
+        ctx.fillText(stain.micro, 0, 0);
+        ctx.restore();
+      }
+
+      ctx.font = "9px Aktiv, ui-monospace, monospace";
+      ctx.fillStyle = "rgba(222,212,191," + (.18 * params.notation) + ")";
+      for(let i = 0; i < 10; i += 1){
+        const x = rnd(rng, w * .04, w * .96);
+        const y = rnd(rng, h * .08, h * .92);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rnd(rng, -0.08, 0.08));
+        ctx.fillText("archive witness / " + pad(int(rng, 1, 99), 2), 0, 0);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
+    function drawRegistration(ctx, w, h){
+      const alpha = .09 + params.notation * .055;
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      ctx.strokeStyle = "rgba(222,212,191," + alpha + ")";
+      ctx.lineWidth = .5;
+      const marks = [
+        [w * .08, h * .18], [w * .92, h * .20],
+        [w * .12, h * .82], [w * .86, h * .76]
+      ];
+      marks.forEach(([x, y], i) => {
+        ctx.beginPath();
+        ctx.moveTo(x - 16, y);
+        ctx.lineTo(x - 4, y);
+        ctx.moveTo(x + 4, y);
+        ctx.lineTo(x + 16, y);
+        ctx.moveTo(x, y - 16);
+        ctx.lineTo(x, y - 4);
+        ctx.moveTo(x, y + 4);
+        ctx.lineTo(x, y + 16);
+        ctx.stroke();
+        if(!hideText){
+          ctx.font = "9px Aktiv, ui-monospace, monospace";
+          ctx.fillStyle = "rgba(222,212,191," + (alpha * 1.25) + ")";
+          ctx.fillText("reg. " + pad(i + 1, 2), x + 21, y + 3);
+        }
+      });
+      ctx.restore();
+    }
+
+    function drawSurface(){
+      if(redrawQueued) return;
+      redrawQueued = true;
+      requestAnimationFrame(() => {
+        redrawQueued = false;
+        const w = size.w;
+        const h = size.h;
+        drawBackground(sctx, w, h);
+
+        seams.forEach((seam, i) => drawSeam(sctx, seam, w, h, i));
+
+        const sorted = [...stains].sort((a, b) => a.size - b.size);
+        sorted.forEach((stain) => {
+          drawStain(sctx, stain, w, h, stain.id === activeId, false);
+        });
+
+        drawAnnotations(sctx, w, h);
+        drawRegistration(sctx, w, h);
+
+        const v = sctx.createRadialGradient(w * .5, h * .5, Math.min(w, h) * .12, w * .5, h * .5, Math.max(w, h) * .72);
+        v.addColorStop(0, "rgba(0,0,0,0)");
+        v.addColorStop(.55, "rgba(0,0,0,.12)");
+        v.addColorStop(1, "rgba(0,0,0,.72)");
+        sctx.fillStyle = v;
+        sctx.fillRect(0, 0, w, h);
+      });
+    }
+
+    function drawDust(t){
+      const w = size.w;
+      const h = size.h;
+      dctx.clearRect(0, 0, w, h);
+      const motion = reduceMotion.matches ? 0.1 : params.speed;
+      const time = t * 0.00004 * (0.2 + motion * 1.8);
+
+      dctx.save();
+      dctx.globalCompositeOperation = "screen";
+      for(const p of particles){
+        const wave = Math.sin(time * (18 + p.z * 21) + p.phase);
+        let x = (p.x * w + wave * 18 * p.drift * motion + w) % w;
+        let y = (p.y * h + (time * 140 * p.z * motion) + Math.cos(time * 10 + p.phase) * 6 * motion) % h;
+        const alpha = p.a * (.35 + params.dust * .75);
+        dctx.strokeStyle = "rgba(226,216,194," + alpha + ")";
+        dctx.lineWidth = Math.max(.25, p.z * .55);
+        dctx.beginPath();
+        dctx.moveTo(x, y);
+        dctx.lineTo(x + p.l * p.z, y + p.l * p.z * .25);
+        dctx.stroke();
+      }
+      dctx.restore();
+
+      const active = stains[activeId];
+      if(active){
+        const x = active.x / 100 * w;
+        const y = active.y / 100 * h;
+        const r = Math.max(44, active.size * Math.min(w, h) / 760);
+        const pulse = reduceMotion.matches ? .45 : (Math.sin(t * 0.0014 * (0.2 + params.speed)) + 1) * .5;
+        dctx.save();
+        dctx.globalCompositeOperation = "screen";
+        let g = dctx.createRadialGradient(x, y, r * .10, x, y, r * (1.65 + pulse * .18));
+        g.addColorStop(0, "rgba(230,218,194," + (.045 + params.focus * .07) + ")");
+        g.addColorStop(.34, "rgba(131,69,42," + (.045 + params.oxidation * .05) + ")");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        dctx.fillStyle = g;
+        dctx.beginPath();
+        dctx.ellipse(x, y, r * active.rx * 1.7, r * active.ry * 1.25, active.rot, 0, Math.PI * 2);
+        dctx.fill();
+
+        dctx.strokeStyle = "rgba(230,218,194," + (.13 + params.focus * .18) + ")";
+        dctx.lineWidth = .65;
+        dctx.setLineDash([1.5, 7]);
+        dctx.beginPath();
+        dctx.ellipse(x, y, r * active.rx * (1.12 + pulse * .02), r * active.ry * (1.03 + pulse * .03), active.rot, 0, Math.PI * 2);
+        dctx.stroke();
+        dctx.setLineDash([]);
+        dctx.restore();
+      }
+
+      if(pointer.active && !coarsePointer){
+        dctx.save();
+        dctx.globalCompositeOperation = "screen";
+        const rg = dctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, Math.min(w, h) * .18);
+        rg.addColorStop(0, "rgba(230,218,194," + (.025 + params.focus * .045) + ")");
+        rg.addColorStop(.44, "rgba(110,61,39,.035)");
+        rg.addColorStop(1, "rgba(0,0,0,0)");
+        dctx.fillStyle = rg;
+        dctx.fillRect(0, 0, w, h);
+        dctx.restore();
+      }
+    }
+
+    function drawDetail(){
+      const stain = stains[activeId];
+      if(!stain) return;
+      resizeDetailCanvas();
+      const rect = detailCanvas.getBoundingClientRect();
+      const w = rect.width || 300;
+      const h = rect.height || 180;
+      detailCtx.fillStyle = "#030201";
+      detailCtx.fillRect(0, 0, w, h);
+
+      detailCtx.save();
+      const g = detailCtx.createRadialGradient(w * .5, h * .45, 0, w * .5, h * .5, Math.max(w, h) * .78);
+      g.addColorStop(0, "rgba(31,18,12,1)");
+      g.addColorStop(1, "rgba(0,0,0,1)");
+      detailCtx.fillStyle = g;
+      detailCtx.fillRect(0, 0, w, h);
+      detailCtx.restore();
+
+      const originalSize = stain.size;
+      stain.size = Math.max(58, Math.min(w, h) * .36);
+      drawStain(detailCtx, stain, w, h, true, true);
+      stain.size = originalSize;
+
+      const rng = mulberry32(seedHash(params.seed + "/detail/" + activeId));
+      detailCtx.save();
+      detailCtx.globalCompositeOperation = "screen";
+      detailCtx.font = "9px Aktiv, ui-monospace, monospace";
+      detailCtx.fillStyle = "rgba(222,212,191,.34)";
+      detailCtx.fillText(stain.entry.id + " / " + stain.entry.residue, 12, 19);
+      detailCtx.strokeStyle = "rgba(222,212,191,.11)";
+      detailCtx.lineWidth = .5;
+      for(let i = 0; i < 18; i += 1){
+        const y = rnd(rng, 24, h - 12);
+        detailCtx.beginPath();
+        detailCtx.moveTo(rnd(rng, -20, w * .55), y);
+        detailCtx.bezierCurveTo(rnd(rng, w * .2, w), y + rnd(rng, -10, 10), rnd(rng, 0, w), y + rnd(rng, -10, 10), rnd(rng, w * .42, w + 30), y + rnd(rng, -10, 10));
+        detailCtx.stroke();
+      }
+      detailCtx.restore();
+
+      entryEls.detail.textContent = "x:" + pad(Math.round(stain.x), 2) + " / y:" + pad(Math.round(stain.y), 2);
+    }
+
+    function renderHotspots(){
+      hotspotLayer.innerHTML = "";
+      const fragment = doc.createDocumentFragment();
+      stains.forEach((stain) => {
+        const btn = doc.createElement("button");
+        btn.type = "button";
+        btn.className = "stain-hotspot";
+        btn.dataset.id = String(stain.id);
+        btn.setAttribute("aria-label", stain.entry.id + " — " + stain.entry.title + ", " + stain.entry.material + ", " + stain.entry.residue);
+        btn.innerHTML = '<span class="visually-hidden">' + stain.entry.title + '</span>';
+        btn.addEventListener("pointerenter", () => {
+          if(!held) setActive(stain.id, { keepHold:true });
+        });
+        btn.addEventListener("focus", () => setActive(stain.id, { keepHold:true }));
+        btn.addEventListener("click", () => {
+          held = true;
+          setActive(stain.id, { keepHold:true });
+        });
+        btn.addEventListener("touchstart", () => {
+          held = true;
+          setActive(stain.id, { keepHold:true });
+        }, { passive:true });
+        fragment.appendChild(btn);
+      });
+      hotspotLayer.appendChild(fragment);
+      updateHotspotPositions();
+    }
+
+    function updateHotspotPositions(){
+      const buttons = hotspotLayer.querySelectorAll(".stain-hotspot");
+      buttons.forEach((btn) => {
+        const stain = stains[Number(btn.dataset.id)];
+        if(!stain) return;
+        const s = Math.max(coarsePointer ? 48 : 38, stain.size * Math.min(window.innerWidth, window.innerHeight) / 820 * Math.max(stain.rx, stain.ry) * 1.38);
+        btn.style.setProperty("--x", stain.x.toFixed(3));
+        btn.style.setProperty("--y", stain.y.toFixed(3));
+        btn.style.setProperty("--s", s.toFixed(1) + "px");
+        btn.style.setProperty("--r", (stain.rot * 57.2958).toFixed(2) + "deg");
+      });
+      markActiveHotspot();
+    }
+
+    function markActiveHotspot(){
+      hotspotLayer.querySelectorAll(".stain-hotspot").forEach((btn) => {
+        btn.classList.toggle("is-active", Number(btn.dataset.id) === activeId);
+      });
+    }
+
+    function setActive(id, options = {}){
+      if(!stains.length) return;
+      activeId = clamp(Number(id) || 0, 0, stains.length - 1);
+      const stain = stains[activeId];
+      const entry = stain.entry;
+      if(options.keepHold === false) held = false;
+
+      entryEls.id.textContent = entry.id;
+      entryEls.title.textContent = entry.title;
+      entryEls.material.textContent = entry.material;
+      entryEls.relation.textContent = entry.relation;
+      entryEls.residue.textContent = entry.residue;
+      entryEls.status.textContent = entry.status;
+      entryEls.note.textContent = entry.note;
+      entryEls.witness.textContent = entry.witness;
+
+      root.style.setProperty("--field-x", stain.x.toFixed(2) + "%");
+      root.style.setProperty("--field-y", stain.y.toFixed(2) + "%");
+      holdBtn.classList.toggle("is-held", held);
+      holdBtn.setAttribute("aria-pressed", String(held));
+      stateChip.classList.toggle("is-visible", held);
+
+      markActiveHotspot();
+      drawSurface();
+      drawDetail();
+      drawDust(performance.now());
+      if(options.updateHash !== false) replaceHash();
+    }
+
+    function applyParam(key, value, regenerate){
+      params[key] = key === "scale" ? clamp(value, .5, 1) : clamp(value, 0, 1);
+      if(outputs.has(key)) outputs.get(key).textContent = Number(params[key]).toFixed(2);
+      if(key === "speed") stillBtn.textContent = params.speed <= 0.02 ? "breathe" : "still";
+      if(regenerate){
+        scheduleGenerate();
+      }else{
+        if(key === "dust") createParticles(seedHash(params.seed + "/dust/" + params.dust.toFixed(2)));
+        if(key === "scale") resizeCanvases();
+        drawSurface();
+        drawDust(performance.now());
+        replaceHash();
+      }
+    }
+
+    function scheduleGenerate(){
+      window.clearTimeout(generateTimer);
+      generateTimer = window.setTimeout(() => {
+        generateArchive();
+      }, 80);
+    }
+
+    controls.forEach((input) => {
+      input.addEventListener("input", () => {
+        const key = input.dataset.param;
+        const value = parseFloat(input.value);
+        const structural = key === "density" || key === "thread" || key === "notation";
+        applyParam(key, value, structural);
+      });
+    });
+
+    paramToggle.addEventListener("click", () => {
+      const open = !body.classList.contains("panel-open");
+      body.classList.toggle("panel-open", open);
+      paramToggle.setAttribute("aria-expanded", String(open));
+    });
+
+    holdBtn.addEventListener("click", () => {
+      held = !held;
+      setActive(activeId, { keepHold:true });
+    });
+
+    deepenBtn.addEventListener("click", () => {
+      params.density = clamp(params.density + .12, .25, 1);
+      params.bleed = clamp(params.bleed + .10, 0, 1);
+      params.oxidation = clamp(params.oxidation + .12, 0, 1);
+      params.dust = clamp(params.dust + .06, 0, 1);
+      syncControls();
+      generateArchive();
+      statusLine.textContent = "field deepened / bleed and oxidation increased.";
+    });
+
+    stillBtn.addEventListener("click", () => {
+      params.speed = params.speed <= .02 ? defaults.speed : 0;
+      syncControls();
+      drawDust(performance.now());
+      replaceHash();
+      statusLine.textContent = params.speed <= .02 ? "surface held nearly still." : "surface breathing restored.";
+    });
+
+    randomBtn.addEventListener("click", () => {
+      const cryptoSeed = window.crypto && window.crypto.getRandomValues ? window.crypto.getRandomValues(new Uint32Array(1))[0] : Math.floor(Math.random() * 999999);
+      params.seed = 1 + (cryptoSeed % 999999);
+      held = false;
+      activeId = 0;
+      generateArchive();
+      statusLine.textContent = "random trace loaded / seed " + params.seed + ".";
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const state = window.location.href.split("#")[0] + stateHash();
+      try{
+        await navigator.clipboard.writeText(state);
+        copyBtn.textContent = "copied";
+        statusLine.textContent = "archive state copied to clipboard.";
+        window.setTimeout(() => { copyBtn.textContent = "copy state"; }, 1200);
+      }catch(error){
+        statusLine.textContent = "state held in url hash: " + stateHash();
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      params = { ...defaults };
+      activeId = 0;
+      held = false;
+      hideText = false;
+      body.classList.remove("hide-text");
+      syncControls();
+      generateArchive();
+      statusLine.textContent = "archive reset to original field.";
+    });
+
+    hideTextBtn.addEventListener("click", () => {
+      hideText = !hideText;
+      body.classList.toggle("hide-text", hideText);
+      syncControls();
+      drawSurface();
+      replaceHash();
+      statusLine.textContent = hideText ? "microtext reduced / surface left nearly mute." : "notation restored to the field.";
+    });
+
+    window.addEventListener("pointermove", (event) => {
+      pointer = { x:event.clientX, y:event.clientY, active:true };
+      root.style.setProperty("--field-x", (event.clientX / window.innerWidth * 100).toFixed(2) + "%");
+      root.style.setProperty("--field-y", (event.clientY / window.innerHeight * 100).toFixed(2) + "%");
+    }, { passive:true });
+
+    window.addEventListener("pointerleave", () => {
+      pointer.active = false;
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if(event.key === "Escape"){
+        body.classList.remove("panel-open");
+        paramToggle.setAttribute("aria-expanded", "false");
+      }
+      if(event.key === "ArrowRight" || event.key === "ArrowDown"){
+        event.preventDefault();
+        held = true;
+        setActive((activeId + 1) % stains.length, { keepHold:true });
+        focusActiveButton();
+      }
+      if(event.key === "ArrowLeft" || event.key === "ArrowUp"){
+        event.preventDefault();
+        held = true;
+        setActive((activeId - 1 + stains.length) % stains.length, { keepHold:true });
+        focusActiveButton();
+      }
+    });
+
+    function focusActiveButton(){
+      const btn = hotspotLayer.querySelector('[data-id="' + activeId + '"]');
+      if(btn) btn.focus({ preventScroll:true });
+    }
+
+    window.addEventListener("resize", () => {
+      window.clearTimeout(generateTimer);
+      generateTimer = window.setTimeout(resizeCanvases, 110);
+    });
+
+    doc.addEventListener("visibilitychange", () => {
+      if(doc.hidden){
+        wasPaused = true;
+        window.cancelAnimationFrame(raf);
+      }else if(wasPaused){
+        wasPaused = false;
+        lastFrame = 0;
+        animate(performance.now());
+      }
+    });
+
+    reduceMotion.addEventListener("change", () => {
+      params.speed = reduceMotion.matches ? Math.min(params.speed, .02) : defaults.speed;
+      syncControls();
+      replaceHash();
+    });
+
+    function animate(t){
+      const target = lowPower ? 1000 / 24 : 1000 / 42;
+      if(!lastFrame || t - lastFrame > target){
+        lastFrame = t;
+        drawDust(t);
+      }
+      raf = window.requestAnimationFrame(animate);
+    }
+
+    function init(){
+      syncControls();
+      generateArchive();
+      window.requestAnimationFrame(animate);
+    }
+
+    init();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Springtime Wishes — the fitting dark, an experimental nocturnal fitting room for garment, pressure, seam, body, and shadow.">
+<title>the fitting dark / springtime wishes</title>
+<style>
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"LTC Metropolitan";src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  --ink:rgba(229,221,205,.82);
+  --ink2:rgba(229,221,205,.56);
+  --ink3:rgba(229,221,205,.31);
+  --line:rgba(229,221,205,.18);
+  --line2:rgba(229,221,205,.085);
+  --panel:rgba(13,9,7,.80);
+  --font-sans:"Aktiv Grotesk",Arial,Helvetica,sans-serif;
+  --font-ital:"LTC Metropolitan",Georgia,"Times New Roman",serif;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-r:env(safe-area-inset-right,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px);
+  --mx:50%;
+  --my:50%;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:var(--ink);
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;-webkit-text-size-adjust:100%;
+}
+body{font-family:var(--font-sans);font-weight:300;cursor:crosshair;isolation:isolate}
+body.is-frozen *{animation-play-state:paused!important}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px dotted rgba(233,226,214,.88);outline-offset:4px}
+::selection{background:rgba(233,226,214,.9);color:#000}
+
+#root{
+  position:fixed;inset:0;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 9%,rgba(206,196,180,.105),transparent 30%),
+    radial-gradient(ellipse at 10% 80%,rgba(78,56,38,.24),transparent 36%),
+    radial-gradient(ellipse at 84% 24%,rgba(96,70,52,.10),transparent 28%),
+    linear-gradient(180deg,#000 0%,#030201 42%,#050302 67%,#000 100%);
+}
+#root::before{
+  content:"";position:absolute;inset:0;z-index:92;pointer-events:none;opacity:.24;mix-blend-mode:overlay;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.010) 0 1px,transparent 1px 9px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.74' numOctaves='2' type='fractalNoise' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+  background-size:100% 3px,100% 100%,174px 174px;
+  animation:grainDrift 5.2s steps(4,end) infinite;
+}
+#root::after{
+  content:"";position:absolute;inset:9px;z-index:84;pointer-events:none;border:1px solid rgba(229,221,205,.16);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.7),inset 0 0 120px rgba(0,0,0,.84);
+  opacity:.74;
+}
+@keyframes grainDrift{
+  0%{transform:translate3d(0,0,0)}
+  33%{transform:translate3d(-1px,1px,0)}
+  66%{transform:translate3d(1px,-1px,0)}
+  100%{transform:translate3d(0,-1px,0)}
+}
+.canvas{
+  position:absolute;inset:0;z-index:2;width:100%;height:100%;display:block;
+}
+.fabric-plane{
+  position:absolute;inset:13px;z-index:7;pointer-events:none;opacity:.19;
+  background:
+    linear-gradient(90deg,transparent calc(50% - .5px),var(--line2) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+    linear-gradient(0deg,transparent calc(56% - .5px),var(--line2) calc(56% - .5px) calc(56% + .5px),transparent calc(56% + .5px)),
+    repeating-linear-gradient(90deg,transparent 0 31px,rgba(229,221,205,.025) 32px 33px),
+    repeating-linear-gradient(0deg,transparent 0 23px,rgba(229,221,205,.021) 24px 25px);
+}
+.cursor-light{
+  position:absolute;inset:0;z-index:9;pointer-events:none;mix-blend-mode:screen;opacity:.78;
+  background:
+    radial-gradient(circle at var(--mx) var(--my),rgba(229,221,205,.13),transparent 10%),
+    radial-gradient(circle at var(--mx) var(--my),rgba(96,68,48,.10),transparent 23%);
+}
+.wordmark{
+  position:absolute;left:50%;top:calc(var(--safe-t) + clamp(7px,2vh,18px));width:min(92vw,1240px);height:auto;z-index:31;
+  transform:translateX(-50%);pointer-events:none;opacity:.15;mix-blend-mode:screen;
+  filter:grayscale(1) contrast(1.08) brightness(.70) blur(.05px) drop-shadow(0 0 18px rgba(226,218,202,.12));
+  animation:wordAge 12s steps(2,end) infinite;
+}
+@keyframes wordAge{
+  0%,100%{opacity:.13;transform:translateX(-50%)}
+  18%{opacity:.23;transform:translateX(calc(-50% + 1px)) translateY(1px)}
+  19%{opacity:.075}
+  54%{opacity:.18}
+  55%{filter:grayscale(1) contrast(1.6) brightness(.53) blur(.42px)}
+  57%{filter:grayscale(1) contrast(1.08) brightness(.70) blur(.05px)}
+}
+.old-button{
+  position:absolute;z-index:96;font-size:11px;line-height:1.15;letter-spacing:.015em;color:rgba(229,221,205,.76);
+  background:
+    linear-gradient(180deg,rgba(24,19,14,.96),rgba(0,0,0,.98) 52%,rgba(17,13,10,.94)),
+    repeating-linear-gradient(90deg,rgba(229,221,205,.032) 0 1px,transparent 1px 6px);
+  border:1px solid rgba(229,221,205,.24);
+  clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px);
+  box-shadow:inset 1px 1px 0 rgba(240,232,220,.14),inset -1px -1px 0 rgba(0,0,0,.94),inset 0 0 18px rgba(0,0,0,.72),0 0 0 1px rgba(0,0,0,.94),0 12px 30px rgba(0,0,0,.62);
+}
+.old-button::before{
+  content:"";position:absolute;inset:3px;pointer-events:none;border:1px solid rgba(229,221,205,.12);
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);
+}
+.old-button:hover{filter:brightness(1.12);color:rgba(249,244,234,.96)}
+.old-button:active{transform:translate(1px,1px)}
+.back-home{
+  left:calc(var(--safe-l) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(12px,2vh,24px));
+  min-width:58px;min-height:32px;display:grid;place-items:center;padding:8px 13px 9px;
+}
+.panel-toggle{
+  right:calc(var(--safe-r) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(12px,2vh,24px));
+  min-height:32px;padding:8px 13px 9px;
+}
+
+.mode-strip{
+  position:absolute;left:50%;top:calc(var(--safe-t) + clamp(58px,8vh,82px));z-index:58;transform:translateX(-50%);
+  display:grid;grid-template-columns:repeat(5,auto);gap:2px;padding:4px;
+  background:rgba(0,0,0,.44);border:1px solid rgba(229,221,205,.12);
+  box-shadow:inset 0 0 18px rgba(0,0,0,.7),0 12px 34px rgba(0,0,0,.46);
+  clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px);
+}
+.mode-strip button{
+  border:1px solid rgba(229,221,205,.08);background:rgba(255,255,255,.018);padding:7px 9px;
+  font-size:10px;letter-spacing:.03em;color:rgba(229,221,205,.52);
+}
+.mode-strip button[aria-pressed="true"]{color:rgba(250,244,232,.92);background:rgba(229,221,205,.08);border-color:rgba(229,221,205,.22)}
+
+.title-block{
+  position:absolute;left:calc(var(--safe-l) + clamp(15px,3vw,48px));bottom:calc(var(--safe-b) + clamp(18px,3.5vh,46px));z-index:70;
+  max-width:min(620px,calc(100vw - 34px));pointer-events:none;
+}
+.kicker{display:block;margin:0 0 10px;color:var(--ink3);font-size:11px;line-height:1.24;letter-spacing:.024em}
+h1{margin:0;color:rgba(232,224,208,.73);font-family:var(--font-ital);font-style:italic;font-weight:400;font-size:clamp(54px,10vw,154px);line-height:.74;letter-spacing:-.062em;text-shadow:0 0 16px rgba(229,221,205,.10)}
+.title-block p{width:min(520px,100%);margin:clamp(12px,2.4vh,22px) 0 0;color:rgba(229,221,205,.48);font-size:clamp(12px,1.02vw,14px);line-height:1.42;letter-spacing:.006em}
+
+.ledger{
+  position:absolute;left:calc(var(--safe-l) + clamp(13px,2vw,28px));top:calc(var(--safe-t) + clamp(72px,11vh,116px));z-index:66;width:min(282px,36vw);
+  color:rgba(229,221,205,.34);font-size:10px;line-height:1.35;letter-spacing:.02em;pointer-events:none;
+}
+.ledger b{display:block;margin-bottom:5px;color:rgba(229,221,205,.50);font-weight:300}
+.ledger span{display:block;min-height:1.35em;opacity:.60;animation:ledgerBlink 5.8s steps(3,end) infinite}
+.ledger span:nth-child(2){animation-delay:-.8s}.ledger span:nth-child(3){animation-delay:-1.6s}.ledger span:nth-child(4){animation-delay:-2.4s}
+@keyframes ledgerBlink{0%,100%{opacity:.17}26%{opacity:.72}27%{opacity:.08}61%{opacity:.46}}
+
+.readout{
+  position:absolute;right:calc(var(--safe-r) + clamp(13px,2vw,28px));bottom:calc(var(--safe-b) + clamp(16px,3vh,34px));z-index:69;
+  width:min(360px,calc(100vw - 28px));pointer-events:none;
+  font-size:10px;line-height:1.48;letter-spacing:.02em;color:rgba(229,221,205,.38);
+}
+.readout strong{display:block;margin:0 0 5px;color:rgba(229,221,205,.62);font-weight:300}
+.readout p{margin:0}
+
+.control-panel{
+  position:absolute;right:calc(var(--safe-r) + clamp(13px,2vw,28px));top:calc(var(--safe-t) + clamp(58px,8vh,86px));z-index:95;
+  width:min(386px,calc(100vw - 28px));max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 108px);overflow:auto;overscroll-behavior:contain;
+  padding:10px;font-size:11px;line-height:1.2;color:rgba(229,221,205,.72);
+  background:
+    linear-gradient(180deg,rgba(18,14,10,.96),rgba(0,0,0,.965) 50%,rgba(13,9,7,.94)),
+    repeating-linear-gradient(90deg,rgba(229,221,205,.03) 0 1px,transparent 1px 8px);
+  border:1px solid rgba(229,221,205,.22);
+  box-shadow:inset 1px 1px 0 rgba(240,232,220,.14),inset -1px -1px 0 rgba(0,0,0,.95),inset 0 0 28px rgba(0,0,0,.72),0 18px 50px rgba(0,0,0,.64);
+  clip-path:polygon(11px 0,calc(100% - 11px) 0,100% 11px,100% calc(100% - 11px),calc(100% - 11px) 100%,11px 100%,0 calc(100% - 11px),0 11px);
+  scrollbar-width:thin;scrollbar-color:rgba(229,221,205,.25) rgba(0,0,0,.2);
+  transition:opacity .22s ease,transform .22s ease,visibility .22s ease;
+}
+.control-panel[hidden]{display:block;visibility:hidden;opacity:0;transform:translateY(-6px);pointer-events:none}
+.control-panel::before{content:"";position:absolute;inset:4px;pointer-events:none;border:1px solid rgba(229,221,205,.12);clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px)}
+.panel-head{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:4px 4px 10px;border-bottom:1px solid rgba(229,221,205,.12)}
+.panel-title{margin:0 0 3px;color:rgba(232,224,208,.82);font-family:var(--font-ital);font-style:italic;font-weight:400;font-size:27px;line-height:.9;letter-spacing:-.04em}
+.panel-head p{margin:0;color:rgba(229,221,205,.42);font-size:10px;line-height:1.35}
+.close-mini{position:relative;z-index:2;width:27px;height:27px;padding:0;border:1px solid rgba(229,221,205,.16);background:rgba(0,0,0,.34);cursor:pointer}
+.group{position:relative;z-index:1;padding:11px 4px 8px;border-bottom:1px solid rgba(229,221,205,.10)}
+.group:last-child{border-bottom:0}
+.control{display:grid;grid-template-columns:1fr minmax(122px,.9fr) 40px;gap:9px;align-items:center;min-height:28px;margin:5px 0}
+.control label{color:rgba(229,221,205,.62)}
+.value{text-align:right;color:rgba(229,221,205,.38);font-variant-numeric:tabular-nums}
+input[type="range"]{width:100%;accent-color:#d7cdbb;background:transparent}
+select,textarea{
+  width:100%;color:rgba(229,221,205,.76);background:rgba(0,0,0,.52);border:1px solid rgba(229,221,205,.16);border-radius:0;
+}
+select{padding:6px 7px}
+textarea{min-height:58px;resize:vertical;padding:8px;line-height:1.35;font-size:10px}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.panel-button{min-height:31px;color:rgba(229,221,205,.76);background:linear-gradient(180deg,rgba(255,255,255,.032),rgba(0,0,0,.42)),rgba(14,10,8,.92);border:1px solid rgba(229,221,205,.16);cursor:pointer;box-shadow:inset 1px 1px 0 rgba(240,232,220,.08),inset -1px -1px 0 rgba(0,0,0,.78)}
+.panel-button:hover{filter:brightness(1.12);color:rgba(249,244,234,.94)}
+.status{margin:8px 0 0;color:rgba(229,221,205,.36);font-size:10px;line-height:1.35}
+.vignette{position:absolute;inset:-6%;z-index:82;pointer-events:none;box-shadow:inset 0 0 16vw 8vw #000;opacity:.84}
+.sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+@media(max-width:900px){
+  .wordmark{width:92vw;opacity:.20}
+  .mode-strip{top:auto;left:calc(var(--safe-l) + 11px);right:calc(var(--safe-r) + 11px);bottom:calc(var(--safe-b) + 76px);transform:none;grid-template-columns:repeat(5,1fr)}
+  .mode-strip button{padding:7px 3px;font-size:9px}
+  .title-block{bottom:calc(var(--safe-b) + 18px);left:calc(var(--safe-l) + 13px);right:calc(var(--safe-r) + 13px);max-width:none}
+  .title-block p{display:none}
+  h1{font-size:clamp(46px,17vw,92px)}
+  .control-panel{left:calc(var(--safe-l) + 11px);right:calc(var(--safe-r) + 11px);top:auto;bottom:calc(var(--safe-b) + 126px);width:auto;max-height:min(430px,calc(100dvh - var(--safe-t) - var(--safe-b) - 197px))}
+  .ledger,.readout{display:none}
+  .fabric-plane{inset:10px;opacity:.15}
+  #root::after{inset:7px}
+}
+@media(max-width:540px){
+  body{cursor:default}
+  .back-home,.panel-toggle{min-height:30px;font-size:10px;padding:7px 10px 8px}
+  .wordmark{top:calc(var(--safe-t) + 8px);opacity:.23}
+  .mode-strip{bottom:calc(var(--safe-b) + 67px)}
+  .mode-strip button{font-size:8.5px;letter-spacing:0}
+  .control-panel{bottom:calc(var(--safe-b) + 112px);max-height:47dvh}
+  .panel-title{font-size:22px}
+  .control{grid-template-columns:1fr minmax(104px,.96fr) 34px;gap:7px}
+  h1{font-size:clamp(42px,18vw,80px)}
+}
+@media(max-height:620px){
+  .title-block{bottom:calc(var(--safe-b) + 12px)}
+  h1{font-size:clamp(34px,12vh,78px)}
+  .title-block p{display:none}
+  .control-panel{max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 92px)}
+}
+@media(max-height:480px) and (orientation:landscape){
+  .mode-strip{display:none}
+  .wordmark{width:70vw;left:56%;opacity:.18}
+  .control-panel{top:calc(var(--safe-t) + 48px);bottom:auto;max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 66px)}
+  .panel-toggle{top:calc(var(--safe-t) + 10px)}
+  .title-block{left:calc(var(--safe-l) + 11px)}
+}
+@media(hover:none) and (pointer:coarse){body{cursor:default}.old-button:hover,.panel-button:hover{filter:none;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <canvas id="fittingCanvas" class="canvas" aria-hidden="true"></canvas>
+  <div class="fabric-plane" aria-hidden="true"></div>
+  <div class="cursor-light" aria-hidden="true"></div>
+  <img class="wordmark" src="./Stw_Logo.png" width="2048" height="343" alt="Springtime Wishes" decoding="async" fetchpriority="high">
+
+  <a class="old-button back-home" href="index.html">index</a>
+  <button class="old-button panel-toggle" id="panelToggle" type="button" aria-expanded="false" aria-controls="controlPanel">parameters</button>
+
+  <div class="mode-strip" id="modeStrip" aria-label="fitting views">
+    <button type="button" data-mode="mirror" aria-pressed="true">mirror</button>
+    <button type="button" data-mode="pattern" aria-pressed="false">pattern</button>
+    <button type="button" data-mode="pressure" aria-pressed="false">pressure</button>
+    <button type="button" data-mode="veil" aria-pressed="false">veil</button>
+    <button type="button" data-mode="trace" aria-pressed="false">trace</button>
+  </div>
+
+  <aside class="control-panel" id="controlPanel" hidden aria-label="the fitting dark parameters">
+    <div class="panel-head">
+      <div>
+        <h2 class="panel-title">fitting controls</h2>
+        <p>not a diagram. a body-shaped room: mirror, pattern, pressure, veil, trace.</p>
+      </div>
+      <button class="close-mini" id="closePanel" type="button" aria-label="hide parameters">×</button>
+    </div>
+
+    <div class="group">
+      <div class="control">
+        <label for="garmentType">garment</label>
+        <select id="garmentType" data-param="garment">
+          <option value="dress">dress</option>
+          <option value="corset">corset</option>
+          <option value="skirt">skirt</option>
+          <option value="veil">veil</option>
+          <option value="sleeve">sleeve study</option>
+        </select>
+        <span class="value" id="garmentValue">dress</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="control"><label for="shoulder">shoulder</label><input id="shoulder" data-param="shoulder" type="range" min="20" max="95" value="58"><span class="value" data-value-for="shoulder">58</span></div>
+      <div class="control"><label for="waist">waist</label><input id="waist" data-param="waist" type="range" min="18" max="90" value="44"><span class="value" data-value-for="waist">44</span></div>
+      <div class="control"><label for="hip">hip</label><input id="hip" data-param="hip" type="range" min="20" max="100" value="62"><span class="value" data-value-for="hip">62</span></div>
+      <div class="control"><label for="hem">hem</label><input id="hem" data-param="hem" type="range" min="20" max="100" value="74"><span class="value" data-value-for="hem">74</span></div>
+      <div class="control"><label for="length">length</label><input id="length" data-param="length" type="range" min="28" max="100" value="68"><span class="value" data-value-for="length">68</span></div>
+      <div class="control"><label for="pressure">pressure</label><input id="pressure" data-param="pressure" type="range" min="0" max="100" value="64"><span class="value" data-value-for="pressure">64</span></div>
+      <div class="control"><label for="ease">ease</label><input id="ease" data-param="ease" type="range" min="0" max="100" value="38"><span class="value" data-value-for="ease">38</span></div>
+      <div class="control"><label for="seam">seam</label><input id="seam" data-param="seam" type="range" min="0" max="100" value="62"><span class="value" data-value-for="seam">62</span></div>
+      <div class="control"><label for="shadow">shadow</label><input id="shadow" data-param="shadow" type="range" min="0" max="100" value="72"><span class="value" data-value-for="shadow">72</span></div>
+      <div class="control"><label for="tilt">tilt</label><input id="tilt" data-param="tilt" type="range" min="-50" max="50" value="4"><span class="value" data-value-for="tilt">4</span></div>
+      <div class="control"><label for="breath">breath</label><input id="breath" data-param="breath" type="range" min="0" max="100" value="48"><span class="value" data-value-for="breath">48</span></div>
+      <div class="control"><label for="render">render</label><input id="render" data-param="render" type="range" min="1" max="7" value="3"><span class="value" data-value-for="render">3</span></div>
+    </div>
+
+    <div class="group">
+      <textarea id="requestNote" placeholder="private fitting note / body memory / request fragment"></textarea>
+    </div>
+
+    <div class="group">
+      <div class="buttons">
+        <button class="panel-button" id="summon" type="button">summon fitting</button>
+        <button class="panel-button" id="still" type="button">still</button>
+        <button class="panel-button" id="randomize" type="button">random body</button>
+        <button class="panel-button" id="copyState" type="button">copy state</button>
+        <button class="panel-button" id="reset" type="button">reset</button>
+        <button class="panel-button" id="hideText" type="button">hide text</button>
+      </div>
+      <p class="status" id="status">engine: active / adaptive fitting render</p>
+    </div>
+  </aside>
+
+  <div class="ledger" aria-hidden="true">
+    <b>fitting ledger</b>
+    <span id="l1">body trace waiting</span>
+    <span id="l2">shoulder / waist / hem</span>
+    <span id="l3">pressure recorded by cloth</span>
+    <span id="l4">absence held by pattern</span>
+  </div>
+
+  <div class="readout" id="readout" aria-hidden="true">
+    <strong>private fitting signal</strong>
+    <p id="readoutText">The garment is not shown as product. It is shown as pressure, outline, allowance, seam, and the delay between body and cloth.</p>
+  </div>
+
+  <header class="title-block" id="titleBlock">
+    <span class="kicker">springtime wishes / experimental room</span>
+    <h1>the fitting dark</h1>
+    <p>a nocturnal fitting system where contour, pressure, allowance, seam, and veil negotiate the absent body.</p>
+  </header>
+
+  <div class="vignette" aria-hidden="true"></div>
+  <p class="sr">The fitting dark is an experimental Springtime Wishes fitting room with adjustable garment type, shoulder, waist, hip, hem, length, pressure, ease, seam, shadow, tilt, breath, and render scale.</p>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarse = matchMedia("(hover:none), (pointer:coarse)").matches;
+  const canvas = document.getElementById("fittingCanvas");
+  const ctx = canvas.getContext("2d", { alpha:false, desynchronized:true });
+  const root = document.documentElement;
+  const body = document.body;
+  const panel = document.getElementById("controlPanel");
+  const panelToggle = document.getElementById("panelToggle");
+  const closePanel = document.getElementById("closePanel");
+  const status = document.getElementById("status");
+  const titleBlock = document.getElementById("titleBlock");
+  const readout = document.getElementById("readout");
+  const readoutText = document.getElementById("readoutText");
+  const garmentValue = document.getElementById("garmentValue");
+  const modeStrip = document.getElementById("modeStrip");
+  const mem = navigator.deviceMemory || 4;
+  const cores = navigator.hardwareConcurrency || 4;
+
+  const defaultState = {
+    garment:"dress",
+    mode:"mirror",
+    shoulder:58,
+    waist:44,
+    hip:62,
+    hem:74,
+    length:68,
+    pressure:64,
+    ease:38,
+    seam:62,
+    shadow:72,
+    tilt:4,
+    breath:48,
+    render:3,
+    paused:false,
+    ui:true,
+    pulse:0,
+    seed:Math.floor(Math.random()*900)+100
+  };
+  const state = { ...defaultState };
+  const P = { x:.5, y:.52, tx:.5, ty:.52, active:false };
+
+  let cssW = 1, cssH = 1, W = 320, H = 220;
+  let raf = 0, last = 0, frame = 0;
+  let small = innerWidth < 760;
+  let lowPower = small || mem <= 4 || cores <= 4 || coarse;
+  let fps = reduced ? 7 : lowPower ? 20 : 30;
+  let points = [];
+
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function rand(min,max){return min+Math.random()*(max-min);}
+  function seeded(n){const x=Math.sin(n*12.9898+state.seed*78.233)*43758.5453;return x-Math.floor(x);}
+  function line(x1,y1,x2,y2,c,w=1,a=1){
+    ctx.globalAlpha=a;ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();
+    ctx.moveTo(Math.round(x1)+.5,Math.round(y1)+.5);ctx.lineTo(Math.round(x2)+.5,Math.round(y2)+.5);ctx.stroke();ctx.globalAlpha=1;
+  }
+  function rect(x,y,w,h,c,a=1){ctx.globalAlpha=a;ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));ctx.globalAlpha=1;}
+  function text(txt,x,y,c,size=7,align="left",a=1){ctx.globalAlpha=a;ctx.fillStyle=c;ctx.font=`${size}px monospace`;ctx.textAlign=align;ctx.textBaseline="top";ctx.fillText(txt,Math.round(x),Math.round(y));ctx.globalAlpha=1;}
+  function curve(points,c,w=1,a=1,fill=null){
+    ctx.globalAlpha=a;
+    ctx.beginPath();
+    ctx.moveTo(points[0][0],points[0][1]);
+    for(let i=1;i<points.length-1;i++){
+      const xc=(points[i][0]+points[i+1][0])/2;
+      const yc=(points[i][1]+points[i+1][1])/2;
+      ctx.quadraticCurveTo(points[i][0],points[i][1],xc,yc);
+    }
+    ctx.lineTo(points[points.length-1][0],points[points.length-1][1]);
+    if(fill){ctx.fillStyle=fill;ctx.fill();}
+    ctx.strokeStyle=c;ctx.lineWidth=w;ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+
+  function applyHash(){
+    const src = location.hash.replace(/^#/,"");
+    if(!src) return;
+    const params = new URLSearchParams(src);
+    for(const [k,v] of params.entries()){
+      if(k in state) state[k] = isNaN(Number(v)) || k === "garment" || k === "mode" ? v : Number(v);
+    }
+  }
+
+  function readControls(){
+    document.querySelectorAll("[data-param]").forEach(el => {
+      const k = el.dataset.param;
+      state[k] = k === "garment" ? el.value : Number(el.value);
+    });
+    document.querySelectorAll("[data-value-for]").forEach(el => el.textContent = String(state[el.dataset.valueFor]));
+    if(garmentValue) garmentValue.textContent = state.garment;
+    updateModeButtons();
+    updateText();
+  }
+
+  function syncControls(){
+    document.querySelectorAll("[data-param]").forEach(el => {
+      const k = el.dataset.param;
+      el.value = String(state[k]);
+    });
+    readControls();
+  }
+
+  function stateString(){
+    const keys = ["garment","mode","shoulder","waist","hip","hem","length","pressure","ease","seam","shadow","tilt","breath","render","seed"];
+    return keys.map(k => `${encodeURIComponent(k)}=${encodeURIComponent(state[k])}`).join("&");
+  }
+
+  function updateModeButtons(){
+    modeStrip.querySelectorAll("button").forEach(btn => btn.setAttribute("aria-pressed", String(btn.dataset.mode === state.mode)));
+  }
+
+  function updateText(){
+    const fit = state.pressure > 72 ? "tight pressure" : state.ease > 62 ? "loose allowance" : "controlled tension";
+    const form = state.garment === "corset" ? "boned trace" : state.garment === "veil" ? "covered apparition" : state.garment === "skirt" ? "lower-body field" : state.garment === "sleeve" ? "limb fragment" : "dress silhouette";
+    if(status) status.textContent = state.paused ? "engine: still / fitting retained" : `engine: active / ${state.mode} / ${W}×${H}`;
+    document.getElementById("l1").textContent = `${state.garment} / ${form}`;
+    document.getElementById("l2").textContent = `shoulder ${state.shoulder} / waist ${state.waist} / hip ${state.hip}`;
+    document.getElementById("l3").textContent = `${fit} / seam ${state.seam} / ease ${state.ease}`;
+    document.getElementById("l4").textContent = `length ${state.length} / shadow ${state.shadow} / view ${state.mode}`;
+    if(readoutText) readoutText.textContent = `Current fitting: ${form}. ${fit}. The body is inferred through pattern allowance, pressure glow, seam collapse, and hem distance.`;
+  }
+
+  function resize(){
+    cssW=Math.max(1,innerWidth); cssH=Math.max(1,innerHeight);
+    small = cssW < 760;
+    lowPower = small || (navigator.deviceMemory || 4) <= 4 || (navigator.hardwareConcurrency || 4) <= 4 || coarse;
+    fps = reduced ? 7 : (panel && !panel.hidden && small) ? 16 : lowPower ? 20 : 30;
+    const scale = lowPower ? Math.max(Number(state.render)||3, 4) : Number(state.render)||3;
+    W = Math.min(Math.max(200, Math.floor(cssW/scale)), small ? 440 : 760);
+    H = Math.min(Math.max(200, Math.floor(cssH/scale)), small ? 760 : 560);
+    canvas.width=W; canvas.height=H; canvas.style.width=cssW+"px"; canvas.style.height=cssH+"px";
+    ctx.imageSmoothingEnabled = true;
+    makeField();
+    updateText();
+  }
+
+  function makeField(){
+    points = [];
+    const count = lowPower ? 54 : 92;
+    for(let i=0;i<count;i++){
+      points.push({
+        x:seeded(i*11)*W,
+        y:seeded(i*17)*H,
+        a:seeded(i*23),
+        s:.3+seeded(i*31)*1.4
+      });
+    }
+  }
+
+  function pointer(x,y){
+    P.tx=clamp(x/cssW,0,1); P.ty=clamp(y/cssH,0,1); P.active=true;
+    root.style.setProperty("--mx",(P.tx*100).toFixed(2)+"%");
+    root.style.setProperty("--my",(P.ty*100).toFixed(2)+"%");
+  }
+
+  function shape(){
+    const cx = W*(.5 + state.tilt/900 + (P.x-.5)*.018);
+    const top = H*.20;
+    const neck = H*.26;
+    const shoulderY = H*.32;
+    const bustY = H*.40;
+    const waistY = H*.51;
+    const hipY = H*.61;
+    const hemY = lerp(H*.70,H*.91,state.length/100);
+    let shoulder = lerp(W*.075,W*.19,state.shoulder/100);
+    let waist = lerp(W*.044,W*.14,state.waist/100);
+    let hip = lerp(W*.060,W*.18,state.hip/100);
+    let hem = lerp(W*.075,W*.24,state.hem/100);
+    if(state.garment === "corset"){hem = hip*.72; shoulder *= .82; waist *= .74;}
+    if(state.garment === "skirt"){shoulder *= .28; waist *= .95; hip *= 1.1;}
+    if(state.garment === "veil"){shoulder *= 1.05; waist *= 1.28; hip *= 1.22; hem *= 1.10;}
+    if(state.garment === "sleeve"){shoulder *= 1.25; waist *= .50; hip *= .46; hem *= .38;}
+    const breathe = Math.sin(frame*.025) * state.breath*.025;
+    const drift = Math.sin(frame*.015) * (state.pressure-state.ease)*.018 + (P.x-.5)*8;
+    return {cx,top,neck,shoulderY,bustY,waistY,hipY,hemY,shoulder,waist,hip,hem,breathe,drift};
+  }
+
+  function background(t){
+    ctx.fillStyle="#050302";
+    ctx.fillRect(0,0,W,H);
+    const g=ctx.createRadialGradient(W*.50,H*.30,0,W*.50,H*.30,Math.max(W,H)*.62);
+    g.addColorStop(0,"rgba(125,98,75,.19)");
+    g.addColorStop(.48,"rgba(24,17,12,.15)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    const floor=H*.72;
+    const fg=ctx.createLinearGradient(0,floor,0,H);
+    fg.addColorStop(0,"rgba(28,19,13,.72)");
+    fg.addColorStop(1,"rgba(0,0,0,.96)");
+    ctx.fillStyle=fg;ctx.fillRect(0,floor,W,H-floor);
+    for(let y=floor;y<H;y+=Math.max(8,H*.025)) line(0,y,W,y,"rgba(229,221,205,.034)",1,.85);
+    line(W*.11,H*.13,W*.11,floor,"rgba(229,221,205,.05)",1,.7);
+    line(W*.89,H*.13,W*.89,floor,"rgba(229,221,205,.05)",1,.7);
+    line(W*.11,H*.13,W*.5,H*.045,"rgba(229,221,205,.032)",1,.65);
+    line(W*.89,H*.13,W*.5,H*.045,"rgba(229,221,205,.032)",1,.65);
+  }
+
+  function mirrors(t){
+    const y=H*.17,h=H*.44,w=W*(small?.17:.145),gap=W*(small?.052:.07);
+    [[W*.5-gap-w,w,-1],[W*.5+gap,w,1]].forEach(([x,mw,side],idx)=>{
+      const grad=ctx.createLinearGradient(x,y,x+mw,y+h);
+      grad.addColorStop(0,"rgba(48,35,25,.30)");
+      grad.addColorStop(.5,"rgba(8,6,5,.68)");
+      grad.addColorStop(1,"rgba(56,41,29,.22)");
+      ctx.fillStyle=grad;ctx.fillRect(x,y,mw,h);
+      ctx.strokeStyle="rgba(229,221,205,.11)";ctx.strokeRect(Math.round(x)+.5,Math.round(y)+.5,Math.round(mw)-1,Math.round(h)-1);
+      for(let i=0;i<10;i++){
+        const yy=y+i*h/10+Math.sin(t*.00035+i)*1.2;
+        line(x+5,yy,x+mw-5,yy,"rgba(229,221,205,.026)",1,.62);
+      }
+    });
+  }
+
+  function bodyOutline(s,t,offset=0,a=1){
+    const o=offset;
+    const tension=(state.pressure-state.ease)/100;
+    const shoulderDrop=state.tilt*.045 + Math.sin(t*.0012)*s.breathe;
+    const left=[
+      [s.cx-o, s.top],
+      [s.cx-s.shoulder*.33-o, s.neck],
+      [s.cx-s.shoulder-o, s.shoulderY+shoulderDrop],
+      [s.cx-s.shoulder*.75-o+s.drift*.18, s.bustY],
+      [s.cx-s.waist-o+s.drift*.44, s.waistY],
+      [s.cx-s.hip-o+s.drift*.24, s.hipY],
+      [s.cx-s.hem*.62-o+s.drift*.20, (s.hipY+s.hemY)*.50],
+      [s.cx-s.hem-o+s.drift*.42, s.hemY]
+    ];
+    const right=[
+      [s.cx+o, s.top],
+      [s.cx+s.shoulder*.33+o, s.neck],
+      [s.cx+s.shoulder+o, s.shoulderY-shoulderDrop*.38],
+      [s.cx+s.shoulder*.75+o-s.drift*.18, s.bustY],
+      [s.cx+s.waist+o-s.drift*.44, s.waistY],
+      [s.cx+s.hip+o-s.drift*.24, s.hipY],
+      [s.cx+s.hem*.62+o-s.drift*.20, (s.hipY+s.hemY)*.50],
+      [s.cx+s.hem+o-s.drift*.42, s.hemY]
+    ];
+    if(state.garment === "sleeve"){
+      left[4][0]=s.cx-s.hem*1.8; left[5][0]=s.cx-s.hem*2.2; left[7][0]=s.cx-s.hem*1.4;
+      right[4][0]=s.cx+s.hem*.5; right[5][0]=s.cx+s.hem*.6; right[7][0]=s.cx+s.hem*.4;
+    }
+    const c=offset?"rgba(229,221,205,.15)":"rgba(229,221,205,.42)";
+    const fill=offset?null:`rgba(196,177,150,${.025+state.shadow*.00055})`;
+    curve(left,c,1,a,fill);
+    curve(right,c,1,a,fill);
+    line(left[7][0],left[7][1],right[7][0],right[7][1],c,1,a);
+    return {left,right};
+  }
+
+  function garmentFill(s,t){
+    const {left,right}=bodyOutline(s,t,0,.0);
+    const e=state.ease/100, pressure=state.pressure/100;
+    ctx.beginPath();
+    ctx.moveTo(s.cx-s.shoulder*.26,s.top+8);
+    for(const p of left.slice(2)) ctx.lineTo(p[0]-e*8,p[1]);
+    for(const p of right.slice(2).reverse()) ctx.lineTo(p[0]+e*8,p[1]);
+    ctx.lineTo(s.cx+s.shoulder*.26,s.top+8);
+    ctx.closePath();
+    const g=ctx.createLinearGradient(s.cx,s.top,s.cx,s.hemY);
+    g.addColorStop(0,`rgba(222,213,195,${.035+pressure*.035})`);
+    g.addColorStop(.33,`rgba(154,132,103,${.085+pressure*.08})`);
+    g.addColorStop(.62,`rgba(88,67,49,${.13+pressure*.07})`);
+    g.addColorStop(1,"rgba(18,12,9,.38)");
+    ctx.fillStyle=g;ctx.fill();
+  }
+
+  function seamLines(s,t){
+    const seam=state.seam/100;
+    const count=4+Math.floor(state.seam/12);
+    for(let i=0;i<count;i++){
+      const p=i/(count-1||1);
+      const y=lerp(s.shoulderY+12,s.hemY-14,p);
+      const width=lerp(s.shoulder*.62,s.hem*.78,p);
+      const bend=Math.sin(t*.0013+i*.9)*state.breath*.03;
+      line(s.cx-width+bend,y,s.cx+width-bend,y+Math.sin(i)*1.5,"rgba(229,221,205,.075)",1,.32+seam*.25);
+    }
+    line(s.cx,s.top+5,s.cx+s.drift*.12,s.hemY+10,"rgba(229,221,205,.13)",1,.35+seam*.25);
+    line(s.cx-s.waist*.75,s.waistY,s.cx+s.waist*.75,s.waistY,"rgba(229,221,205,.22)",1,.42+seam*.2);
+    if(state.garment === "corset"){
+      for(let i=-3;i<=3;i++){
+        const x=s.cx+i*s.waist*.28;
+        line(x,s.shoulderY+6,x+Math.sin(t*.001+i)*2,s.hipY,"rgba(229,221,205,.15)",1,.55);
+      }
+    }
+  }
+
+  function measurements(s,t){
+    const alpha=.22+state.shadow*.0025;
+    const rows=[
+      ["shoulder",s.shoulderY-14,s.cx-s.shoulder-20,s.cx+s.shoulder+20],
+      ["waist",s.waistY-8,s.cx-s.waist-18,s.cx+s.waist+18],
+      ["hip",s.hipY-8,s.cx-s.hip-18,s.cx+s.hip+18],
+      ["hem",s.hemY+8,s.cx-s.hem-18,s.cx+s.hem+18]
+    ];
+    rows.forEach(([lab,y,x1,x2],i)=>{
+      line(x1,y,x2,y,"rgba(229,221,205,.16)",1,alpha);
+      line(x1,y-4,x1,y+4,"rgba(229,221,205,.16)",1,alpha);
+      line(x2,y-4,x2,y+4,"rgba(229,221,205,.16)",1,alpha);
+      if(!small || i>0) text(lab,(x1+x2)/2,y-11,"rgba(229,221,205,.34)",7,"center",.8);
+    });
+    line(s.cx+s.hem+25,s.top+6,s.cx+s.hem+25,s.hemY,"rgba(229,221,205,.14)",1,alpha);
+    if(!small) text("length",s.cx+s.hem+28,(s.top+s.hemY)/2,"rgba(229,221,205,.32)",7,"left",.8);
+  }
+
+  function pressureMap(s,t){
+    const spots=[
+      [s.cx,s.shoulderY,s.shoulder*.9, .35],
+      [s.cx,s.waistY,s.waist*1.2, .55],
+      [s.cx,s.hipY,s.hip*1.25, .38],
+      [s.cx,s.hemY,s.hem*1.3, .18]
+    ];
+    spots.forEach(([x,y,r,a],i)=>{
+      const g=ctx.createRadialGradient(x,y,0,x,y,r*(1.3+state.pressure/130));
+      const hue = state.pressure > 70 ? "135,68,44" : "226,218,202";
+      g.addColorStop(0,`rgba(${hue},${a*state.pressure/100})`);
+      g.addColorStop(.55,`rgba(${hue},${a*.22*state.pressure/100})`);
+      g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g;ctx.fillRect(x-r*2,y-r*2,r*4,r*4);
+    });
+  }
+
+  function patternTable(s,t){
+    const originX=small?W*.08:W*.10, originY=small?H*.15:H*.18;
+    const bw=small?W*.84:W*.35, bh=small?H*.33:H*.60;
+    rect(originX,originY,bw,bh,"rgba(0,0,0,.18)",1);
+    line(originX,originY,originX+bw,originY,"rgba(229,221,205,.13)",1,.8);
+    line(originX,originY,originX,originY+bh,"rgba(229,221,205,.13)",1,.8);
+    for(let i=1;i<7;i++){
+      line(originX+i*bw/7,originY,originX+i*bw/7,originY+bh,"rgba(229,221,205,.04)",1,.7);
+      line(originX,originY+i*bh/7,originX+bw,originY+i*bh/7,"rgba(229,221,205,.04)",1,.7);
+    }
+    const cx=originX+bw*.52;
+    const top=originY+bh*.08;
+    const bottom=originY+bh*.92;
+    const sh=bw*(.12+state.shoulder/620);
+    const wa=bw*(.06+state.waist/840);
+    const he=bw*(.09+state.hem/560);
+    const pattern=[
+      [cx,top],
+      [cx-sh,top+bh*.20],
+      [cx-wa,top+bh*.46],
+      [cx-he,bottom],
+      [cx+he,bottom],
+      [cx+wa,top+bh*.46],
+      [cx+sh,top+bh*.20],
+      [cx,top]
+    ];
+    ctx.beginPath();ctx.moveTo(pattern[0][0],pattern[0][1]);
+    pattern.slice(1).forEach(p=>ctx.lineTo(p[0],p[1]));
+    ctx.strokeStyle="rgba(229,221,205,.44)";ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle="rgba(229,221,205,.025)";ctx.fill();
+    for(let i=0;i<8;i++){
+      const y=lerp(top+bh*.15,bottom-bh*.05,i/7);
+      line(cx-he*.8,y,cx+he*.8,y+Math.sin(i+t*.001)*2,"rgba(229,221,205,.10)",1,.7);
+    }
+    text("pattern allowance",originX+6,originY+6,"rgba(229,221,205,.36)",7,"left",.9);
+  }
+
+  function veilField(s,t){
+    const layers=lowPower?10:18;
+    for(let i=0;i<layers;i++){
+      const y=lerp(s.top-10,s.hemY+18,i/(layers-1||1))+Math.sin(t*.0008+i)*3;
+      const off=Math.sin(t*.0007+i*1.8)*state.breath*.045;
+      line(s.cx-s.hem*1.35+off,y,s.cx+s.hem*1.35-off,y+Math.sin(i)*2,"rgba(229,221,205,.050)",1,.55);
+    }
+    for(let i=0;i<9;i++){
+      const x=s.cx-s.hem+i*(s.hem*2/8)+Math.sin(t*.0006+i)*4;
+      line(x,s.top+6,x+Math.sin(i)*8,s.hemY+22,"rgba(229,221,205,.04)",1,.55);
+    }
+  }
+
+  function traceField(s,t){
+    points.forEach((p,i)=>{
+      const dx=p.x-s.cx, dy=p.y-s.waistY;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      const pull=clamp(1-d/(Math.max(W,H)*.42),0,1);
+      const x=p.x + dx*pull*.08*Math.sin(t*.0008+p.a*8);
+      const y=p.y + dy*pull*.06*Math.cos(t*.0007+p.a*5);
+      const a=(.03+p.a*.06)*(state.shadow/100);
+      rect(x,y,p.s,p.s,"rgba(229,221,205,.8)",a);
+      if(pull>.5 && !lowPower) line(x,y,s.cx,s.waistY,"rgba(229,221,205,.035)",1,pull*.16);
+    });
+  }
+
+  function drawNoise(){
+    const count=lowPower?90:170;
+    for(let i=0;i<count;i++){
+      const x=Math.floor(seeded(i*31+frame*7.1)*W);
+      const y=Math.floor(seeded(i*19+frame*5.4)*H);
+      const a=seeded(i*47+frame)*.08*(state.shadow/100);
+      ctx.fillStyle=i%2?`rgba(229,221,205,${a})`:`rgba(0,0,0,${a*1.8})`;
+      ctx.fillRect(x,y,1,1);
+    }
+  }
+
+  function draw(now){
+    raf=requestAnimationFrame(draw);
+    if(document.hidden || state.paused) return;
+    const interval=1000/fps;
+    if(now-last<interval) return;
+    last=now; frame++;
+    P.x=lerp(P.x,P.tx,.08); P.y=lerp(P.y,P.ty,.08);
+    if(state.pulse>0) state.pulse*=.94;
+
+    const t=now;
+    background(t);
+    mirrors(t);
+    const s=shape();
+
+    if(state.mode==="trace") traceField(s,t);
+    if(state.mode==="pattern") patternTable(s,t);
+
+    for(let i=3;i>=1;i--) bodyOutline({...s,cx:s.cx+i*(7+state.breath*.03)},t,i*5,.08+i*.025);
+    for(let i=3;i>=1;i--) bodyOutline({...s,cx:s.cx-i*(7+state.breath*.03)},t,i*5,.08+i*.025);
+
+    garmentFill(s,t);
+    if(state.mode==="pressure") pressureMap(s,t);
+    bodyOutline(s,t,0,.65);
+    seamLines(s,t);
+    measurements(s,t);
+    if(state.mode==="veil" || state.garment==="veil") veilField(s,t);
+    if(state.mode==="mirror") traceField(s,t);
+
+    const glow=ctx.createRadialGradient(s.cx,s.waistY,0,s.cx,s.waistY,Math.max(W,H)*.29);
+    glow.addColorStop(0,`rgba(229,221,205,${.045+state.pulse*.22})`);
+    glow.addColorStop(.52,"rgba(229,221,205,.018)");
+    glow.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+
+    if(!lowPower){
+      for(let i=0;i<8;i++){
+        const x=W*.5+Math.sin(t*.00055+i)*W*.34;
+        const y=H*.13+i*H*.085;
+        line(x,y,x+Math.sin(t*.0011+i)*14,y+9,"rgba(229,221,205,.028)",1,.52);
+      }
+    }
+    drawNoise();
+  }
+
+  function setMode(mode){
+    state.mode=mode;
+    updateModeButtons();
+    updateText();
+  }
+
+  function toggleUI(on){
+    state.ui=on;
+    titleBlock.style.display=on?"":"none";
+    readout.style.display=on && !small ? "":"none";
+    document.querySelector(".ledger").style.display=on && !small ? "":"none";
+    modeStrip.style.opacity=on?"1":".35";
+  }
+
+  function bind(){
+    document.querySelectorAll("[data-param]").forEach(el=>{
+      el.addEventListener("input",()=>{
+        readControls();
+        if(el.dataset.param==="render") resize();
+      },{passive:true});
+    });
+    modeStrip.querySelectorAll("button").forEach(btn=>{
+      btn.addEventListener("click",()=>setMode(btn.dataset.mode));
+    });
+    document.getElementById("summon").addEventListener("click",()=>{
+      state.paused=false; state.pulse=1; updateText(); cancelAnimationFrame(raf); raf=requestAnimationFrame(draw);
+    });
+    document.getElementById("still").addEventListener("click",()=>{
+      state.paused=!state.paused; updateText(); if(!state.paused){cancelAnimationFrame(raf); raf=requestAnimationFrame(draw);}
+    });
+    document.getElementById("randomize").addEventListener("click",()=>{
+      const garments=["dress","corset","skirt","veil","sleeve"];
+      const modes=["mirror","pattern","pressure","veil","trace"];
+      state.garment=garments[Math.floor(Math.random()*garments.length)];
+      state.mode=modes[Math.floor(Math.random()*modes.length)];
+      state.shoulder=Math.floor(rand(32,82));
+      state.waist=Math.floor(rand(24,70));
+      state.hip=Math.floor(rand(34,92));
+      state.hem=Math.floor(rand(38,96));
+      state.length=Math.floor(rand(42,96));
+      state.pressure=Math.floor(rand(22,94));
+      state.ease=Math.floor(rand(10,84));
+      state.seam=Math.floor(rand(24,94));
+      state.shadow=Math.floor(rand(38,94));
+      state.tilt=Math.floor(rand(-24,25));
+      state.breath=Math.floor(rand(12,86));
+      state.render=Math.floor(rand(small?2:1, small?6:5));
+      state.seed=Math.floor(rand(100,999));
+      state.pulse=1;
+      syncControls(); resize();
+    });
+    document.getElementById("copyState").addEventListener("click",async()=>{
+      const url=`${location.origin}${location.pathname}#${stateString()}`;
+      try{await navigator.clipboard.writeText(url); status.textContent="parameter state copied";}
+      catch(e){location.hash=stateString(); status.textContent="parameter state written to url";}
+    });
+    document.getElementById("reset").addEventListener("click",()=>{
+      Object.assign(state, defaultState, {seed:Math.floor(Math.random()*900)+100});
+      syncControls(); resize(); toggleUI(true);
+      panel.hidden=small; panelToggle.setAttribute("aria-expanded",String(!panel.hidden));
+    });
+    document.getElementById("hideText").addEventListener("click",()=>toggleUI(!state.ui));
+    panelToggle.addEventListener("click",()=>{
+      const isHidden=panel.hasAttribute("hidden");
+      panel.toggleAttribute("hidden",!isHidden);
+      panelToggle.setAttribute("aria-expanded",String(isHidden));
+      resize();
+    });
+    closePanel.addEventListener("click",()=>{
+      panel.setAttribute("hidden","");
+      panelToggle.setAttribute("aria-expanded","false");
+      resize();
+    });
+
+    window.addEventListener("mousemove",e=>pointer(e.clientX,e.clientY),{passive:true});
+    window.addEventListener("touchstart",e=>{const t=e.touches&&e.touches[0]; if(t) pointer(t.clientX,t.clientY);},{passive:true});
+    window.addEventListener("touchmove",e=>{const t=e.touches&&e.touches[0]; if(t) pointer(t.clientX,t.clientY);},{passive:true});
+    let resizeTimer=0;
+    window.addEventListener("resize",()=>{
+      clearTimeout(resizeTimer);
+      resizeTimer=setTimeout(resize,120);
+    },{passive:true});
+    document.addEventListener("visibilitychange",()=>{
+      body.classList.toggle("is-frozen",document.hidden);
+      if(!document.hidden && !state.paused){last=0; cancelAnimationFrame(raf); raf=requestAnimationFrame(draw);}
+    });
+    window.addEventListener("pagehide",()=>body.classList.add("is-frozen"),{passive:true});
+    window.addEventListener("pageshow",()=>{body.classList.remove("is-frozen"); if(!state.paused){last=0; cancelAnimationFrame(raf); raf=requestAnimationFrame(draw);}}, {passive:true});
+    document.addEventListener("keydown",e=>{
+      if(e.key===" "){e.preventDefault(); state.paused=!state.paused; updateText();}
+      if(e.key.toLowerCase()==="p") panelToggle.click();
+      if(e.key.toLowerCase()==="r") document.getElementById("randomize").click();
+      if(["1","2","3","4","5"].includes(e.key)){
+        setMode(["mirror","pattern","pressure","veil","trace"][Number(e.key)-1]);
+      }
+    });
+  }
+
+  applyHash();
+  bind();
+  syncControls();
+  resize();
+  pointer(innerWidth*.5, innerHeight*.52);
+  if(small){ panel.hidden=true; panelToggle.setAttribute("aria-expanded","false"); }
+  else { panel.hidden=false; panelToggle.setAttribute("aria-expanded","true"); }
+  if(reduced) state.paused=true;
+  raf=requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

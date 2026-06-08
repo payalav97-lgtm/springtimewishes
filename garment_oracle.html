@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Springtime Wishes — garment oracle, a private divination engine for garment, body, fabric, memory, and request.">
+<title>garment oracle / springtime wishes</title>
+<style>
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"LTC Metropolitan";src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  --paper:#bdb6a7;
+  --pale:#d9d2c2;
+  --ink:rgba(222,215,202,.84);
+  --ink2:rgba(222,215,202,.58);
+  --ink3:rgba(222,215,202,.34);
+  --hair:rgba(214,205,188,.19);
+  --hair2:rgba(214,205,188,.10);
+  --brown:#19130f;
+  --black:#000;
+  --blood:#32110e;
+  --moss:#171e13;
+  --font-sans:"Aktiv Grotesk",Arial,Helvetica,sans-serif;
+  --font-ital:"LTC Metropolitan",Georgia,"Times New Roman",serif;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-r:env(safe-area-inset-right,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px);
+  --px:50%;
+  --py:50%;
+  --oracle-shift:0px;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+  color:var(--ink);
+  -webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+body{
+  font-family:var(--font-sans);
+  font-weight:300;
+  cursor:crosshair;
+  isolation:isolate;
+}
+body.is-frozen *{animation-play-state:paused!important}
+body.panel-open .title-block{opacity:.18;filter:blur(.7px)}
+body.panel-open .oracle-table{opacity:.74}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+button{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:1px dotted var(--pale);
+  outline-offset:4px;
+}
+::selection{background:rgba(222,215,202,.86);color:#000}
+
+#root{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 49% 8%,rgba(170,160,142,.13),transparent 30%),
+    radial-gradient(ellipse at 12% 76%,rgba(70,54,39,.25),transparent 39%),
+    radial-gradient(ellipse at 88% 43%,rgba(65,18,14,.13),transparent 36%),
+    linear-gradient(180deg,#000 0%,#030201 47%,#000 100%);
+}
+#root::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:90;
+  pointer-events:none;
+  opacity:.23;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.020) 0 1px,transparent 1px 3px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.74' numOctaves='2' type='fractalNoise' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.36'/%3E%3C/svg%3E");
+  background-size:100% 2px,176px 176px;
+  mix-blend-mode:overlay;
+  animation:paperDrift 4.7s steps(3,end) infinite;
+}
+#root::after{
+  content:"";
+  position:absolute;
+  inset:9px;
+  z-index:72;
+  pointer-events:none;
+  border:1px solid rgba(207,197,178,.17);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.64),inset 0 0 96px rgba(0,0,0,.80);
+  opacity:.72;
+}
+@keyframes paperDrift{
+  0%{transform:translate3d(0,0,0)}
+  33%{transform:translate3d(-1px,1px,0)}
+  66%{transform:translate3d(1px,-1px,0)}
+  100%{transform:translate3d(0,-1px,0)}
+}
+.oracle-canvas{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  opacity:.98;
+  mix-blend-mode:screen;
+}
+.old-grid{
+  position:absolute;
+  inset:16px;
+  z-index:4;
+  pointer-events:none;
+  opacity:.21;
+  background:
+    linear-gradient(90deg,transparent calc(25% - .5px),var(--hair2) calc(25% - .5px) calc(25% + .5px),transparent calc(25% + .5px)),
+    linear-gradient(90deg,transparent calc(50% - .5px),var(--hair2) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+    linear-gradient(90deg,transparent calc(75% - .5px),var(--hair2) calc(75% - .5px) calc(75% + .5px),transparent calc(75% + .5px)),
+    linear-gradient(0deg,transparent calc(50% - .5px),var(--hair2) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+    repeating-linear-gradient(0deg,transparent 0 23px,rgba(214,205,188,.027) 24px 25px);
+}
+.cursor-glow{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  opacity:.62;
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(circle at var(--px) var(--py),rgba(222,214,198,.12),transparent 10%),
+    radial-gradient(circle at var(--px) var(--py),rgba(85,26,18,.10),transparent 25%);
+}
+.scan{
+  position:absolute;
+  inset:0;
+  z-index:56;
+  pointer-events:none;
+  opacity:.19;
+  mix-blend-mode:screen;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 2px,rgba(216,207,190,.040) 3px 4px),
+    repeating-linear-gradient(90deg,transparent 0 8px,rgba(216,207,190,.012) 9px 10px);
+}
+.wordmark{
+  position:absolute;
+  left:50%;
+  top:calc(var(--safe-t) + clamp(7px,2.4vh,22px));
+  width:min(96vw,1680px);
+  height:auto;
+  z-index:25;
+  transform:translateX(-50%);
+  opacity:.22;
+  filter:grayscale(1) contrast(1.16) brightness(.72) blur(.14px) drop-shadow(0 0 18px rgba(220,211,194,.11));
+  mix-blend-mode:screen;
+  pointer-events:none;
+  animation:wordmarkAge 13s steps(2,end) infinite;
+}
+@keyframes wordmarkAge{
+  0%,100%{opacity:.17;transform:translateX(-50%) translateY(0) scale(1)}
+  18%{opacity:.29;transform:translateX(-50%) translateY(1px) scale(1.002)}
+  19%{opacity:.11;transform:translateX(calc(-50% + 2px)) translateY(0) scale(.999)}
+  20%,56%{opacity:.22;transform:translateX(-50%) translateY(0) scale(1)}
+  57%{opacity:.07;filter:grayscale(1) contrast(1.8) brightness(.56) blur(.5px)}
+  59%{opacity:.32;filter:grayscale(1) contrast(1.08) brightness(.78) blur(.04px)}
+}
+.vignette{
+  position:absolute;
+  inset:-6%;
+  z-index:65;
+  pointer-events:none;
+  box-shadow:inset 0 0 15vw 8vw #000;
+  opacity:.82;
+}
+.old-button{
+  position:absolute;
+  z-index:84;
+  font-family:var(--font-sans);
+  font-size:11px;
+  line-height:1.18;
+  letter-spacing:.015em;
+  color:rgba(222,214,198,.74);
+  background:
+    linear-gradient(180deg,rgba(24,19,14,.96),rgba(0,0,0,.98) 52%,rgba(16,12,9,.94)),
+    repeating-linear-gradient(90deg,rgba(225,213,190,.03) 0 1px,transparent 1px 6px);
+  border:1px solid rgba(210,198,174,.25);
+  clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.15),
+    inset -1px -1px 0 rgba(0,0,0,.95),
+    inset 0 0 17px rgba(0,0,0,.72),
+    0 0 0 1px rgba(0,0,0,.94),
+    0 12px 30px rgba(0,0,0,.62);
+  cursor:pointer;
+}
+.old-button::before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  pointer-events:none;
+  opacity:.7;
+  border:1px solid rgba(213,201,177,.13);
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);
+}
+.old-button:hover{color:rgba(255,248,232,.95);filter:brightness(1.12)}
+.old-button:active{transform:translate(1px,1px)}
+.back-home{
+  left:calc(var(--safe-l) + clamp(13px,2.1vw,30px));
+  top:calc(var(--safe-t) + clamp(13px,2.1vh,28px));
+  display:inline-grid;
+  place-items:center;
+  min-height:32px;
+  min-width:58px;
+  padding:8px 13px 9px;
+  text-align:center;
+}
+.panel-toggle{
+  right:calc(var(--safe-r) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(13px,2vh,28px));
+  min-height:32px;
+  padding:8px 13px 9px;
+}
+.cast-button{
+  right:calc(var(--safe-r) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(54px,7vh,74px));
+  min-height:32px;
+  padding:8px 13px 9px;
+}
+.title-block{
+  position:absolute;
+  left:calc(var(--safe-l) + clamp(14px,3.2vw,52px));
+  bottom:calc(var(--safe-b) + clamp(18px,4vh,56px));
+  z-index:70;
+  max-width:min(620px,calc(100vw - 32px));
+  pointer-events:none;
+  transition:opacity .22s ease,filter .22s ease;
+}
+.kicker{
+  display:block;
+  margin:0 0 10px;
+  color:rgba(222,214,198,.46);
+  font-size:11px;
+  line-height:1.25;
+  letter-spacing:.024em;
+}
+h1{
+  margin:0;
+  color:rgba(226,218,202,.70);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(62px,11vw,172px);
+  line-height:.72;
+  letter-spacing:-.065em;
+  text-shadow:0 0 18px rgba(218,208,190,.12);
+  filter:blur(.08px);
+}
+.title-block p{
+  width:min(540px,100%);
+  margin:clamp(12px,2.4vh,24px) 0 0;
+  color:rgba(224,216,198,.49);
+  font-size:clamp(12px,1.04vw,15px);
+  line-height:1.42;
+  letter-spacing:.006em;
+  text-wrap:pretty;
+}
+.oracle-table{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:38;
+  width:min(860px,calc(100vw - 420px));
+  min-width:520px;
+  transform:translate3d(calc(-50% + var(--oracle-shift)), -50%, 0);
+  display:grid;
+  grid-template-columns:1.12fr .88fr;
+  gap:clamp(12px,1.4vw,22px);
+  transition:opacity .22s ease,transform .38s cubic-bezier(.16,1,.3,1);
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  min-height:250px;
+  align-items:stretch;
+}
+.oracle-card{
+  position:relative;
+  min-height:250px;
+  padding:14px 12px 12px;
+  overflow:hidden;
+  isolation:isolate;
+  color:rgba(222,214,198,.74);
+  background:
+    radial-gradient(circle at 50% 18%,rgba(225,216,198,.10),transparent 34%),
+    linear-gradient(180deg,rgba(23,17,12,.90),rgba(0,0,0,.95) 52%,rgba(18,12,9,.90)),
+    repeating-linear-gradient(90deg,rgba(225,213,190,.030) 0 1px,transparent 1px 8px);
+  border:1px solid rgba(205,193,169,.22);
+  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px),0 14px);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.12),
+    inset -1px -1px 0 rgba(0,0,0,.94),
+    inset 0 0 34px rgba(0,0,0,.65),
+    0 24px 60px rgba(0,0,0,.48);
+  transform:translateY(var(--rise,0)) rotate(var(--rot,0deg));
+}
+.oracle-card::before{
+  content:"";
+  position:absolute;
+  inset:5px;
+  z-index:1;
+  border:1px solid rgba(213,201,177,.12);
+  pointer-events:none;
+  clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 9px,100% calc(100% - 9px),calc(100% - 9px) 100%,9px 100%,0 calc(100% - 9px),0 9px);
+}
+.oracle-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  opacity:.24;
+  mix-blend-mode:overlay;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 10px,rgba(234,224,205,.055) 11px 12px),
+    radial-gradient(circle at 50% 35%,rgba(230,220,200,.20),transparent 3px,transparent 20px);
+  animation:cardSurface 7s steps(3,end) infinite;
+  animation-delay:var(--delay,0s);
+}
+@keyframes cardSurface{
+  0%,100%{opacity:.14;transform:translate3d(0,0,0)}
+  32%{opacity:.35;transform:translate3d(-1px,1px,0)}
+  66%{opacity:.08;transform:translate3d(1px,0,0)}
+}
+.card-mark{
+  position:relative;
+  z-index:3;
+  display:grid;
+  place-items:center;
+  height:92px;
+  margin-bottom:12px;
+  color:rgba(222,214,198,.70);
+}
+.card-mark svg{
+  width:88px;
+  height:88px;
+  overflow:visible;
+  filter:drop-shadow(0 0 10px rgba(220,210,190,.12));
+}
+.card-mark path,.card-mark line,.card-mark circle,.card-mark rect,.card-mark polyline{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.4;
+  vector-effect:non-scaling-stroke;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.card-no{
+  position:relative;
+  z-index:3;
+  display:block;
+  margin-bottom:12px;
+  color:rgba(222,214,198,.36);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-size:12px;
+  letter-spacing:.05em;
+}
+.card-title{
+  position:relative;
+  z-index:3;
+  display:block;
+  margin:0 0 9px;
+  color:rgba(228,220,204,.78);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-size:clamp(23px,2.1vw,36px);
+  line-height:.92;
+  letter-spacing:-.045em;
+}
+.card-line{
+  position:relative;
+  z-index:3;
+  margin:0;
+  color:rgba(222,214,198,.46);
+  font-size:11px;
+  line-height:1.38;
+  letter-spacing:.01em;
+}
+.oracle-card.is-cast{
+  animation:cardCast .76s cubic-bezier(.16,1,.3,1) both;
+}
+.oracle-card:nth-child(2){--rise:-18px;--rot:.6deg}
+.oracle-card:nth-child(1){--rise:13px;--rot:-1.1deg}
+.oracle-card:nth-child(3){--rise:18px;--rot:1.2deg}
+@keyframes cardCast{
+  0%{opacity:.18;filter:blur(10px);transform:translateY(calc(var(--rise,0) + 22px)) rotate(calc(var(--rot,0deg) - 2deg)) scale(.96)}
+  42%{opacity:1;filter:blur(.2px)}
+  100%{opacity:1;filter:blur(0);transform:translateY(var(--rise,0)) rotate(var(--rot,0deg)) scale(1)}
+}
+.reading{
+  position:relative;
+  min-height:250px;
+  padding:15px 15px 13px;
+  overflow:hidden;
+  color:rgba(222,214,198,.70);
+  background:
+    linear-gradient(180deg,rgba(18,14,10,.92),rgba(0,0,0,.94) 48%,rgba(13,9,7,.90)),
+    repeating-linear-gradient(90deg,rgba(225,213,190,.025) 0 1px,transparent 1px 9px);
+  border:1px solid rgba(205,193,169,.22);
+  clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.11),
+    inset -1px -1px 0 rgba(0,0,0,.94),
+    inset 0 0 32px rgba(0,0,0,.70),
+    0 20px 54px rgba(0,0,0,.45);
+}
+.reading::before{
+  content:"";
+  position:absolute;
+  inset:5px;
+  pointer-events:none;
+  border:1px solid rgba(213,201,177,.12);
+  clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px);
+}
+.reading-meta{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(214,205,188,.11);
+  color:rgba(222,214,198,.38);
+  font-size:10px;
+  line-height:1.35;
+  letter-spacing:.018em;
+}
+.reading-code{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.reading h2{
+  position:relative;
+  z-index:2;
+  margin:0 0 12px;
+  color:rgba(230,222,207,.80);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(29px,2.8vw,48px);
+  line-height:.9;
+  letter-spacing:-.055em;
+}
+.reading p{
+  position:relative;
+  z-index:2;
+  margin:0 0 10px;
+  color:rgba(222,214,198,.52);
+  font-size:12px;
+  line-height:1.48;
+  letter-spacing:.007em;
+}
+.reading-list{
+  position:relative;
+  z-index:2;
+  display:grid;
+  gap:5px;
+  margin:12px 0 0;
+  padding:0;
+  list-style:none;
+  color:rgba(222,214,198,.47);
+  font-size:11px;
+  line-height:1.35;
+}
+.reading-list li{
+  display:grid;
+  grid-template-columns:82px 1fr;
+  gap:10px;
+  border-top:1px solid rgba(214,205,188,.075);
+  padding-top:6px;
+}
+.reading-list b{
+  color:rgba(222,214,198,.34);
+  font-weight:300;
+  font-family:var(--font-ital);
+  font-style:italic;
+}
+.control-panel{
+  position:absolute;
+  right:calc(var(--safe-r) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(97px,12vh,130px));
+  z-index:82;
+  width:min(382px,calc(100vw - 28px));
+  max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 146px);
+  overflow:auto;
+  overscroll-behavior:contain;
+  padding:10px;
+  font-size:11px;
+  line-height:1.2;
+  color:rgba(222,214,198,.70);
+  background:
+    linear-gradient(180deg,rgba(18,14,10,.94),rgba(0,0,0,.96) 50%,rgba(13,9,7,.94)),
+    repeating-linear-gradient(90deg,rgba(225,213,190,.03) 0 1px,transparent 1px 8px);
+  border:1px solid rgba(205,193,169,.23);
+  box-shadow:
+    inset 1px 1px 0 rgba(235,224,199,.14),
+    inset -1px -1px 0 rgba(0,0,0,.95),
+    inset 0 0 28px rgba(0,0,0,.70),
+    0 18px 50px rgba(0,0,0,.62);
+  clip-path:polygon(11px 0,calc(100% - 11px) 0,100% 11px,100% calc(100% - 11px),calc(100% - 11px) 100%,11px 100%,0 calc(100% - 11px),0 11px);
+  scrollbar-width:thin;
+  scrollbar-color:rgba(214,205,188,.25) rgba(0,0,0,.2);
+  transition:opacity .22s ease,transform .22s ease,visibility .22s ease;
+}
+.control-panel[hidden]{
+  display:block;
+  visibility:hidden;
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+}
+.control-panel::before{
+  content:"";
+  position:absolute;
+  inset:4px;
+  pointer-events:none;
+  border:1px solid rgba(213,201,177,.12);
+  clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px);
+}
+.panel-head{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:start;
+  gap:10px;
+  padding:4px 4px 10px;
+  border-bottom:1px solid rgba(214,205,188,.12);
+}
+.panel-title{
+  margin:0 0 3px;
+  color:rgba(230,222,207,.80);
+  font-family:var(--font-ital);
+  font-style:italic;
+  font-weight:400;
+  font-size:26px;
+  line-height:.9;
+  letter-spacing:-.04em;
+}
+.panel-head p{
+  margin:0;
+  color:rgba(222,214,198,.42);
+  font-size:10px;
+  line-height:1.35;
+}
+.close-mini{
+  position:relative;
+  z-index:2;
+  width:27px;
+  height:27px;
+  padding:0;
+  border:1px solid rgba(214,205,188,.16);
+  background:rgba(0,0,0,.34);
+  color:rgba(222,214,198,.70);
+  cursor:pointer;
+}
+.group{
+  position:relative;
+  z-index:1;
+  padding:11px 4px 8px;
+  border-bottom:1px solid rgba(214,205,188,.10);
+}
+.group:last-child{border-bottom:0}
+.control{
+  display:grid;
+  grid-template-columns:1fr minmax(124px,.92fr) 42px;
+  gap:9px;
+  align-items:center;
+  min-height:28px;
+  margin:5px 0;
+}
+.control label{color:rgba(222,214,198,.62)}
+.value{
+  color:rgba(222,214,198,.38);
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+input[type="range"]{width:100%;accent-color:#bdb6a7;background:transparent}
+select,textarea{
+  width:100%;
+  color:rgba(222,214,198,.78);
+  background:rgba(0,0,0,.62);
+  border:1px solid rgba(214,205,188,.18);
+  border-radius:0;
+}
+select{padding:6px 7px}
+textarea{
+  min-height:70px;
+  resize:vertical;
+  padding:8px;
+  line-height:1.35;
+}
+textarea::placeholder{color:rgba(222,214,198,.25)}
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+}
+.panel-button{
+  min-height:31px;
+  color:rgba(222,214,198,.74);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.035),rgba(0,0,0,.42)),
+    rgba(15,11,8,.92);
+  border:1px solid rgba(214,205,188,.16);
+  cursor:pointer;
+  box-shadow:inset 1px 1px 0 rgba(235,224,199,.08),inset -1px -1px 0 rgba(0,0,0,.78);
+}
+.panel-button:hover{filter:brightness(1.12);color:rgba(255,248,232,.94)}
+.status{
+  margin:8px 0 0;
+  color:rgba(222,214,198,.36);
+  font-size:10px;
+  line-height:1.35;
+}
+.ledger{
+  position:absolute;
+  left:calc(var(--safe-l) + clamp(13px,2vw,28px));
+  top:calc(var(--safe-t) + clamp(70px,11vh,112px));
+  z-index:69;
+  width:min(278px,38vw);
+  color:rgba(222,214,198,.34);
+  font-size:10px;
+  line-height:1.35;
+  letter-spacing:.02em;
+  pointer-events:none;
+}
+.ledger b{
+  display:block;
+  margin-bottom:5px;
+  color:rgba(222,214,198,.50);
+  font-weight:300;
+}
+.ledger span{
+  display:block;
+  min-height:1.35em;
+  opacity:.62;
+  animation:ledgerBlink 5.8s steps(3,end) infinite;
+}
+.ledger span:nth-child(2){animation-delay:-.7s}
+.ledger span:nth-child(3){animation-delay:-1.4s}
+.ledger span:nth-child(4){animation-delay:-2.1s}
+@keyframes ledgerBlink{
+  0%,100%{opacity:.18}
+  26%{opacity:.72}
+  27%{opacity:.08}
+  61%{opacity:.48}
+}
+.sr{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+
+@media(max-width:1180px){
+  :root{--oracle-shift:-120px}
+  .oracle-table{
+    width:calc(100vw - 420px);
+    min-width:500px;
+  }
+}
+@media(max-width:940px){
+  :root{--oracle-shift:0px}
+  .oracle-table{
+    left:calc(var(--safe-l) + 13px);
+    right:calc(var(--safe-r) + 13px);
+    top:50%;
+    width:auto;
+    min-width:0;
+    transform:translateY(-52%);
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .cards{min-height:188px}
+  .oracle-card{min-height:188px;padding:11px 9px 10px}
+  .card-mark{height:66px;margin-bottom:8px}
+  .card-mark svg{width:62px;height:62px}
+  .card-title{font-size:clamp(20px,4.4vw,30px)}
+  .card-line{font-size:10px;line-height:1.30}
+  .reading{min-height:150px;padding:12px}
+  .reading p{font-size:11px;line-height:1.38}
+  .reading-list{display:none}
+  .title-block{
+    left:calc(var(--safe-l) + 13px);
+    right:calc(var(--safe-r) + 13px);
+    bottom:calc(var(--safe-b) + 13px);
+    max-width:none;
+  }
+  .title-block p{display:none}
+  h1{font-size:clamp(52px,15vw,100px)}
+  .ledger{display:none}
+  .control-panel{
+    left:calc(var(--safe-l) + 11px);
+    right:calc(var(--safe-r) + 11px);
+    top:auto;
+    bottom:calc(var(--safe-b) + 11px);
+    width:auto;
+    max-height:min(560px,calc(100dvh - var(--safe-t) - var(--safe-b) - 72px));
+  }
+}
+@media(max-width:620px){
+  body{cursor:default}
+  .wordmark{
+    width:92vw;
+    top:calc(var(--safe-t) + 7px);
+    opacity:.26;
+  }
+  #root::after{inset:7px}
+  .old-grid{inset:12px;opacity:.17}
+  .scan{opacity:.15}
+  .cursor-glow{opacity:.50}
+  .back-home,.panel-toggle,.cast-button{
+    min-height:30px;
+    padding:7px 10px 8px;
+    font-size:10px;
+  }
+  .panel-toggle{right:calc(var(--safe-r) + 11px)}
+  .cast-button{
+    top:calc(var(--safe-t) + 48px);
+    right:calc(var(--safe-r) + 11px);
+  }
+  .back-home{
+    left:calc(var(--safe-l) + 11px);
+    top:calc(var(--safe-t) + 11px);
+  }
+  .oracle-table{
+    top:47%;
+    transform:translateY(-50%);
+    gap:8px;
+  }
+  .cards{
+    grid-template-columns:1fr;
+    min-height:0;
+    gap:6px;
+  }
+  .oracle-card{
+    min-height:96px;
+    display:grid;
+    grid-template-columns:58px 1fr;
+    column-gap:9px;
+    align-items:center;
+    padding:9px 10px;
+  }
+  .oracle-card:nth-child(1),
+  .oracle-card:nth-child(2),
+  .oracle-card:nth-child(3){--rise:0px;--rot:0deg}
+  .card-mark{
+    grid-row:1 / span 3;
+    height:58px;
+    margin:0;
+  }
+  .card-mark svg{width:52px;height:52px}
+  .card-no{margin:0 0 3px;font-size:10px}
+  .card-title{margin:0 0 3px;font-size:26px}
+  .card-line{font-size:10px}
+  .reading{
+    min-height:128px;
+    max-height:162px;
+    overflow:hidden;
+  }
+  .reading-meta{margin-bottom:8px;padding-bottom:7px}
+  .reading h2{font-size:31px;margin-bottom:7px}
+  .reading p{font-size:10px;line-height:1.33;margin-bottom:6px}
+  .title-block{bottom:calc(var(--safe-b) + 9px)}
+  .kicker{font-size:10px;margin-bottom:7px}
+  h1{font-size:clamp(44px,17vw,78px)}
+  .control-panel{
+    max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 70px);
+  }
+  .panel-title{font-size:22px}
+  .control{
+    grid-template-columns:1fr minmax(102px,.96fr) 34px;
+    gap:7px;
+  }
+  .group{padding:9px 4px 7px}
+  textarea{min-height:62px}
+}
+@media(max-height:640px){
+  .title-block p{display:none}
+  .title-block{bottom:calc(var(--safe-b) + 9px)}
+  h1{font-size:clamp(42px,12vh,88px)}
+  .oracle-table{top:54%}
+  .control-panel{
+    top:calc(var(--safe-t) + 92px);
+    max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 104px);
+  }
+}
+@media(max-height:500px) and (orientation:landscape){
+  .wordmark{width:74vw;left:56%;opacity:.22}
+  .title-block{left:calc(var(--safe-l) + 11px);bottom:calc(var(--safe-b) + 36px)}
+  h1{font-size:clamp(34px,13vh,66px)}
+  .oracle-table{
+    left:calc(var(--safe-l) + 132px);
+    right:calc(var(--safe-r) + 350px);
+    top:52%;
+    transform:translateY(-50%);
+  }
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .oracle-card{
+    min-height:140px;
+    display:block;
+  }
+  .card-mark{height:42px}
+  .card-mark svg{width:42px;height:42px}
+  .reading{display:none}
+  .control-panel{
+    top:calc(var(--safe-t) + 48px);
+    right:calc(var(--safe-r) + 10px);
+    left:auto;
+    bottom:auto;
+    width:min(330px,36vw);
+    max-height:calc(100dvh - var(--safe-t) - var(--safe-b) - 60px);
+  }
+  .panel-toggle{top:calc(var(--safe-t) + 10px)}
+  .cast-button{top:calc(var(--safe-t) + 10px);right:calc(var(--safe-r) + 124px)}
+}
+@media(hover:none) and (pointer:coarse){
+  body{cursor:default}
+  .old-button:hover,.panel-button:hover{filter:none;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+  .oracle-canvas{opacity:.42}
+  .scan{opacity:.11}
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <canvas id="oracleCanvas" class="oracle-canvas" aria-hidden="true"></canvas>
+  <div class="old-grid" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="scan" aria-hidden="true"></div>
+
+  <img class="wordmark" src="./Stw_Logo.png" width="2048" height="343" alt="Springtime Wishes" decoding="async" fetchpriority="high">
+
+  <a class="old-button back-home" href="index.html">index</a>
+  <button class="old-button panel-toggle" id="panelToggle" type="button" aria-expanded="true" aria-controls="controlPanel">parameters</button>
+  <button class="old-button cast-button" id="quickCast" type="button">draw garment</button>
+
+  <main class="oracle-table" id="oracleTable" aria-label="Garment oracle reading">
+    <section class="cards" aria-label="Three oracle cards">
+      <article class="oracle-card" id="cardA">
+        <div class="card-mark" aria-hidden="true"></div>
+        <span class="card-no">i / body trace</span>
+        <strong class="card-title">body trace</strong>
+        <p class="card-line">the body appears through pressure, shadow, and delayed light.</p>
+      </article>
+      <article class="oracle-card" id="cardB">
+        <div class="card-mark" aria-hidden="true"></div>
+        <span class="card-no">ii / garment</span>
+        <strong class="card-title">garment</strong>
+        <p class="card-line">a dormant piece waits inside the archive field.</p>
+      </article>
+      <article class="oracle-card" id="cardC">
+        <div class="card-mark" aria-hidden="true"></div>
+        <span class="card-no">iii / wish</span>
+        <strong class="card-title">wish</strong>
+        <p class="card-line">the request is not spoken yet. it moves under fabric.</p>
+      </article>
+    </section>
+
+    <section class="reading" aria-live="polite" aria-label="Oracle reading">
+      <div class="reading-meta">
+        <span id="readingMode">spread: relic request</span>
+        <span class="reading-code" id="readingCode">SW-ORC-000</span>
+      </div>
+      <h2 id="readingTitle">garment oracle</h2>
+      <p id="readingText">Enter a private fragment or leave it empty. Draw a garment. The oracle will return a body trace, a material mood, a memory, and a request direction.</p>
+      <p id="readingInstruction">The reading is generated in the browser only. Nothing is sent. Treat it as a fitting room for language and apparition.</p>
+      <ul class="reading-list" id="readingList">
+        <li><b>status</b><span>waiting</span></li>
+        <li><b>material</b><span>unselected</span></li>
+        <li><b>gesture</b><span>touch the parameters</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <aside class="control-panel" id="controlPanel" aria-label="garment oracle parameters">
+    <div class="panel-head">
+      <div>
+        <h2 class="panel-title">oracle controls</h2>
+        <p>a private engine for garment, body, memory, desire, fabric, trace, and request.</p>
+      </div>
+      <button class="close-mini" id="closePanel" type="button" aria-label="hide parameters">×</button>
+    </div>
+
+    <div class="group">
+      <div class="control">
+        <label for="spread">spread</label>
+        <select id="spread" data-param="spread">
+          <option value="relic">relic request</option>
+          <option value="fitting">fitting shadow</option>
+          <option value="veil">veil aperture</option>
+          <option value="garden">black garden</option>
+          <option value="archive">archive return</option>
+          <option value="armor">mourning armor</option>
+        </select>
+        <span class="value" id="spreadValue">relic</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <label for="wishInput" class="sr">private fragment</label>
+      <textarea id="wishInput" spellcheck="false" maxlength="420" placeholder="private fragment / measurement / dream / request. leave empty for an archive draw."></textarea>
+    </div>
+
+    <div class="group">
+      <div class="control"><label for="desire">desire</label><input id="desire" data-param="desire" type="range" min="0" max="100" value="67"><span class="value" data-value-for="desire">67</span></div>
+      <div class="control"><label for="memory">memory</label><input id="memory" data-param="memory" type="range" min="0" max="100" value="74"><span class="value" data-value-for="memory">74</span></div>
+      <div class="control"><label for="body">body</label><input id="body" data-param="body" type="range" min="0" max="100" value="58"><span class="value" data-value-for="body">58</span></div>
+      <div class="control"><label for="fabric">fabric</label><input id="fabric" data-param="fabric" type="range" min="0" max="100" value="71"><span class="value" data-value-for="fabric">71</span></div>
+      <div class="control"><label for="shadow">shadow</label><input id="shadow" data-param="shadow" type="range" min="0" max="100" value="63"><span class="value" data-value-for="shadow">63</span></div>
+      <div class="control"><label for="omen">omen</label><input id="omen" data-param="omen" type="range" min="0" max="100" value="49"><span class="value" data-value-for="omen">49</span></div>
+      <div class="control"><label for="thread">thread</label><input id="thread" data-param="thread" type="range" min="0" max="100" value="56"><span class="value" data-value-for="thread">56</span></div>
+      <div class="control"><label for="speed">drift</label><input id="speed" data-param="speed" type="range" min="8" max="140" value="62"><span class="value" data-value-for="speed">62</span></div>
+    </div>
+
+    <div class="group">
+      <div class="buttons">
+        <button class="panel-button" id="draw" type="button">draw garment</button>
+        <button class="panel-button" id="deepen" type="button">deepen</button>
+        <button class="panel-button" id="still" type="button">still</button>
+        <button class="panel-button" id="copyReading" type="button">copy reading</button>
+        <button class="panel-button" id="randomize" type="button">random wish</button>
+        <button class="panel-button" id="reset" type="button">reset</button>
+      </div>
+      <p class="status" id="status">engine: active / private browser-side reading / hidden tabs pause automatically</p>
+    </div>
+  </aside>
+
+  <div class="ledger" aria-hidden="true">
+    <b>oracle ledger</b>
+    <span id="ledgerOne">spread: relic request</span>
+    <span id="ledgerTwo">body / garment / wish</span>
+    <span id="ledgerThree">archive status: waiting</span>
+    <span id="ledgerFour">draw a garment</span>
+  </div>
+
+  <header class="title-block" id="titleBlock">
+    <span class="kicker">springtime wishes / private room</span>
+    <h1>garment oracle</h1>
+    <p>A private divination engine for garment, body, fabric, memory, and request. The reading forms inside the browser, then disappears back into the room.</p>
+  </header>
+
+  <div class="vignette" aria-hidden="true"></div>
+  <p class="sr">Garment oracle is an experimental private divination page for Springtime Wishes. It generates a body trace, garment reading, material mood, and request direction in the browser.</p>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarse = window.matchMedia("(hover:none), (pointer:coarse)").matches;
+  const canvas = document.getElementById("oracleCanvas");
+  const ctx = canvas.getContext("2d", { alpha:true, desynchronized:true });
+  const rootStyle = document.documentElement.style;
+  const bodyEl = document.body;
+  const panel = document.getElementById("controlPanel");
+  const panelToggle = document.getElementById("panelToggle");
+  const closePanel = document.getElementById("closePanel");
+  const quickCast = document.getElementById("quickCast");
+  const statusEl = document.getElementById("status");
+  const spreadValue = document.getElementById("spreadValue");
+  const wishInput = document.getElementById("wishInput");
+  const cards = [document.getElementById("cardA"), document.getElementById("cardB"), document.getElementById("cardC")];
+  const cardMarks = cards.map(card => card.querySelector(".card-mark"));
+  const readingMode = document.getElementById("readingMode");
+  const readingCode = document.getElementById("readingCode");
+  const readingTitle = document.getElementById("readingTitle");
+  const readingText = document.getElementById("readingText");
+  const readingInstruction = document.getElementById("readingInstruction");
+  const readingList = document.getElementById("readingList");
+
+  const mem = navigator.deviceMemory || 4;
+  const cores = navigator.hardwareConcurrency || 4;
+  let small = innerWidth < 760;
+  let lowPower = small || coarse || mem <= 4 || cores <= 4;
+  let cssW = 1, cssH = 1, W = 1, H = 1, dpr = 1;
+  let raf = 0, last = 0, frame = 0, glyphTick = 0;
+  let targetFPS = reduced ? 5 : lowPower ? 16 : 24;
+  let paused = false;
+  let pulse = 0;
+  let castSeed = Math.floor(Math.random() * 9999);
+  let lastReading = "";
+  const pointer = {x:.5,y:.5,tx:.5,ty:.5,active:false};
+
+  const state = {
+    spread:"relic",
+    desire:67,
+    memory:74,
+    body:58,
+    fabric:71,
+    shadow:63,
+    omen:49,
+    thread:56,
+    speed:62
+  };
+
+  const lexicon = {
+    garment:[
+      "mourning veil","bone-laced bodice","garden slip","relic skirt","shadow corset","black chapel blouse",
+      "threaded mantle","fitting dress","ashen sleeve","waist relic","night apron","soft armor",
+      "wounded camisole","archive petticoat","moth-lit coat","hidden tie","procession skirt","threshold veil"
+    ],
+    material:[
+      "raw silk under ash","cotton voile with old pressure","wool gauze and ironed shadow","deadstock lace, almost black",
+      "linen marked by humidity","charcoal satin, dulled by touch","sheer mesh over a hidden seam","brown organza and oxidized thread",
+      "viscose like cooled smoke","silk taffeta with a severe memory","washed cotton, candle-dark","veiled nylon, softened by wear",
+      "blackened muslin and hand tension","ribbon, hook, residue","matte velvet with faint abrasion"
+    ],
+    body:[
+      "collarbone / withheld light","waist / delayed closure","hip / garden pressure","shoulder / returning trace",
+      "spine / quiet rupture","throat / veil aperture","wrist / thread witness","hem / floor memory",
+      "bust / guarded breath","back / invisible fastening","knee / procession mark","hand / request gesture"
+    ],
+    memory:[
+      "a room remembers before the wearer does","the fabric keeps the shape of an absence","a fitting is repeated in low light",
+      "the piece asks to be closed slowly","a private request is already forming under the seam","the archive returns as a garment, not an image",
+      "something was removed, then became structure","the wish survives as a small hard edge","the body does not enter; it appears",
+      "the garment waits at the threshold of use","spring returns through dark matter","a note becomes a sleeve"
+    ],
+    omen:[
+      "do not brighten it","lengthen the shadow","keep the closure visible","allow one edge to remain unfinished",
+      "use pressure, not decoration","answer with a fitting","let the hem drag slightly","cut only where the body insists",
+      "bind the softness with one severe line","make the back remember","do not make it sweet","leave a trace at the wrist"
+    ],
+    status:["private request","archive direction","fitting advised","custom apparition","material study","available as shadow","not for immediate release","waiting garment"],
+    gesture:["pin","veil","gather","bind","unfasten","reconstruct","darken","lengthen","hold","return","measure","seal"],
+    color:["black-brown","candle charcoal","wet moss black","iron red under black","old ivory in darkness","soil satin","ash grey","deep tobacco"],
+    spreadText:{
+      relic:"relic request",
+      fitting:"fitting shadow",
+      veil:"veil aperture",
+      garden:"black garden",
+      archive:"archive return",
+      armor:"mourning armor"
+    }
+  };
+
+  const marks = [
+    '<svg viewBox="0 0 100 100"><path d="M50 8 C35 28 25 43 25 62 C25 80 39 91 50 91 C61 91 75 80 75 62 C75 43 65 28 50 8Z"/><path d="M50 18 L50 82"/><path d="M35 54 C42 48 58 48 65 54"/><circle cx="50" cy="62" r="8"/></svg>',
+    '<svg viewBox="0 0 100 100"><path d="M24 24 H76 V76 H24 Z"/><path d="M34 16 V84"/><path d="M66 16 V84"/><path d="M16 34 H84"/><path d="M16 66 H84"/><circle cx="50" cy="50" r="11"/></svg>',
+    '<svg viewBox="0 0 100 100"><path d="M50 12 L76 36 L64 86 H36 L24 36 Z"/><path d="M50 12 V86"/><path d="M28 40 C42 48 58 48 72 40"/><path d="M36 86 C42 74 58 74 64 86"/></svg>',
+    '<svg viewBox="0 0 100 100"><path d="M18 74 C30 44 34 20 50 20 C66 20 70 44 82 74"/><path d="M30 74 C39 64 61 64 70 74"/><path d="M50 20 V86"/><path d="M40 36 H60"/><path d="M34 52 H66"/></svg>',
+    '<svg viewBox="0 0 100 100"><path d="M28 14 C25 38 28 68 50 88 C72 68 75 38 72 14 C60 20 40 20 28 14Z"/><path d="M50 24 V76"/><path d="M38 44 H62"/><path d="M34 62 C44 57 56 57 66 62"/></svg>',
+    '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="34"/><path d="M50 16 V84"/><path d="M20 50 H80"/><path d="M32 28 C45 38 55 38 68 28"/><path d="M32 72 C45 62 55 62 68 72"/></svg>'
+  ];
+
+  function hashString(str){
+    let h = 2166136261 >>> 0;
+    for (let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function rng(seed){
+    let s = seed >>> 0;
+    return () => {
+      s += 0x6D2B79F5;
+      let t = s;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(arr, r){ return arr[Math.floor(r() * arr.length) % arr.length]; }
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h);}
+  function line(x1,y1,x2,y2,c,w=1){
+    ctx.strokeStyle=c;
+    ctx.lineWidth=w;
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+  }
+
+  function readControls(){
+    document.querySelectorAll("[data-param]").forEach(el => {
+      const key = el.dataset.param;
+      state[key] = key === "spread" ? el.value : Number(el.value);
+    });
+    if (spreadValue) spreadValue.textContent = state.spread;
+    document.querySelectorAll("[data-value-for]").forEach(el => {
+      const key = el.dataset.valueFor;
+      el.textContent = String(state[key]);
+    });
+    updateStatus();
+  }
+
+  function syncControls(){
+    document.querySelectorAll("[data-param]").forEach(el => {
+      const key = el.dataset.param;
+      el.value = String(state[key]);
+    });
+    readControls();
+  }
+
+  function updateStatus(msg){
+    if (statusEl) statusEl.textContent = msg || (paused ? "engine: still / reading retained" : "engine: active / private browser-side reading / hidden tabs pause automatically");
+    const l1 = document.getElementById("ledgerOne");
+    const l2 = document.getElementById("ledgerTwo");
+    const l3 = document.getElementById("ledgerThree");
+    const l4 = document.getElementById("ledgerFour");
+    if (l1) l1.textContent = `spread: ${lexicon.spreadText[state.spread] || state.spread}`;
+    if (l2) l2.textContent = `desire ${state.desire} / memory ${state.memory} / fabric ${state.fabric}`;
+    if (l3) l3.textContent = `shadow ${state.shadow} / omen ${state.omen} / thread ${state.thread}`;
+    if (l4) l4.textContent = glyphTick % 2 ? "the garment is listening" : "draw a garment";
+  }
+
+  function buildSeed(extra=""){
+    const src = [
+      wishInput.value.trim().toLowerCase(),
+      state.spread,state.desire,state.memory,state.body,state.fabric,state.shadow,state.omen,state.thread,state.speed,
+      castSeed,extra
+    ].join("|");
+    return hashString(src);
+  }
+
+  function cast(extra=""){
+    castSeed = (castSeed + 137 + Math.floor(Math.random()*9000)) % 99999;
+    const seed = buildSeed(extra);
+    const r = rng(seed);
+    const garment = pick(lexicon.garment, r);
+    const material = pick(lexicon.material, r);
+    const body = pick(lexicon.body, r);
+    const memory = pick(lexicon.memory, r);
+    const omen = pick(lexicon.omen, r);
+    const status = pick(lexicon.status, r);
+    const gesture = pick(lexicon.gesture, r);
+    const color = pick(lexicon.color, r);
+    const second = pick(lexicon.memory, r);
+    const code = "SW-ORC-" + String(seed % 9999).padStart(4,"0");
+    const spreadLabel = lexicon.spreadText[state.spread] || state.spread;
+
+    const titles = [body.split(" / ")[0], garment, gesture + " / " + color];
+    const lines = [
+      `body trace: ${body}. ${memory}.`,
+      `garment: ${garment}. material mood: ${material}.`,
+      `wish: ${omen}. the request should move as ${gesture}.`
+    ];
+
+    cards.forEach((card, i) => {
+      card.querySelector(".card-title").textContent = titles[i];
+      card.querySelector(".card-line").textContent = lines[i];
+      card.querySelector(".card-no").textContent = ["i / body trace","ii / garment","iii / wish"][i];
+      cardMarks[i].innerHTML = marks[(seed + i + Math.floor(r()*10)) % marks.length];
+      card.classList.remove("is-cast");
+      void card.offsetWidth;
+      card.classList.add("is-cast");
+      card.style.setProperty("--delay", (-r()*5).toFixed(2)+"s");
+    });
+
+    readingMode.textContent = "spread: " + spreadLabel;
+    readingCode.textContent = code;
+    readingTitle.textContent = garment;
+    readingText.textContent = `${body}. ${memory}. The oracle returns ${material}; it should remain ${color}, held between ${status} and private apparition.`;
+    readingInstruction.textContent = `${omen}. ${second}.`;
+    readingList.innerHTML = [
+      ["status", status],
+      ["material", material],
+      ["gesture", gesture],
+      ["color", color],
+      ["spread", spreadLabel]
+    ].map(([a,b]) => `<li><b>${a}</b><span>${b}</span></li>`).join("");
+
+    lastReading = [
+      "springtime wishes / garment oracle",
+      code,
+      "spread: " + spreadLabel,
+      "garment: " + garment,
+      "body trace: " + body,
+      "material: " + material,
+      "status: " + status,
+      "gesture: " + gesture,
+      "omen: " + omen,
+      "memory: " + memory
+    ].join("\n");
+
+    pulse = 1;
+    glyphTick++;
+    updateStatus("reading drawn / " + code);
+    if (small && !panel.hasAttribute("hidden")) togglePanel(false);
+  }
+
+  function randomWish(){
+    const fragments = [
+      "a black dress for returning",
+      "something to wear after loss",
+      "veil, shoulder, garden, pressure",
+      "private fitting / no sweetness",
+      "a garment that remembers the spine",
+      "cloth like an old room",
+      "soft armor for a quiet request",
+      "archive piece with a hidden closure"
+    ];
+    const r = rng(Date.now() % 999999);
+    wishInput.value = pick(fragments, r);
+    state.desire = Math.floor(40 + r()*58);
+    state.memory = Math.floor(45 + r()*54);
+    state.body = Math.floor(35 + r()*60);
+    state.fabric = Math.floor(40 + r()*58);
+    state.shadow = Math.floor(45 + r()*54);
+    state.omen = Math.floor(20 + r()*74);
+    state.thread = Math.floor(25 + r()*70);
+    state.speed = Math.floor(28 + r()*82);
+    state.spread = pick(Object.keys(lexicon.spreadText), r);
+    syncControls();
+    cast("random");
+  }
+
+  function deepen(){
+    state.desire = clamp(state.desire + 7,0,100);
+    state.memory = clamp(state.memory + 5,0,100);
+    state.shadow = clamp(state.shadow + 6,0,100);
+    state.omen = clamp(state.omen + 4,0,100);
+    state.thread = clamp(state.thread + 3,0,100);
+    syncControls();
+    cast("deepen");
+  }
+
+  function togglePanel(open){
+    const shouldOpen = typeof open === "boolean" ? open : panel.hasAttribute("hidden");
+    panel.toggleAttribute("hidden", !shouldOpen);
+    panelToggle.setAttribute("aria-expanded", String(shouldOpen));
+    bodyEl.classList.toggle("panel-open", shouldOpen);
+    if (small && shouldOpen) targetFPS = 10;
+    else targetFPS = reduced ? 5 : lowPower ? 16 : 24;
+  }
+
+  function bind(){
+    document.querySelectorAll("[data-param]").forEach(el => {
+      el.addEventListener("input", readControls, {passive:true});
+    });
+    document.getElementById("draw").addEventListener("click", () => cast("panel"));
+    quickCast.addEventListener("click", () => cast("quick"));
+    document.getElementById("deepen").addEventListener("click", deepen);
+    document.getElementById("randomize").addEventListener("click", randomWish);
+    document.getElementById("reset").addEventListener("click", () => {
+      Object.assign(state,{spread:"relic",desire:67,memory:74,body:58,fabric:71,shadow:63,omen:49,thread:56,speed:62});
+      wishInput.value = "";
+      syncControls();
+      castSeed = Math.floor(Math.random()*9999);
+      readingTitle.textContent = "garment oracle";
+      readingText.textContent = "Enter a private fragment or leave it empty. Draw a garment. The oracle will return a body trace, a material mood, a memory, and a request direction.";
+      readingInstruction.textContent = "The reading is generated in the browser only. Nothing is sent. Treat it as a fitting room for language and apparition.";
+      readingCode.textContent = "SW-ORC-000";
+      readingMode.textContent = "spread: relic request";
+      readingList.innerHTML = '<li><b>status</b><span>waiting</span></li><li><b>material</b><span>unselected</span></li><li><b>gesture</b><span>touch the parameters</span></li>';
+      updateStatus("oracle reset");
+    });
+    document.getElementById("still").addEventListener("click", () => {
+      paused = !paused;
+      updateStatus();
+      if (!paused && !document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(draw);
+      }
+    });
+    document.getElementById("copyReading").addEventListener("click", async () => {
+      if (!lastReading) cast("copy");
+      try {
+        await navigator.clipboard.writeText(lastReading);
+        updateStatus("reading copied");
+      } catch(e) {
+        updateStatus("copy unavailable / reading retained");
+      }
+    });
+    panelToggle.addEventListener("click", () => togglePanel());
+    closePanel.addEventListener("click", () => togglePanel(false));
+    window.addEventListener("keydown", e => {
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === "TEXTAREA" || tag === "INPUT" || tag === "SELECT") return;
+      if (e.key.toLowerCase() === "p") togglePanel();
+      if (e.key.toLowerCase() === "d") cast("key");
+      if (e.key === " ") {
+        e.preventDefault();
+        paused = !paused;
+        updateStatus();
+        if (!paused) raf = requestAnimationFrame(draw);
+      }
+    });
+  }
+
+  function resize(){
+    cssW = Math.max(1, innerWidth);
+    cssH = Math.max(1, innerHeight);
+    small = cssW < 760;
+    lowPower = small || coarse || (navigator.deviceMemory || 4) <= 4 || (navigator.hardwareConcurrency || 4) <= 4;
+    dpr = Math.min(devicePixelRatio || 1, lowPower ? .82 : 1.05);
+    const pixelCap = lowPower ? 260000 : 720000;
+    let targetW = Math.floor(cssW * dpr);
+    let targetH = Math.floor(cssH * dpr);
+    const pixels = targetW * targetH;
+    if (pixels > pixelCap) {
+      const scale = Math.sqrt(pixelCap / pixels);
+      targetW = Math.max(1, Math.floor(targetW * scale));
+      targetH = Math.max(1, Math.floor(targetH * scale));
+    }
+    W = targetW;
+    H = targetH;
+    canvas.width = W;
+    canvas.height = H;
+    canvas.style.width = cssW + "px";
+    canvas.style.height = cssH + "px";
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.imageSmoothingEnabled = false;
+    targetFPS = reduced ? 5 : lowPower ? 16 : 24;
+    if (small && !panel.hasAttribute("hidden")) targetFPS = 10;
+  }
+
+  function setPointer(x,y){
+    pointer.tx = clamp(x / Math.max(1,cssW),0,1);
+    pointer.ty = clamp(y / Math.max(1,cssH),0,1);
+    pointer.active = true;
+    rootStyle.setProperty("--px",(pointer.tx*100).toFixed(2)+"%");
+    rootStyle.setProperty("--py",(pointer.ty*100).toFixed(2)+"%");
+  }
+
+  function drawBackground(t){
+    ctx.globalCompositeOperation = "source-over";
+    ctx.clearRect(0,0,W,H);
+    const g = ctx.createRadialGradient(W*.50,H*.20,0,W*.50,H*.24,Math.max(W,H)*.70);
+    g.addColorStop(0,"rgba(148,120,88,.22)");
+    g.addColorStop(.38,"rgba(34,22,15,.26)");
+    g.addColorStop(1,"rgba(0,0,0,.98)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,W,H);
+
+    const s = state.speed / 62;
+    const lines = lowPower ? 18 : 34;
+    ctx.lineCap = "round";
+    for (let i=0;i<lines;i++){
+      const p = i / lines;
+      const y = H*(.08 + p*.84) + Math.sin(t*.00035*s+i)*H*.025;
+      const wave = Math.sin(t*.00022*s + i*1.7) * W*.05;
+      const alpha = (.018 + state.thread*.00055) * (1 - Math.abs(p-.5)*.65);
+      ctx.strokeStyle = `rgba(222,214,198,${alpha})`;
+      ctx.lineWidth = i%6===0 ? 1.2 : .75;
+      ctx.beginPath();
+      ctx.moveTo(-W*.1, y);
+      for (let x=-W*.08; x<W*1.12; x+=W/8){
+        const yy = y + Math.sin(x*.008 + t*.00035*s + i)*H*.018;
+        ctx.lineTo(x + wave, yy);
+      }
+      ctx.stroke();
+    }
+
+    const veilCount = lowPower ? 5 : 9;
+    for (let i=0;i<veilCount;i++){
+      const x = W*(i/(veilCount-1 || 1)) + Math.sin(t*.00027+i)*W*.025;
+      const a = .018 + state.veil*.00045;
+      line(x, H*.06, x + Math.sin(t*.0005+i)*W*.05, H*.92, `rgba(222,214,198,${a})`, 1);
+    }
+  }
+
+  function drawOraclePlate(t){
+    const cx = W*(.50 + (pointer.x-.5)*.04);
+    const cy = H*(.48 + (pointer.y-.5)*.04);
+    const r = Math.min(W,H)*(small ? .19 : .23);
+    const a = .09 + state.omen*.0007 + pulse*.14;
+    ctx.globalCompositeOperation = "screen";
+    ctx.strokeStyle = `rgba(222,214,198,${a})`;
+    ctx.lineWidth = 1;
+    for (let k=0;k<4;k++){
+      ctx.beginPath();
+      const rr = r * (.55 + k*.18) + Math.sin(t*.0007+k)*3;
+      ctx.ellipse(cx, cy, rr*1.16, rr*.76, Math.sin(t*.00018)*.2, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    const spokes = lowPower ? 10 : 18;
+    for (let i=0;i<spokes;i++){
+      const a0 = i/spokes * Math.PI*2 + t*.00013*(state.speed/62);
+      const rr1 = r*.48, rr2 = r*(.88 + (i%3)*.05);
+      line(cx+Math.cos(a0)*rr1,cy+Math.sin(a0)*rr1*.72,cx+Math.cos(a0)*rr2,cy+Math.sin(a0)*rr2*.72,`rgba(222,214,198,${.035+state.omen*.00045})`,1);
+    }
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  function drawCardsGhost(t){
+    const cx = W*.5;
+    const cy = H*.52;
+    const cardW = Math.min(W*(small ? .18 : .115), 90*dpr);
+    const cardH = cardW * 1.46;
+    const count = 3;
+    for (let i=0;i<count;i++){
+      const dx = (i-1) * cardW * 1.25;
+      const y = cy + Math.sin(t*.0008+i)*5*dpr;
+      ctx.save();
+      ctx.translate(cx+dx, y);
+      ctx.rotate((i-1)*.08 + Math.sin(t*.0004+i)*.025);
+      rect(-cardW/2,-cardH/2,cardW,cardH,`rgba(20,13,9,${.28+i*.03})`);
+      ctx.strokeStyle = `rgba(222,214,198,${.06+state.memory*.0005+pulse*.05})`;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(-cardW/2+3*dpr,-cardH/2+3*dpr,cardW-6*dpr,cardH-6*dpr);
+      ctx.beginPath();
+      ctx.moveTo(0,-cardH*.32);
+      ctx.lineTo(cardW*.18,-cardH*.02);
+      ctx.lineTo(0,cardH*.28);
+      ctx.lineTo(-cardW*.18,-cardH*.02);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  function drawGlyphs(t){
+    const glyphs = ["veil","body","wish","trace","garment","memory","request","fabric","shadow","return"];
+    const amount = lowPower ? 7 : 13;
+    ctx.font = `${Math.max(8*dpr, Math.floor(W/105))}px monospace`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (let i=0;i<amount;i++){
+      const orbit = i/amount*Math.PI*2 + t*.00010*(state.speed/62);
+      const rx = W*(.22 + (i%4)*.035);
+      const ry = H*(.16 + (i%5)*.018);
+      const x = W*.5 + Math.cos(orbit)*rx;
+      const y = H*.48 + Math.sin(orbit*1.28)*ry;
+      const alpha = .045 + state.omen*.00055 + (Math.sin(t*.001+i)*.5+.5)*.045;
+      ctx.fillStyle = `rgba(222,214,198,${alpha})`;
+      ctx.fillText(glyphs[(i+glyphTick)%glyphs.length], x, y);
+    }
+  }
+
+  function drawGarmentTrace(t){
+    const cx = W*(.5 + Math.sin(t*.00037)*.018);
+    const cy = H*(small ? .46 : .51);
+    const sc = Math.min(W,H) * (small ? .0032 : .0038);
+    const a = .08 + state.body*.0007 + pulse*.18;
+    ctx.globalCompositeOperation = "screen";
+    ctx.strokeStyle = `rgba(222,214,198,${a})`;
+    ctx.fillStyle = `rgba(222,214,198,${a*.32})`;
+    ctx.lineWidth = Math.max(1, sc*1.5);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 42*sc);
+    ctx.bezierCurveTo(cx-38*sc,cy-18*sc,cx-46*sc,cy+38*sc,cx-24*sc,cy+65*sc);
+    ctx.bezierCurveTo(cx-8*sc,cy+82*sc,cx+8*sc,cy+82*sc,cx+24*sc,cy+65*sc);
+    ctx.bezierCurveTo(cx+46*sc,cy+38*sc,cx+38*sc,cy-18*sc,cx,cy-42*sc);
+    ctx.stroke();
+    line(cx,cy-30*sc,cx,cy+72*sc,`rgba(222,214,198,${a*.7})`,1);
+    line(cx-26*sc,cy-2*sc,cx+26*sc,cy-2*sc,`rgba(222,214,198,${a*.55})`,1);
+    line(cx-18*sc,cy+31*sc,cx+18*sc,cy+31*sc,`rgba(222,214,198,${a*.42})`,1);
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  function drawAsh(t){
+    const amount = lowPower ? 90 : 190;
+    for (let i=0;i<amount;i++){
+      const x = (Math.sin(i*91.7 + t*.00036*state.speed)*.5+.5)*W;
+      const y = (Math.cos(i*37.1 + t*.00031*state.speed)*.5+.5)*H;
+      const a = (.012 + (i%7)*.003) * (state.shadow/62);
+      rect(Math.floor(x),Math.floor(y),i%9===0?2:1,1, i%5 ? `rgba(222,214,198,${a})` : `rgba(95,36,25,${a*1.5})`);
+    }
+    const noise = lowPower ? 80 : 180;
+    for (let j=0;j<noise;j++){
+      const x = Math.random()*W;
+      const y = Math.random()*H;
+      const a = Math.random()*.035*(state.shadow/80);
+      rect(x,y,1,1,Math.random()>.55?`rgba(222,214,198,${a})`:`rgba(0,0,0,${a*2})`);
+    }
+  }
+
+  function draw(now){
+    if (document.hidden || paused) return;
+    raf = requestAnimationFrame(draw);
+    const interval = 1000 / targetFPS;
+    if (now - last < interval) return;
+    last = now;
+    frame++;
+    const t = now * (state.speed / 62);
+    pointer.x = lerp(pointer.x,pointer.tx,.06);
+    pointer.y = lerp(pointer.y,pointer.ty,.06);
+    if (pulse > .002) pulse *= .93;
+
+    drawBackground(t);
+    drawOraclePlate(t);
+    drawCardsGhost(t);
+    drawGarmentTrace(t);
+    drawGlyphs(t);
+    drawAsh(t);
+
+    if (frame % (lowPower ? 150 : 220) === 0){
+      glyphTick++;
+      updateStatus();
+    }
+  }
+
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      resize();
+      if (!paused && !document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(draw);
+      }
+    }, 140);
+  }, {passive:true});
+
+  window.addEventListener("pointermove", e => setPointer(e.clientX,e.clientY), {passive:true});
+  window.addEventListener("touchstart", e => {
+    if (e.touches && e.touches[0]) setPointer(e.touches[0].clientX,e.touches[0].clientY);
+  }, {passive:true});
+  window.addEventListener("touchmove", e => {
+    if (e.touches && e.touches[0]) setPointer(e.touches[0].clientX,e.touches[0].clientY);
+  }, {passive:true});
+
+  document.addEventListener("visibilitychange", () => {
+    bodyEl.classList.toggle("is-frozen", document.hidden);
+    if (!document.hidden && !paused) {
+      last = 0;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(draw);
+    }
+  });
+  window.addEventListener("pagehide", () => {
+    cancelAnimationFrame(raf);
+    bodyEl.classList.add("is-frozen");
+  });
+  window.addEventListener("pageshow", () => {
+    bodyEl.classList.remove("is-frozen");
+    if (!paused && !document.hidden) {
+      last = 0;
+      raf = requestAnimationFrame(draw);
+    }
+  });
+
+  bind();
+  syncControls();
+  resize();
+  setPointer(innerWidth*.5, innerHeight*.48);
+  cardMarks.forEach((slot,i) => { slot.innerHTML = marks[i % marks.length]; });
+  if (small) togglePanel(false);
+  else togglePanel(true);
+  cast("initial");
+
+  if (reduced) {
+    paused = true;
+    drawBackground(0);
+    drawOraclePlate(0);
+    drawCardsGhost(0);
+    drawGarmentTrace(0);
+    drawGlyphs(0);
+    drawAsh(0);
+    updateStatus("reduced motion / still reading");
+  } else {
+    raf = requestAnimationFrame(draw);
+  }
+})();
+</script>
+</body>
+</html>

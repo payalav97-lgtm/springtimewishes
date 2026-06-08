@@ -1,0 +1,2113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Springtime Wishes wish furnace: a dark procedural chamber where wishes burn into garment, ash, relic, pressure, and trace." />
+  <title>wish furnace / springtime wishes</title>
+  <style>
+    @font-face{
+      font-family:"Aktiv Grotesk";
+      src:url("./AktivGrotesk-Regular.ttf") format("truetype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Aktiv Grotesk";
+      src:url("./AktivGrotesk-Light.ttf") format("truetype");
+      font-weight:300;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Aktiv Grotesk";
+      src:url("./AktivGrotesk-Medium.ttf") format("truetype");
+      font-weight:500;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"LTC Metropolitan";
+      src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");
+      font-weight:400;
+      font-style:italic;
+      font-display:swap;
+    }
+
+    :root{
+      --black:#010101;
+      --black-2:#050403;
+      --charcoal:#0b0907;
+      --brown:#15100d;
+      --brown-2:#241710;
+      --ember:#8f3024;
+      --ember-dim:#5d1c16;
+      --old-gold:#947744;
+      --bone:#ddd2bf;
+      --bone-soft:#a99e8d;
+      --ash:#6c655d;
+      --smoke:rgba(221,210,191,.08);
+      --smoke-2:rgba(221,210,191,.045);
+      --panel:rgba(9,7,5,.62);
+      --panel-heavy:rgba(4,3,2,.86);
+      --line:rgba(221,210,191,.16);
+      --line-2:rgba(221,210,191,.08);
+      --line-hot:rgba(196,108,66,.38);
+      --focus:rgba(226,213,190,.72);
+      --title:"LTC Metropolitan", Georgia, "Times New Roman", serif;
+      --sans:"Aktiv Grotesk", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono:"Aktiv Grotesk", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --edge:clamp(14px,2.6vw,38px);
+      --radius:22px;
+      --panel-w:clamp(304px,27vw,430px);
+      --small:10px;
+    }
+
+    *{box-sizing:border-box}
+    html{
+      min-height:100%;
+      background:#000;
+      color:var(--bone);
+      text-size-adjust:100%;
+      -webkit-text-size-adjust:100%;
+    }
+    body{
+      margin:0;
+      min-height:100svh;
+      overflow:hidden;
+      color:var(--bone);
+      background:
+        radial-gradient(circle at 50% 18%, rgba(107,45,29,.19), transparent 31vh),
+        radial-gradient(circle at 80% 76%, rgba(103,78,43,.09), transparent 42vw),
+        radial-gradient(circle at 18% 80%, rgba(90,23,18,.11), transparent 38vw),
+        linear-gradient(180deg,#000 0%,#060504 42%,#010101 100%);
+      font-family:var(--sans);
+      font-weight:300;
+      letter-spacing:.01em;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:geometricPrecision;
+      isolation:isolate;
+    }
+
+    body::before,
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:4;
+    }
+    body::before{
+      opacity:.58;
+      mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.50'/%3E%3C/svg%3E");
+      background-size:190px 190px;
+      animation:grain-shift 1.45s steps(2,end) infinite;
+    }
+    body::after{
+      z-index:3;
+      background:
+        radial-gradient(ellipse at 50% 52%, transparent 0 35%, rgba(0,0,0,.32) 62%, rgba(0,0,0,.82) 100%),
+        linear-gradient(90deg,rgba(0,0,0,.58),transparent 25% 71%,rgba(0,0,0,.72)),
+        repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 8px);
+      mix-blend-mode:multiply;
+      opacity:.86;
+    }
+
+    @keyframes grain-shift{
+      0%{transform:translate3d(0,0,0)}
+      25%{transform:translate3d(-1.4%,.7%,0)}
+      50%{transform:translate3d(.9%,-1%,0)}
+      75%{transform:translate3d(-.6%,-.8%,0)}
+      100%{transform:translate3d(1.1%,.5%,0)}
+    }
+    @keyframes slow-breath{
+      0%{transform:scale(1) translate3d(-1%,0,0); opacity:.35}
+      100%{transform:scale(1.07) translate3d(1%,1.3%,0); opacity:.6}
+    }
+    @keyframes title-flicker{
+      0%,100%{opacity:.88;filter:blur(.1px)}
+      17%{opacity:.62;filter:blur(.7px)}
+      18%{opacity:.9;filter:blur(.1px)}
+      54%{opacity:.73}
+      55%{opacity:.94}
+      81%{opacity:.66;filter:blur(.45px)}
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,
+    textarea,
+    input{font:inherit}
+    button{border:0;color:inherit;background:none;cursor:pointer}
+    textarea,
+    input[type="range"]{width:100%}
+
+    :focus-visible{
+      outline:1px solid var(--focus);
+      outline-offset:3px;
+      box-shadow:0 0 0 5px rgba(226,213,190,.08);
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+    .skip-link{
+      position:fixed;
+      left:12px;
+      top:12px;
+      z-index:1000;
+      transform:translateY(-160%);
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:#080604;
+      color:var(--bone);
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .skip-link:focus{transform:none}
+
+    #furnaceCanvas{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      width:100vw;
+      height:100svh;
+      display:block;
+      background:#000;
+    }
+
+    .smoke-haze{
+      position:fixed;
+      inset:-18%;
+      z-index:1;
+      pointer-events:none;
+      opacity:.9;
+      mix-blend-mode:screen;
+      background:
+        radial-gradient(ellipse at 50% 44%, rgba(128,47,31,.18), transparent 18%),
+        radial-gradient(ellipse at 51% 48%, rgba(224,196,141,.055), transparent 26%),
+        radial-gradient(ellipse at 28% 62%, rgba(221,210,191,.052), transparent 18%),
+        radial-gradient(ellipse at 72% 29%, rgba(221,210,191,.043), transparent 16%);
+      filter:blur(44px) contrast(132%);
+      animation:slow-breath 18s ease-in-out infinite alternate;
+    }
+
+    .ghost-logo{
+      position:fixed;
+      top:max(10px,env(safe-area-inset-top));
+      left:50%;
+      z-index:2;
+      width:min(48vw,380px);
+      max-height:118px;
+      transform:translateX(-50%);
+      object-fit:contain;
+      opacity:.105;
+      filter:grayscale(1) blur(1.2px) contrast(116%);
+      mix-blend-mode:screen;
+      pointer-events:none;
+      mask-image:linear-gradient(90deg,transparent,black 16% 84%,transparent);
+      -webkit-mask-image:linear-gradient(90deg,transparent,black 16% 84%,transparent);
+    }
+
+    .topbar{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:10;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding:
+        calc(max(12px,env(safe-area-inset-top)) + 4px)
+        calc(var(--edge) + env(safe-area-inset-right))
+        16px
+        calc(var(--edge) + env(safe-area-inset-left));
+      pointer-events:none;
+    }
+    .index-link,
+    .panel-toggle{
+      pointer-events:auto;
+      min-height:38px;
+      display:inline-grid;
+      place-items:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(0,0,0,.38);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      color:rgba(221,210,191,.78);
+      padding:10px 13px;
+      font-size:10px;
+      font-weight:400;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      box-shadow:inset 0 0 22px rgba(221,210,191,.025),0 10px 40px rgba(0,0,0,.36);
+      transition:border-color .25s ease, color .25s ease, background .25s ease, transform .25s ease;
+    }
+    .index-link:hover,
+    .panel-toggle:hover{
+      border-color:rgba(221,210,191,.38);
+      color:var(--bone);
+      background:rgba(20,12,8,.58);
+      transform:translateY(-1px);
+    }
+
+    main{
+      position:relative;
+      z-index:5;
+      min-height:100svh;
+      pointer-events:none;
+    }
+
+    .copy-block{
+      position:fixed;
+      left:calc(var(--edge) + env(safe-area-inset-left));
+      bottom:calc(var(--edge) + env(safe-area-inset-bottom));
+      z-index:8;
+      width:min(495px,calc(100vw - var(--edge) * 2));
+      pointer-events:none;
+      transition:opacity .35s ease, transform .35s ease, filter .35s ease;
+    }
+    .eyebrow{
+      margin:0 0 14px;
+      color:rgba(221,210,191,.47);
+      font-size:10px;
+      font-weight:400;
+      letter-spacing:.26em;
+      line-height:1.7;
+      text-transform:uppercase;
+    }
+    h1{
+      margin:0;
+      color:rgba(221,210,191,.9);
+      font-family:var(--title);
+      font-size:clamp(52px,10.5vw,172px);
+      font-style:italic;
+      font-weight:400;
+      line-height:.78;
+      letter-spacing:-.088em;
+      text-shadow:0 0 14px rgba(221,210,191,.13),0 0 68px rgba(138,45,27,.18);
+      filter:blur(.12px);
+      animation:title-flicker 8.8s linear infinite;
+    }
+    .statement{
+      max-width:360px;
+      margin:18px 0 0;
+      color:rgba(221,210,191,.66);
+      font-size:clamp(15px,1.2vw,18px);
+      font-weight:300;
+      line-height:1.45;
+      letter-spacing:.015em;
+      text-wrap:balance;
+    }
+
+    .furnace-caption{
+      position:fixed;
+      left:50%;
+      bottom:calc(var(--edge) + env(safe-area-inset-bottom));
+      z-index:6;
+      transform:translateX(-50%);
+      width:min(42vw,430px);
+      text-align:center;
+      pointer-events:none;
+      color:rgba(221,210,191,.38);
+      font-size:9px;
+      font-weight:400;
+      letter-spacing:.2em;
+      line-height:1.7;
+      text-transform:uppercase;
+      transition:opacity .35s ease;
+    }
+
+    .ledger{
+      position:fixed;
+      left:50%;
+      top:calc(max(64px,env(safe-area-inset-top) + 52px));
+      z-index:7;
+      transform:translateX(-50%);
+      width:min(560px,44vw);
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:1px;
+      border:1px solid rgba(221,210,191,.085);
+      background:rgba(0,0,0,.2);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      pointer-events:none;
+      transition:opacity .35s ease, transform .35s ease;
+    }
+    .ledger div{
+      min-width:0;
+      padding:9px 10px 8px;
+      border-right:1px solid rgba(221,210,191,.065);
+      overflow:hidden;
+    }
+    .ledger div:last-child{border-right:0}
+    .ledger span,
+    .ledger strong{
+      display:block;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .ledger span{
+      margin-bottom:5px;
+      color:rgba(221,210,191,.36);
+      font-size:8px;
+      font-weight:400;
+      letter-spacing:.19em;
+      text-transform:uppercase;
+    }
+    .ledger strong{
+      color:rgba(221,210,191,.64);
+      font-size:10px;
+      font-weight:300;
+      letter-spacing:.06em;
+      line-height:1.2;
+    }
+
+    .control-panel{
+      position:fixed;
+      right:calc(var(--edge) + env(safe-area-inset-right));
+      top:calc(max(66px,env(safe-area-inset-top) + 56px));
+      bottom:calc(var(--edge) + env(safe-area-inset-bottom));
+      z-index:12;
+      width:var(--panel-w);
+      max-height:calc(100svh - 96px);
+      display:flex;
+      flex-direction:column;
+      border:1px solid rgba(221,210,191,.16);
+      background:
+        linear-gradient(180deg,rgba(20,12,8,.72),rgba(4,3,2,.9)),
+        radial-gradient(circle at 50% 0%,rgba(134,54,34,.17),transparent 38%);
+      box-shadow:
+        inset 0 0 58px rgba(221,210,191,.025),
+        0 0 0 1px rgba(0,0,0,.8),
+        0 18px 90px rgba(0,0,0,.62);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+      pointer-events:auto;
+      transition:transform .42s cubic-bezier(.16,1,.3,1), opacity .32s ease;
+    }
+    body.panel-closed .control-panel{
+      transform:translateX(calc(100% + 48px));
+      opacity:.08;
+      pointer-events:none;
+    }
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      padding:18px 18px 13px;
+      border-bottom:1px solid rgba(221,210,191,.11);
+      background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,0,0,0));
+    }
+    .panel-head h2{
+      margin:0;
+      font-family:var(--title);
+      font-style:italic;
+      font-weight:400;
+      font-size:clamp(28px,2.6vw,42px);
+      line-height:.82;
+      letter-spacing:-.068em;
+      color:rgba(221,210,191,.86);
+    }
+    .panel-head p{
+      margin:8px 0 0;
+      color:rgba(221,210,191,.45);
+      font-size:10px;
+      font-weight:300;
+      letter-spacing:.1em;
+      line-height:1.45;
+      text-transform:uppercase;
+    }
+    .close-panel{
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      width:34px;
+      height:34px;
+      border:1px solid rgba(221,210,191,.13);
+      border-radius:50%;
+      color:rgba(221,210,191,.6);
+      background:rgba(0,0,0,.22);
+    }
+    .panel-scroll{
+      flex:1 1 auto;
+      overflow:auto;
+      overscroll-behavior:contain;
+      padding:16px 18px 18px;
+      scrollbar-color:rgba(221,210,191,.24) rgba(0,0,0,.22);
+      scrollbar-width:thin;
+    }
+    .field-group{
+      display:grid;
+      gap:8px;
+      margin-bottom:13px;
+    }
+    label,
+    .slider-title,
+    .ledger-label{
+      color:rgba(221,210,191,.53);
+      font-size:9px;
+      font-weight:400;
+      letter-spacing:.18em;
+      line-height:1.4;
+      text-transform:uppercase;
+    }
+    textarea{
+      min-height:96px;
+      resize:vertical;
+      border:1px solid rgba(221,210,191,.16);
+      border-radius:0;
+      background:rgba(0,0,0,.36);
+      color:rgba(231,221,204,.92);
+      padding:13px 13px 12px;
+      line-height:1.38;
+      font-size:15px;
+      font-weight:300;
+      box-shadow:inset 0 0 30px rgba(0,0,0,.42), inset 0 0 22px rgba(221,210,191,.018);
+    }
+    textarea::placeholder{color:rgba(221,210,191,.3)}
+    .button-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin:12px 0 18px;
+    }
+    .instrument-button{
+      min-height:42px;
+      display:inline-grid;
+      place-items:center;
+      border:1px solid rgba(221,210,191,.15);
+      background:
+        linear-gradient(180deg,rgba(221,210,191,.045),rgba(0,0,0,.1)),
+        rgba(0,0,0,.26);
+      color:rgba(221,210,191,.75);
+      padding:11px 9px 10px;
+      font-size:10px;
+      font-weight:400;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
+    }
+    .instrument-button:hover{
+      border-color:rgba(221,210,191,.36);
+      color:var(--bone);
+      background:rgba(70,28,19,.28);
+      transform:translateY(-1px);
+    }
+    .instrument-button.primary{
+      color:rgba(242,226,199,.94);
+      border-color:rgba(196,108,66,.34);
+      background:
+        radial-gradient(circle at 50% 20%,rgba(162,60,39,.28),transparent 60%),
+        rgba(18,8,5,.68);
+      box-shadow:inset 0 0 20px rgba(196,65,36,.08),0 0 30px rgba(116,36,24,.13);
+    }
+    .params{
+      display:grid;
+      gap:12px;
+      padding-top:14px;
+      border-top:1px solid rgba(221,210,191,.09);
+    }
+    .slider{
+      display:grid;
+      grid-template-columns:86px 1fr 36px;
+      gap:10px;
+      align-items:center;
+    }
+    .slider output{
+      color:rgba(221,210,191,.46);
+      text-align:right;
+      font-size:9px;
+      font-weight:400;
+      letter-spacing:.1em;
+    }
+    input[type="range"]{
+      appearance:none;
+      height:22px;
+      background:transparent;
+      cursor:pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track{
+      height:2px;
+      background:
+        linear-gradient(90deg,rgba(137,51,33,.9),rgba(221,210,191,.34)),
+        rgba(221,210,191,.08);
+      border-radius:999px;
+      box-shadow:0 0 16px rgba(104,37,26,.18);
+    }
+    input[type="range"]::-moz-range-track{
+      height:2px;
+      background:rgba(221,210,191,.19);
+      border-radius:999px;
+    }
+    input[type="range"]::-webkit-slider-thumb{
+      appearance:none;
+      width:15px;
+      height:15px;
+      margin-top:-6.5px;
+      border:1px solid rgba(221,210,191,.44);
+      border-radius:50%;
+      background:#120b08;
+      box-shadow:0 0 0 4px rgba(0,0,0,.48),0 0 18px rgba(205,80,43,.28);
+    }
+    input[type="range"]::-moz-range-thumb{
+      width:15px;
+      height:15px;
+      border:1px solid rgba(221,210,191,.44);
+      border-radius:50%;
+      background:#120b08;
+      box-shadow:0 0 0 4px rgba(0,0,0,.48),0 0 18px rgba(205,80,43,.28);
+    }
+    .panel-note{
+      margin:14px 0 0;
+      color:rgba(221,210,191,.38);
+      font-size:10px;
+      line-height:1.55;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .mailto-link{
+      display:inline-block;
+      margin-top:12px;
+      border-bottom:1px solid rgba(221,210,191,.26);
+      color:rgba(221,210,191,.68);
+      font-size:10px;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    body.is-text-hidden .copy-block,
+    body.is-text-hidden .furnace-caption,
+    body.is-text-hidden .ledger,
+    body.is-text-hidden .ghost-logo{
+      opacity:0;
+      transform:translateY(8px);
+      filter:blur(8px);
+      pointer-events:none;
+    }
+
+    .state-toast{
+      position:fixed;
+      left:50%;
+      bottom:calc(28px + env(safe-area-inset-bottom));
+      z-index:30;
+      transform:translate(-50%,18px);
+      opacity:0;
+      pointer-events:none;
+      padding:10px 13px;
+      border:1px solid rgba(221,210,191,.13);
+      background:rgba(5,4,3,.78);
+      color:rgba(221,210,191,.7);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      transition:opacity .25s ease, transform .25s ease;
+    }
+    .state-toast.is-visible{
+      opacity:1;
+      transform:translate(-50%,0);
+    }
+
+    @media (max-width:1050px){
+      .ledger{
+        width:min(640px,calc(100vw - 30px));
+        top:calc(max(64px,env(safe-area-inset-top) + 50px));
+      }
+      .furnace-caption{display:none}
+    }
+
+    @media (max-width:780px){
+      body{overflow:hidden}
+      .topbar{
+        padding:
+          calc(max(11px,env(safe-area-inset-top)) + 2px)
+          calc(13px + env(safe-area-inset-right))
+          12px
+          calc(13px + env(safe-area-inset-left));
+      }
+      .index-link,
+      .panel-toggle{min-height:40px;padding:10px 12px;font-size:9px}
+      .ghost-logo{
+        width:min(68vw,285px);
+        max-height:78px;
+        top:calc(max(13px,env(safe-area-inset-top)) + 34px);
+        opacity:.085;
+      }
+      .copy-block{
+        left:calc(16px + env(safe-area-inset-left));
+        right:calc(16px + env(safe-area-inset-right));
+        bottom:calc(18px + env(safe-area-inset-bottom));
+        width:auto;
+      }
+      .eyebrow{margin-bottom:9px;font-size:8px;letter-spacing:.22em}
+      h1{font-size:clamp(46px,16vw,80px)}
+      .statement{
+        max-width:285px;
+        margin-top:10px;
+        font-size:13px;
+        line-height:1.38;
+      }
+      .ledger{
+        display:none;
+      }
+      .control-panel{
+        left:calc(10px + env(safe-area-inset-left));
+        right:calc(10px + env(safe-area-inset-right));
+        top:auto;
+        bottom:calc(10px + env(safe-area-inset-bottom));
+        width:auto;
+        max-height:min(78svh,720px);
+        clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+        transform:none;
+      }
+      body.panel-closed .control-panel{
+        transform:translateY(calc(100% + 28px));
+        opacity:0;
+      }
+      .panel-head{padding:15px 15px 11px}
+      .panel-head h2{font-size:30px}
+      .panel-head p{font-size:9px}
+      .panel-scroll{padding:14px 15px 15px}
+      textarea{min-height:88px;font-size:16px}
+      .instrument-button{min-height:44px}
+      .slider{grid-template-columns:78px 1fr 30px;gap:8px}
+      .state-toast{
+        bottom:calc(72px + env(safe-area-inset-bottom));
+        width:max-content;
+        max-width:calc(100vw - 28px);
+      }
+    }
+
+    @media (max-width:390px){
+      .statement{display:none}
+      .copy-block{bottom:calc(13px + env(safe-area-inset-bottom))}
+      h1{font-size:clamp(42px,15vw,62px)}
+      .button-grid{grid-template-columns:1fr}
+      .slider{grid-template-columns:1fr 1fr;gap:5px 10px}
+      .slider input{grid-column:1 / -1}
+      .slider output{text-align:left}
+      .panel-scroll{padding-bottom:20px}
+    }
+
+    @media (max-height:520px) and (orientation:landscape){
+      .copy-block{
+        left:calc(14px + env(safe-area-inset-left));
+        bottom:calc(12px + env(safe-area-inset-bottom));
+        width:min(340px,42vw);
+      }
+      h1{font-size:clamp(34px,9vw,76px)}
+      .statement{display:none}
+      .control-panel{
+        top:calc(max(54px,env(safe-area-inset-top) + 44px));
+        bottom:calc(8px + env(safe-area-inset-bottom));
+        right:calc(9px + env(safe-area-inset-right));
+        left:auto;
+        width:min(380px,42vw);
+        max-height:calc(100svh - 64px);
+      }
+      body.panel-closed .control-panel{transform:translateX(calc(100% + 30px))}
+      .panel-head p{display:none}
+      textarea{min-height:58px}
+      .button-grid{grid-template-columns:1fr 1fr;margin-bottom:12px}
+      .params{gap:8px}
+      .slider{grid-template-columns:72px 1fr 30px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,
+      *::before,
+      *::after{
+        animation:none!important;
+        transition:none!important;
+        scroll-behavior:auto!important;
+      }
+      body::before{animation:none!important}
+      .smoke-haze{animation:none!important}
+      h1{animation:none!important}
+    }
+  </style>
+</head>
+<body>
+  <a href="#wishInput" class="skip-link">skip to furnace controls</a>
+  <canvas id="furnaceCanvas" aria-hidden="true"></canvas>
+  <div class="smoke-haze" aria-hidden="true"></div>
+  <img class="ghost-logo" src="./Stw_Logo.png" alt="" aria-hidden="true" loading="eager" decoding="async" />
+
+  <header class="topbar" aria-label="wish furnace navigation">
+    <a class="index-link" href="index.html" aria-label="return to Springtime Wishes index">index</a>
+    <button class="panel-toggle" id="panelToggle" type="button" aria-expanded="true" aria-controls="controlPanel">parameters</button>
+  </header>
+
+  <main id="mainContent" aria-labelledby="pageTitle">
+    <p id="furnaceDescription" class="sr-only">
+      Wish furnace is an experimental Springtime Wishes chamber. Type a wish, memory, private request, or body trace. The canvas consumes the text and transforms it into ash, thread, pressure rings, and an abstract garment relic.
+    </p>
+
+    <section class="copy-block" aria-describedby="furnaceDescription">
+      <p class="eyebrow">springtime wishes / private transformation chamber</p>
+      <h1 id="pageTitle">wish furnace</h1>
+      <p class="statement">write a wish. let it burn into garment, shadow, and trace.</p>
+    </section>
+
+    <p class="furnace-caption" aria-hidden="true">furnace / combustion / pressure / text becoming garment / wish becoming relic</p>
+
+    <aside class="ledger" aria-label="furnace state ledger">
+      <div><span>seed</span><strong id="ledgerSeed">—</strong></div>
+      <div><span>phrase</span><strong id="ledgerPhrase">—</strong></div>
+      <div><span>heat</span><strong id="ledgerHeat">—</strong></div>
+      <div><span>material</span><strong id="ledgerMaterial">—</strong></div>
+      <div><span>phase</span><strong id="ledgerPhase">—</strong></div>
+    </aside>
+
+    <section class="control-panel" id="controlPanel" aria-labelledby="controlsTitle">
+      <div class="panel-head">
+        <div>
+          <h2 id="controlsTitle">furnace instruments</h2>
+          <p>letters enter as request. pressure returns them as relic.</p>
+        </div>
+        <button class="close-panel" id="closePanel" type="button" aria-label="close controls">×</button>
+      </div>
+
+      <div class="panel-scroll">
+        <div class="field-group">
+          <label for="wishInput">wish / request / garment memory</label>
+          <textarea id="wishInput" maxlength="180" spellcheck="true" autocomplete="off" placeholder="make a garment for what survived"></textarea>
+        </div>
+
+        <div class="button-grid" aria-label="furnace actions">
+          <button class="instrument-button primary" id="burnBtn" type="button">burn wish</button>
+          <button class="instrument-button" id="stokeBtn" type="button">stoke</button>
+          <button class="instrument-button" id="stillBtn" type="button">still</button>
+          <button class="instrument-button" id="randomBtn" type="button">random wish</button>
+          <button class="instrument-button" id="copyBtn" type="button">copy state</button>
+          <button class="instrument-button" id="resetBtn" type="button">reset</button>
+          <button class="instrument-button" id="hideTextBtn" type="button">hide text</button>
+          <a class="instrument-button" id="requestLink" href="mailto:contact@springtimewishes.com?subject=private%20request%20/%20wish%20furnace">private request</a>
+        </div>
+
+        <div class="params" aria-label="furnace parameters">
+          <div class="slider">
+            <span class="slider-title">heat</span>
+            <input type="range" min="0" max="100" value="62" id="paramHeat" data-param="heat" aria-label="heat" />
+            <output for="paramHeat" id="outHeat">62</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">pressure</span>
+            <input type="range" min="0" max="100" value="54" id="paramPressure" data-param="pressure" aria-label="pressure" />
+            <output for="paramPressure" id="outPressure">54</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">ash</span>
+            <input type="range" min="0" max="100" value="58" id="paramAsh" data-param="ash" aria-label="ash" />
+            <output for="paramAsh" id="outAsh">58</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">melt</span>
+            <input type="range" min="0" max="100" value="64" id="paramMelt" data-param="melt" aria-label="melt" />
+            <output for="paramMelt" id="outMelt">64</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">thread</span>
+            <input type="range" min="0" max="100" value="70" id="paramThread" data-param="thread" aria-label="thread" />
+            <output for="paramThread" id="outThread">70</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">garment</span>
+            <input type="range" min="0" max="100" value="68" id="paramGarment" data-param="garment" aria-label="garment" />
+            <output for="paramGarment" id="outGarment">68</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">shadow</span>
+            <input type="range" min="0" max="100" value="80" id="paramShadow" data-param="shadow" aria-label="shadow" />
+            <output for="paramShadow" id="outShadow">80</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">rupture</span>
+            <input type="range" min="0" max="100" value="34" id="paramRupture" data-param="rupture" aria-label="rupture" />
+            <output for="paramRupture" id="outRupture">34</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">speed</span>
+            <input type="range" min="10" max="100" value="48" id="paramSpeed" data-param="speed" aria-label="speed" />
+            <output for="paramSpeed" id="outSpeed">48</output>
+          </div>
+          <div class="slider">
+            <span class="slider-title">render scale</span>
+            <input type="range" min="55" max="115" value="86" id="paramScale" data-param="scale" aria-label="render scale" />
+            <output for="paramScale" id="outScale">86</output>
+          </div>
+        </div>
+
+        <p class="panel-note">
+          same text, seed, and instruments restore the same broad relic. no sound is played. no request leaves this page unless you send one.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div class="state-toast" id="stateToast" role="status" aria-live="polite">state copied</div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("furnaceCanvas");
+      const ctx = canvas.getContext("2d", { alpha:false, desynchronized:true });
+      const wishInput = document.getElementById("wishInput");
+      const panelToggle = document.getElementById("panelToggle");
+      const closePanel = document.getElementById("closePanel");
+      const burnBtn = document.getElementById("burnBtn");
+      const stokeBtn = document.getElementById("stokeBtn");
+      const stillBtn = document.getElementById("stillBtn");
+      const randomBtn = document.getElementById("randomBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const hideTextBtn = document.getElementById("hideTextBtn");
+      const requestLink = document.getElementById("requestLink");
+      const toast = document.getElementById("stateToast");
+      const ledger = {
+        seed:document.getElementById("ledgerSeed"),
+        phrase:document.getElementById("ledgerPhrase"),
+        heat:document.getElementById("ledgerHeat"),
+        material:document.getElementById("ledgerMaterial"),
+        phase:document.getElementById("ledgerPhase")
+      };
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      const memory = navigator.deviceMemory || 4;
+      const cores = navigator.hardwareConcurrency || 4;
+      const lowPower = reduceMotion || coarsePointer || memory <= 4 || cores <= 4 || Math.min(screen.width, screen.height) < 760;
+
+      const defaultPhrase = "make a garment for what survived";
+      const defaults = {
+        heat:62,
+        pressure:54,
+        ash:58,
+        melt:64,
+        thread:70,
+        garment:68,
+        shadow:80,
+        rupture:34,
+        speed:48,
+        scale:86
+      };
+      const randomWishes = [
+        "make a garment for what survived",
+        "let the body return as shadow",
+        "a sleeve for a memory I cannot keep",
+        "burn the request into cloth",
+        "make softness behave like armor",
+        "a private fitting for the absent body",
+        "turn the wish into seam",
+        "not a dress, a trace",
+        "something survived the fire",
+        "spring returns through dark matter"
+      ];
+
+      const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+      const lerp = (a,b,t) => a + (b-a) * t;
+      const easeOut = t => 1 - Math.pow(1 - clamp(t,0,1), 3);
+      const easeInOut = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+
+      function hashString(str){
+        let h = 2166136261 >>> 0;
+        for(let i=0;i<str.length;i++){
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        h += h << 13; h ^= h >>> 7;
+        h += h << 3; h ^= h >>> 17;
+        h += h << 5;
+        return h >>> 0;
+      }
+      function mulberry32(seed){
+        return function(){
+          let t = seed += 0x6D2B79F5;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      function makeSeed(){
+        return (Date.now().toString(36) + hashString(String(Math.random())).toString(36)).slice(-9);
+      }
+
+      let W = 1;
+      let H = 1;
+      let dpr = 1;
+      let rafId = 0;
+      let lastTime = 0;
+      let frameCarry = 0;
+      let hidden = document.hidden;
+      let pageAlive = true;
+      let paused = false;
+      let lastLedger = 0;
+      let stillNeedsRender = true;
+
+      const state = {
+        text:defaultPhrase,
+        seed:makeSeed(),
+        phase:"primed",
+        phaseTime:0,
+        cycleStart:0,
+        activeCycle:false,
+        intake:0,
+        burnEnergy:.12,
+        copied:false,
+        params:{...defaults}
+      };
+
+      const core = {x:0,y:0,w:0,h:0,innerW:0,innerH:0};
+      let ashParticles = [];
+      let embers = [];
+      let glyphs = [];
+      let rings = [];
+      let scratches = [];
+      let relic = null;
+      let pointer = {x:.5,y:.5,tx:.5,ty:.5,down:false,bloom:0};
+      let materialName = "oxidized veil / ember seam";
+      let chamberSeed = 7;
+
+      const paramInputs = Array.from(document.querySelectorAll("[data-param]"));
+
+      function parseHash(){
+        if(!location.hash || location.hash.length < 2) return;
+        const raw = location.hash.slice(1);
+        const params = new URLSearchParams(raw);
+        const phrase = params.get("w");
+        const seed = params.get("s");
+        if(phrase) state.text = phrase.slice(0,180);
+        if(seed) state.seed = seed.slice(0,32);
+        Object.keys(defaults).forEach(key => {
+          const value = Number(params.get(key));
+          if(Number.isFinite(value)){
+            if(key === "speed") state.params[key] = clamp(value,10,100);
+            else if(key === "scale") state.params[key] = clamp(value,55,115);
+            else state.params[key] = clamp(value,0,100);
+          }
+        });
+        if(params.get("hidden") === "1"){
+          document.body.classList.add("is-text-hidden");
+          hideTextBtn.textContent = "show text";
+        }
+      }
+
+      function updateDOMFromState(){
+        wishInput.value = state.text;
+        paramInputs.forEach(input => {
+          const key = input.dataset.param;
+          input.value = String(state.params[key]);
+          const out = document.getElementById("out" + key.charAt(0).toUpperCase() + key.slice(1));
+          if(out) out.value = String(state.params[key]);
+        });
+        requestLink.href = "mailto:contact@springtimewishes.com?subject=private%20request%20/%20wish%20furnace&body=" + encodeURIComponent("wish furnace state\n\nphrase: " + state.text + "\nseed: " + state.seed + "\nmaterial: " + materialName + "\n");
+      }
+
+      function stateToHash(){
+        const params = new URLSearchParams();
+        params.set("w", state.text.slice(0,180));
+        params.set("s", state.seed);
+        Object.keys(defaults).forEach(key => params.set(key, String(Math.round(state.params[key]))));
+        if(document.body.classList.contains("is-text-hidden")) params.set("hidden","1");
+        return "#" + params.toString();
+      }
+
+      function showToast(message){
+        toast.textContent = message;
+        toast.classList.add("is-visible");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove("is-visible"), 1700);
+      }
+
+      function isMobileLayout(){
+        return window.matchMedia("(max-width: 780px)").matches;
+      }
+
+      function setPanel(open){
+        document.body.classList.toggle("panel-closed", !open);
+        panelToggle.setAttribute("aria-expanded", String(open));
+      }
+
+      function updateCore(){
+        const mobile = W < 760;
+        const landscapeSmall = H < 520 && W > H;
+        const panelBias = mobile ? 0 : (W > 1200 ? -42 : -18);
+        core.x = W * (mobile ? .5 : .52) + panelBias;
+        core.y = H * (mobile ? .45 : .50) + (landscapeSmall ? -12 : 0);
+        core.w = clamp(W * (mobile ? .82 : .52), 280, 820);
+        core.h = clamp(H * (mobile ? .54 : .66), 260, 650);
+        if(landscapeSmall){
+          core.w = clamp(W * .44, 300, 520);
+          core.h = clamp(H * .7, 220, 380);
+          core.x = W * .50;
+          core.y = H * .48;
+        }
+        core.innerW = core.w * .58;
+        core.innerH = core.h * .66;
+      }
+
+      function resizeCanvas(){
+        const scale = lowPower ? Math.min(state.params.scale / 100, .85) : state.params.scale / 100;
+        dpr = clamp((window.devicePixelRatio || 1) * scale, .55, lowPower ? 1.05 : 1.65);
+        W = Math.max(1, Math.floor(window.innerWidth));
+        H = Math.max(1, Math.floor(window.innerHeight));
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+        canvas.style.width = W + "px";
+        canvas.style.height = H + "px";
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        updateCore();
+        rebuildAtmosphere();
+        stillNeedsRender = true;
+      }
+
+      function rebuildAtmosphere(){
+        chamberSeed = hashString(state.seed + state.text + "chamber");
+        const rng = mulberry32(chamberSeed);
+        const ashCount = reduceMotion ? 0 : Math.floor((lowPower ? 76 : 165) * (.55 + state.params.ash / 100));
+        ashParticles = Array.from({length:ashCount}, () => ({
+          x:rng() * W,
+          y:rng() * H,
+          z:.25 + rng() * 1.5,
+          r:.15 + rng() * 1.6,
+          a:.035 + rng() * .18,
+          vx:(rng() - .5) * (.08 + rng() * .16),
+          vy:(rng() - .42) * (.07 + rng() * .18),
+          phase:rng() * Math.PI * 2,
+          scratch:rng() > .91
+        }));
+        const emberCount = reduceMotion ? 0 : Math.floor((lowPower ? 10 : 24) * (.35 + state.params.heat / 120));
+        embers = Array.from({length:emberCount}, () => makeEmber(rng));
+        scratches = Array.from({length:lowPower ? 28 : 64}, () => ({
+          x:(rng() - .5) * core.w,
+          y:(rng() - .5) * core.h,
+          len:10 + rng() * 70,
+          rot:(rng() - .5) * 1.4,
+          a:.035 + rng() * .11,
+          hot:rng() > .88
+        }));
+      }
+
+      function makeEmber(rng){
+        const angle = rng() * Math.PI * 2;
+        const radius = Math.sqrt(rng()) * core.innerW * .34;
+        return {
+          x:core.x + Math.cos(angle) * radius,
+          y:core.y + Math.sin(angle) * radius * .72 + core.innerH * .1,
+          vx:(rng() - .5) * .32,
+          vy:-(.18 + rng() * .52),
+          r:.55 + rng() * 2.1,
+          life:.4 + rng() * 1,
+          age:rng(),
+          drift:rng() * Math.PI * 2
+        };
+      }
+
+      function rebuildRelic(){
+        const key = state.text + "|" + state.seed + "|" + Object.values(state.params).join(",");
+        const rng = mulberry32(hashString(key));
+        const textLen = Math.max(1, state.text.trim().length);
+        const garment = state.params.garment / 100;
+        const pressure = state.params.pressure / 100;
+        const melt = state.params.melt / 100;
+        const rupture = state.params.rupture / 100;
+        const thread = state.params.thread / 100;
+        const charTone = Array.from(state.text).reduce((a,c)=>a+c.charCodeAt(0),0) % 9;
+
+        const vertical = 285 + garment * 142 + Math.min(textLen,130) * .72;
+        const shoulder = 52 + garment * 82 + (charTone % 3) * 10;
+        const waist = 31 + garment * 42 - pressure * 18;
+        const hem = 80 + garment * 105 + (textLen % 17) * 1.2;
+        const sleeve = (state.text.match(/[aeiou]/gi) || []).length / Math.max(1,textLen);
+        const absence = 16 + pressure * 24 + (charTone % 4) * 3;
+
+        const left = [];
+        const right = [];
+        const detail = 21;
+        for(let i=0;i<detail;i++){
+          const t = i / (detail - 1);
+          const y = lerp(-vertical*.48, vertical*.52, t);
+          const shoulderBell = Math.exp(-Math.pow((t - .16) / .13, 2));
+          const waistPinch = Math.exp(-Math.pow((t - .50) / .17, 2));
+          const hemBell = Math.exp(-Math.pow((t - .88) / .20, 2));
+          const collarCut = Math.exp(-Math.pow((t - .02) / .08, 2));
+          let half = 42 + shoulder * shoulderBell - waist * waistPinch + hem * hemBell - collarCut * absence;
+          half += (Math.sin(t * Math.PI * 2.4 + charTone) * 8 + (rng() - .5) * 18) * melt;
+          half *= lerp(1.08, .72, pressure * .45);
+          const tear = (rng() - .5) * rupture * 38;
+          left.push({x:-half + tear, y:y + (rng()-.5) * rupture * 20, t});
+          right.push({x:half + (rng()-.5)*rupture*34, y:y + (rng()-.5) * rupture * 20, t});
+        }
+
+        const seams = [];
+        const seamCount = Math.floor(3 + thread * 10 + garment * 4);
+        for(let i=0;i<seamCount;i++){
+          const t = rng();
+          const y = lerp(-vertical*.40, vertical*.46, t);
+          const width = lerp(30, hem*.7, Math.pow(t,.9));
+          const side = rng() > .45 ? 1 : -1;
+          seams.push({
+            x1:(rng()-.5) * 22,
+            y1:y - 28 - rng()*40,
+            x2:side * (width + rng()*shoulder*.55),
+            y2:y + (rng()-.5)*82,
+            c1:(rng()-.5)*80,
+            c2:side*(30 + rng()*90),
+            a:.12 + rng() * .28
+          });
+        }
+
+        const hems = [];
+        const hemCount = Math.floor(3 + garment * 6 + melt * 4);
+        for(let i=0;i<hemCount;i++){
+          const t = .68 + rng() * .30;
+          hems.push({
+            y:lerp(-vertical*.48, vertical*.52, t),
+            x:(rng()-.5) * hem * 1.4,
+            w:hem * (.45 + rng() * .7),
+            wave:rng() * Math.PI * 2,
+            a:.08 + rng() * .18
+          });
+        }
+
+        const fractures = [];
+        const fractureCount = Math.floor(rupture * 10);
+        for(let i=0;i<fractureCount;i++){
+          const pts = [];
+          let x = (rng()-.5) * hem * 1.1;
+          let y = lerp(-vertical*.34, vertical*.50, rng());
+          const len = 3 + Math.floor(rng() * 5);
+          for(let k=0;k<len;k++){
+            pts.push({x,y});
+            x += (rng()-.5) * 52;
+            y += 18 + rng() * 34;
+          }
+          fractures.push({pts,a:.12 + rng() * .18});
+        }
+
+        const words = ["oxidized","molten","ash-black","bone-lit","smoked","compressed","torn","residual","private"];
+        const forms = ["veil","bodice","sleeve","hem","trace","relic","seam","absence","cloth"];
+        const residues = ["ember seam","body hollow","pressure cloth","dark residue","wish signal","fitting ash","shadow request","molten archive","burnt thread"];
+        materialName = words[hashString(key + "a") % words.length] + " " + forms[hashString(key + "b") % forms.length] + " / " + residues[hashString(key + "c") % residues.length];
+
+        relic = {left,right,seams,hems,fractures,vertical,garment,pressure,melt,rupture,thread,charTone,sleeve};
+      }
+
+      function spawnGlyphs(){
+        const phrase = state.text.trim() || defaultPhrase;
+        const rng = mulberry32(hashString(phrase + state.seed + "glyph"));
+        const chars = Array.from(phrase).slice(0,92);
+        glyphs = chars.map((char, i) => {
+          const line = Math.floor(i / 24);
+          const col = i % 24;
+          const startX = core.x - Math.min(340, chars.length * 5.2) / 2 + col * 13 + (rng()-.5)*12;
+          const startY = core.y - core.innerH * .62 - line * 22 + (rng()-.5)*14;
+          const tx = core.x + (rng()-.5) * core.innerW * .48;
+          const ty = core.y + (rng()-.5) * core.innerH * .38;
+          return {
+            char:char === " " ? "·" : char,
+            x:startX,
+            y:startY,
+            sx:startX,
+            sy:startY,
+            tx,
+            ty,
+            vx:(rng()-.5)*.9,
+            vy:(rng()-.2)*.35,
+            rot:(rng()-.5)*.7,
+            spin:(rng()-.5)*1.8,
+            age:0,
+            life:3.3 + rng()*2.4,
+            heat:.4 + rng()*.9,
+            size:10 + rng()*9,
+            ash:rng() > .72
+          };
+        });
+      }
+
+      function burnWish(){
+        state.text = (wishInput.value.trim() || defaultPhrase).slice(0,180);
+        state.activeCycle = true;
+        state.cycleStart = performance.now();
+        state.phase = "intake";
+        state.phaseTime = 0;
+        state.intake = 1;
+        state.burnEnergy = 1.2;
+        state.seed = state.seed || makeSeed();
+        rebuildRelic();
+        spawnGlyphs();
+        pulse(.9 + state.params.pressure/150);
+        updateDOMFromState();
+        if(reduceMotion){
+          state.activeCycle = false;
+          state.phase = "relic apparition";
+          glyphs = [];
+          stillNeedsRender = true;
+          renderStill();
+        }else{
+          ensureLoop();
+        }
+      }
+
+      function pulse(strength){
+        const count = 2 + Math.floor(state.params.pressure / 42);
+        for(let i=0;i<count;i++){
+          rings.push({
+            x:core.x,
+            y:core.y,
+            age:-i*.18,
+            life:2.8 + i*.38,
+            strength:strength * (1 - i*.11),
+            wobble:Math.random() * Math.PI * 2
+          });
+        }
+        const rng = mulberry32(hashString(state.seed + Date.now()));
+        const extra = lowPower ? 5 : 15;
+        for(let i=0;i<extra;i++) embers.push(makeEmber(rng));
+      }
+
+      function stoke(){
+        state.params.heat = clamp(state.params.heat + 8,0,100);
+        state.params.pressure = clamp(state.params.pressure + 3,0,100);
+        state.burnEnergy = Math.min(1.6, state.burnEnergy + .38);
+        syncParamInputs();
+        pulse(.75);
+        rebuildRelic();
+        showToast("heat increased");
+        stillNeedsRender = true;
+        if(reduceMotion) renderStill(); else ensureLoop();
+      }
+
+      function syncParamInputs(){
+        paramInputs.forEach(input => {
+          const key = input.dataset.param;
+          input.value = String(Math.round(state.params[key]));
+          const out = document.getElementById("out" + key.charAt(0).toUpperCase() + key.slice(1));
+          if(out) out.value = String(Math.round(state.params[key]));
+        });
+      }
+
+      function resetState(){
+        state.text = defaultPhrase;
+        state.seed = makeSeed();
+        state.phase = "primed";
+        state.phaseTime = 0;
+        state.activeCycle = false;
+        state.burnEnergy = .12;
+        state.params = {...defaults};
+        glyphs = [];
+        rings = [];
+        document.body.classList.remove("is-text-hidden");
+        hideTextBtn.textContent = "hide text";
+        history.replaceState(null,"",location.pathname + location.search);
+        updateDOMFromState();
+        resizeCanvas();
+        rebuildRelic();
+        showToast("furnace reset");
+        stillNeedsRender = true;
+        if(reduceMotion) renderStill(); else ensureLoop();
+      }
+
+      function randomWish(){
+        const rng = mulberry32(hashString(state.seed + Date.now() + "random"));
+        state.text = randomWishes[Math.floor(rng() * randomWishes.length)] || randomWishes[0];
+        wishInput.value = state.text;
+        state.seed = makeSeed();
+        state.phase = "primed";
+        state.burnEnergy = .32;
+        rebuildRelic();
+        pulse(.35);
+        updateDOMFromState();
+        showToast("wish inserted");
+        stillNeedsRender = true;
+        if(reduceMotion) renderStill(); else ensureLoop();
+      }
+
+      function copyState(){
+        state.text = (wishInput.value.trim() || defaultPhrase).slice(0,180);
+        const hash = stateToHash();
+        history.replaceState(null, "", location.pathname + location.search + hash);
+        const url = location.href;
+        const done = () => {
+          showToast("state copied");
+          state.copied = true;
+          updateLedger(performance.now());
+        };
+        if(navigator.clipboard && window.isSecureContext){
+          navigator.clipboard.writeText(url).then(done).catch(() => fallbackCopy(url, done));
+        }else{
+          fallbackCopy(url, done);
+        }
+      }
+
+      function fallbackCopy(text, done){
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.setAttribute("readonly","");
+        area.style.position = "fixed";
+        area.style.left = "-9999px";
+        document.body.appendChild(area);
+        area.select();
+        try{ document.execCommand("copy"); }catch(e){}
+        document.body.removeChild(area);
+        done();
+      }
+
+      function togglePause(){
+        paused = !paused;
+        stillBtn.textContent = paused ? "resume" : "still";
+        state.phase = paused ? "stilled" : (state.activeCycle ? state.phase : "cooling");
+        if(!paused) ensureLoop();
+        else {
+          stillNeedsRender = true;
+          renderStill();
+        }
+        updateLedger(performance.now());
+      }
+
+      function updatePhase(now){
+        if(!state.activeCycle){
+          if(state.burnEnergy > .14) state.burnEnergy *= .985;
+          return;
+        }
+        const tempo = lerp(.72,1.62,state.params.speed/100);
+        const elapsed = ((now - state.cycleStart) / 1000) * tempo;
+        state.phaseTime = elapsed;
+        if(elapsed < 1.1) state.phase = "intake";
+        else if(elapsed < 2.4) state.phase = "ignition";
+        else if(elapsed < 4.4) state.phase = "melt";
+        else if(elapsed < 6.15) state.phase = "ash";
+        else if(elapsed < 9.2) state.phase = "relic apparition";
+        else if(elapsed < 12.5) state.phase = "cooling";
+        else {
+          state.phase = "cooling";
+          state.activeCycle = false;
+        }
+        const energyTarget = state.activeCycle ? (state.phase === "ignition" ? 1.22 : state.phase === "melt" ? 1.06 : state.phase === "ash" ? .72 : state.phase === "relic apparition" ? .54 : .32) : .18;
+        state.burnEnergy = lerp(state.burnEnergy, energyTarget, .035);
+      }
+
+      function relicVisibility(){
+        if(!state.activeCycle) return .82;
+        const e = state.phaseTime;
+        if(e < 2.2) return .08 + e * .06;
+        if(e < 5.4) return lerp(.16,.62,(e-2.2)/3.2);
+        if(e < 8.8) return lerp(.62,1,(e-5.4)/3.4);
+        return lerp(1,.82,Math.min(1,(e-8.8)/3.4));
+      }
+
+      function updateLedger(now){
+        if(now - lastLedger < 190 && !state.copied) return;
+        lastLedger = now;
+        const phrase = (state.text || defaultPhrase).trim();
+        ledger.seed.textContent = state.seed || "unseeded";
+        ledger.phrase.textContent = phrase.length > 34 ? phrase.slice(0,31) + "…" : phrase;
+        ledger.heat.textContent = String(Math.round(state.params.heat + state.burnEnergy * 22)).padStart(2,"0") + " / pressure " + Math.round(state.params.pressure);
+        ledger.material.textContent = materialName;
+        ledger.phase.textContent = state.phase;
+        state.copied = false;
+      }
+
+      function updateParticles(dt){
+        pointer.x = lerp(pointer.x, pointer.tx, .08);
+        pointer.y = lerp(pointer.y, pointer.ty, .08);
+        pointer.bloom *= .94;
+
+        const speed = lerp(.55,1.75,state.params.speed/100);
+        const heat = state.params.heat / 100;
+        const ash = state.params.ash / 100;
+        const airflowX = (pointer.x - .5) * .18 + Math.sin(performance.now() * .00018) * .035;
+        const airflowY = (pointer.y - .5) * .11;
+
+        for(const p of ashParticles){
+          p.phase += dt * .00045 * speed;
+          p.x += (p.vx + airflowX / p.z) * dt * .06 * speed;
+          p.y += (p.vy - heat * .035 - ash * .018 + airflowY * .05) * dt * .06 * speed;
+          if(p.y < -20){ p.y = H + 20; p.x = Math.random() * W; }
+          if(p.y > H + 30){ p.y = -20; p.x = Math.random() * W; }
+          if(p.x < -30) p.x = W + 30;
+          if(p.x > W + 30) p.x = -30;
+        }
+
+        for(const e of embers){
+          e.age += dt * .00028 * speed * (1 + heat);
+          e.drift += dt * .001;
+          e.x += (e.vx + Math.sin(e.drift) * .13 + airflowX * 1.4) * dt * .08 * speed;
+          e.y += (e.vy - heat * .28 - state.burnEnergy * .14) * dt * .08 * speed;
+          if(e.age > e.life || e.y < core.y - core.innerH * .68 || e.x < -30 || e.x > W + 30){
+            const rng = Math.random;
+            Object.assign(e, makeEmber(rng));
+            e.age = 0;
+          }
+        }
+
+        for(const g of glyphs){
+          g.age += dt * .001 * speed * (.8 + state.params.heat/120);
+          const t = clamp(g.age / g.life, 0, 1);
+          const e = easeInOut(t);
+          const pressurePull = state.params.pressure / 100;
+          const swirl = Math.sin(t * Math.PI * 5 + g.heat * 8) * (1 - t) * 28;
+          g.x = lerp(g.sx, g.tx, e) + swirl * (.4 + pressurePull);
+          g.y = lerp(g.sy, g.ty, e) + Math.sin(t * 8 + g.heat) * 16 * (1 - t);
+          g.rot += g.spin * dt * .0007 * (1 + t);
+        }
+        glyphs = glyphs.filter(g => g.age < g.life + .2);
+
+        for(const r of rings) r.age += dt * .001 * speed;
+        rings = rings.filter(r => r.age < r.life);
+      }
+
+      function roundedRectPath(c,x,y,w,h,r){
+        const rr = Math.min(r, w/2, h/2);
+        c.beginPath();
+        c.moveTo(x+rr,y);
+        c.lineTo(x+w-rr,y);
+        c.quadraticCurveTo(x+w,y,x+w,y+rr);
+        c.lineTo(x+w,y+h-rr);
+        c.quadraticCurveTo(x+w,y+h,x+w-rr,y+h);
+        c.lineTo(x+rr,y+h);
+        c.quadraticCurveTo(x,y+h,x,y+h-rr);
+        c.lineTo(x,y+rr);
+        c.quadraticCurveTo(x,y,x+rr,y);
+      }
+
+      function drawBackground(now){
+        const t = now * .001;
+        const shadow = state.params.shadow / 100;
+        const heat = state.params.heat / 100;
+        const grad = ctx.createRadialGradient(core.x, core.y, 30, core.x, core.y, Math.max(W,H)*.82);
+        grad.addColorStop(0, `rgba(${34 + heat*38},${18 + heat*8},${10 + heat*2},1)`);
+        grad.addColorStop(.22, `rgba(${13 + heat*13},${9},${6},1)`);
+        grad.addColorStop(.55, `rgba(${3},${3},${3},1)`);
+        grad.addColorStop(1, "#000");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,W,H);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const haze = ctx.createRadialGradient(core.x + Math.sin(t*.37)*24, core.y - core.h*.18, 8, core.x, core.y, core.w * .68);
+        haze.addColorStop(0, `rgba(129,45,29,${.08 + heat*.09 + state.burnEnergy*.04})`);
+        haze.addColorStop(.38, `rgba(151,102,52,${.025 + heat*.035})`);
+        haze.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = haze;
+        ctx.fillRect(0,0,W,H);
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalAlpha = .62 + shadow * .25;
+        const vignette = ctx.createRadialGradient(W*.52,H*.48,Math.min(W,H)*.14,W*.5,H*.5,Math.max(W,H)*.72);
+        vignette.addColorStop(0,"rgba(0,0,0,0)");
+        vignette.addColorStop(.62,"rgba(0,0,0,.38)");
+        vignette.addColorStop(1,"rgba(0,0,0,.94)");
+        ctx.fillStyle = vignette;
+        ctx.fillRect(0,0,W,H);
+        ctx.restore();
+      }
+
+      function drawChamber(now){
+        const t = now * .001;
+        const heat = state.params.heat / 100;
+        const melt = state.params.melt / 100;
+        const pressure = state.params.pressure / 100;
+        const shadow = state.params.shadow / 100;
+        const breath = Math.sin(t * .82) * (2 + heat * 7 + state.burnEnergy * 6);
+        const fw = core.w + breath * .4;
+        const fh = core.h + breath * .2;
+        const x = core.x - fw/2;
+        const y = core.y - fh/2;
+        const radius = Math.min(42, fw*.08);
+
+        ctx.save();
+        ctx.translate(Math.sin(t*.33)*melt*2, Math.cos(t*.27)*melt*1.4);
+
+        const metal = ctx.createLinearGradient(x,y,x+fw,y+fh);
+        metal.addColorStop(0,"rgba(0,0,0,.86)");
+        metal.addColorStop(.25,`rgba(${28 + heat*9},${18},${12},.88)`);
+        metal.addColorStop(.5,"rgba(4,3,2,.95)");
+        metal.addColorStop(.72,`rgba(${32 + heat*15},${19},${11},.82)`);
+        metal.addColorStop(1,"rgba(0,0,0,.92)");
+        roundedRectPath(ctx,x,y,fw,fh,radius);
+        ctx.fillStyle = metal;
+        ctx.shadowColor = `rgba(0,0,0,${.8 + shadow*.16})`;
+        ctx.shadowBlur = 70;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = "rgba(221,210,191,.10)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        const rim = ctx.createRadialGradient(core.x,core.y,core.innerW*.08,core.x,core.y,core.innerW*.78);
+        rim.addColorStop(0,`rgba(128,46,30,${.16 + heat*.12 + state.burnEnergy*.06})`);
+        rim.addColorStop(.38,"rgba(10,7,5,.82)");
+        rim.addColorStop(.74,"rgba(0,0,0,.95)");
+        rim.addColorStop(1,"rgba(0,0,0,1)");
+        ctx.beginPath();
+        ctx.ellipse(core.x,core.y,core.innerW*.62 + pressure*22,core.innerH*.53 - pressure*8,0,0,Math.PI*2);
+        ctx.fillStyle = rim;
+        ctx.fill();
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const chamber = ctx.createRadialGradient(core.x,core.y + core.innerH*.08,0,core.x,core.y,core.innerW*.58);
+        chamber.addColorStop(0,`rgba(219,196,146,${.09 + heat*.1 + state.burnEnergy*.09})`);
+        chamber.addColorStop(.18,`rgba(126,41,27,${.14 + heat*.18 + state.burnEnergy*.12})`);
+        chamber.addColorStop(.45,`rgba(55,20,14,${.12 + heat*.12})`);
+        chamber.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle = chamber;
+        ctx.beginPath();
+        ctx.ellipse(core.x,core.y,core.innerW*.55,core.innerH*.48,0,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalAlpha = .5;
+        ctx.strokeStyle = `rgba(221,210,191,${.055 + heat*.035})`;
+        ctx.lineWidth = 1;
+        for(const s of scratches){
+          const sx = core.x + s.x;
+          const sy = core.y + s.y;
+          if(Math.pow(s.x/(core.w*.5),2) + Math.pow(s.y/(core.h*.5),2) < .31) continue;
+          ctx.save();
+          ctx.translate(sx,sy);
+          ctx.rotate(s.rot + Math.sin(t*.2 + s.x)*.03);
+          ctx.globalAlpha = s.a * (s.hot ? 1.5 + heat : 1);
+          ctx.strokeStyle = s.hot ? `rgba(164,74,42,${s.a + heat*.08})` : `rgba(221,210,191,${s.a})`;
+          ctx.beginPath();
+          ctx.moveTo(-s.len*.5,0);
+          ctx.lineTo(s.len*.5,0);
+          ctx.stroke();
+          ctx.restore();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalAlpha = .52 + heat*.16;
+        ctx.strokeStyle = `rgba(64,29,20,${.48 + heat*.12})`;
+        ctx.lineWidth = 2;
+        for(let i=0;i<4;i++){
+          ctx.beginPath();
+          ctx.ellipse(core.x,core.y,core.innerW*(.66+i*.055),core.innerH*(.56+i*.045),0,0,Math.PI*2);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.restore();
+      }
+
+      function drawAsh(now){
+        const heat = state.params.heat / 100;
+        const ash = state.params.ash / 100;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for(const p of ashParticles){
+          const nearCore = Math.max(0, 1 - Math.hypot(p.x-core.x, p.y-core.y) / (core.w*.82));
+          const flicker = .62 + Math.sin(p.phase + now*.001)*.38;
+          const alpha = p.a * (.48 + ash*.85) * flicker * (1 + nearCore*.45);
+          if(p.scratch){
+            ctx.strokeStyle = `rgba(221,210,191,${alpha*.48})`;
+            ctx.lineWidth = Math.max(.35,p.r*.4);
+            ctx.beginPath();
+            ctx.moveTo(p.x,p.y);
+            ctx.lineTo(p.x + 3 + p.z*8, p.y + 14 + p.z*24);
+            ctx.stroke();
+          }else{
+            ctx.fillStyle = `rgba(${180 + heat*34},${164 + heat*17},${136},${alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r / p.z,0,Math.PI*2);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawPressureRings(now){
+        const pressure = state.params.pressure / 100;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for(const r of rings){
+          if(r.age < 0) continue;
+          const t = clamp(r.age / r.life, 0, 1);
+          const alpha = (1 - t) * (.18 + pressure*.24) * r.strength;
+          const radiusX = core.innerW * (.18 + t * (.82 - pressure*.18));
+          const radiusY = core.innerH * (.14 + t * (.66 - pressure*.10));
+          ctx.strokeStyle = `rgba(221,210,191,${alpha})`;
+          ctx.lineWidth = Math.max(.45, 1.3 - t*.8);
+          ctx.beginPath();
+          ctx.ellipse(r.x, r.y, radiusX, radiusY, Math.sin(r.wobble + now*.00025)*.03, 0, Math.PI*2);
+          ctx.stroke();
+          if(pressure > .56){
+            ctx.strokeStyle = `rgba(151,58,38,${alpha*.8})`;
+            ctx.beginPath();
+            ctx.ellipse(r.x, r.y, radiusX*.72, radiusY*.72, 0, 0, Math.PI*2);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawGlyphs(){
+        const heat = state.params.heat / 100;
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "16px 'Aktiv Grotesk', sans-serif";
+        ctx.globalCompositeOperation = "screen";
+        for(const g of glyphs){
+          const t = clamp(g.age / g.life, 0, 1);
+          const alpha = Math.pow(1 - t, .75);
+          ctx.save();
+          ctx.translate(g.x,g.y);
+          ctx.rotate(g.rot);
+          if(t < .58){
+            ctx.font = `${g.size * (1 + heat*.2)}px 'Aktiv Grotesk', sans-serif`;
+            ctx.fillStyle = t > .28 ? `rgba(226,137,83,${alpha*.64})` : `rgba(221,210,191,${alpha*.78})`;
+            ctx.shadowColor = `rgba(143,48,36,${alpha * heat})`;
+            ctx.shadowBlur = 10 + heat * 18;
+            ctx.fillText(g.char,0,0);
+          }else{
+            const len = g.size * (1 + (t-.58)*3);
+            ctx.strokeStyle = `rgba(224,191,135,${alpha*.38})`;
+            ctx.lineWidth = .7;
+            ctx.beginPath();
+            ctx.moveTo(-len*.4,0);
+            ctx.lineTo(len*.5,0);
+            ctx.stroke();
+            ctx.fillStyle = `rgba(221,210,191,${alpha*.32})`;
+            ctx.beginPath();
+            ctx.arc(0,0,Math.max(.35,g.size*.07),0,Math.PI*2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      function drawRelic(now){
+        if(!relic) return;
+        const alpha = relicVisibility();
+        const t = now * .001;
+        const melt = state.params.melt / 100;
+        const pressure = state.params.pressure / 100;
+        const heat = state.params.heat / 100;
+        const rupture = state.params.rupture / 100;
+        const thread = state.params.thread / 100;
+        const scale = Math.min(core.innerW / 360, core.innerH / 480) * (1.05 - pressure*.12);
+        const ox = Math.sin(t*.44 + relic.charTone) * melt * 4 + (pointer.x-.5) * 10 * pointer.bloom;
+        const oy = Math.cos(t*.39) * melt * 3 + (pointer.y-.5) * 7 * pointer.bloom;
+
+        ctx.save();
+        ctx.translate(core.x + ox, core.y + oy + core.innerH*.03);
+        ctx.scale(scale, scale);
+
+        const outline = ctx.createLinearGradient(0,-relic.vertical*.5,0,relic.vertical*.55);
+        outline.addColorStop(0,`rgba(221,210,191,${.085 * alpha})`);
+        outline.addColorStop(.22,`rgba(120,39,27,${(.18 + heat*.08) * alpha})`);
+        outline.addColorStop(.52,`rgba(8,6,5,${(.74 + state.params.shadow/300) * alpha})`);
+        outline.addColorStop(1,`rgba(70,29,22,${(.14 + heat*.1) * alpha})`);
+
+        ctx.beginPath();
+        const left = relic.left;
+        const right = relic.right;
+        ctx.moveTo(left[0].x, left[0].y);
+        for(let i=1;i<left.length;i++){
+          const prev = left[i-1], p = left[i];
+          const mx = (prev.x + p.x) / 2;
+          const my = (prev.y + p.y) / 2;
+          ctx.quadraticCurveTo(prev.x, prev.y, mx, my);
+        }
+        ctx.lineTo(left[left.length-1].x,left[left.length-1].y);
+        for(let i=right.length-1;i>=0;i--){
+          const p = right[i], next = right[Math.max(0,i-1)];
+          if(i === right.length-1) ctx.lineTo(p.x,p.y);
+          else{
+            const mx = (p.x + next.x) / 2;
+            const my = (p.y + next.y) / 2;
+            ctx.quadraticCurveTo(p.x,p.y,mx,my);
+          }
+        }
+        ctx.closePath();
+        ctx.fillStyle = outline;
+        ctx.shadowColor = `rgba(0,0,0,${.72 * alpha})`;
+        ctx.shadowBlur = 28;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.strokeStyle = `rgba(221,210,191,${(.24 + heat*.08) * alpha})`;
+        ctx.lineWidth = .82;
+        ctx.stroke();
+
+        ctx.strokeStyle = `rgba(156,61,39,${(.18 + heat*.16) * alpha})`;
+        ctx.lineWidth = .55;
+        ctx.setLineDash([9 + melt*18, 15 + pressure*9]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.globalAlpha = .32 * alpha;
+        ctx.beginPath();
+        ctx.ellipse(0, -relic.vertical*.22, 18 + pressure*34, 42 + relic.garment*34, 0, 0, Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+
+        drawRelicThreads(alpha, t, scale);
+        drawRelicHems(alpha, t);
+        drawRelicFractures(alpha, t, rupture);
+
+        ctx.restore();
+      }
+
+      function drawRelicThreads(alpha, t){
+        const thread = state.params.thread / 100;
+        if(thread <= .02) return;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        ctx.strokeStyle = `rgba(221,210,191,${(.11 + thread*.25) * alpha})`;
+        ctx.lineWidth = .65;
+        ctx.beginPath();
+        ctx.moveTo(0,-relic.vertical*.44);
+        ctx.bezierCurveTo(Math.sin(t)*8,-relic.vertical*.16,Math.cos(t*.7)*12,relic.vertical*.18,0,relic.vertical*.48);
+        ctx.stroke();
+
+        for(const s of relic.seams){
+          const pulse = .62 + Math.sin(t*1.6 + s.x2*.03) * .38;
+          ctx.strokeStyle = `rgba(222,205,171,${s.a * alpha * (.55 + thread) * pulse})`;
+          ctx.lineWidth = .42 + thread*.42;
+          ctx.beginPath();
+          ctx.moveTo(s.x1,s.y1);
+          ctx.bezierCurveTo(s.c1,s.y1+34,s.c2,s.y2-38,s.x2,s.y2);
+          ctx.stroke();
+
+          if(thread > .58){
+            ctx.fillStyle = `rgba(225,211,185,${s.a * alpha * .35})`;
+            ctx.beginPath();
+            ctx.arc(s.x2,s.y2,.9 + thread*.6,0,Math.PI*2);
+            ctx.fill();
+          }
+        }
+
+        if(thread > .34){
+          const lines = Math.floor(5 + thread * 9);
+          for(let i=0;i<lines;i++){
+            const y = lerp(-relic.vertical*.36,relic.vertical*.42,i/(lines-1));
+            const span = 34 + Math.sin(i*1.7 + relic.charTone) * 12 + thread * 92;
+            ctx.strokeStyle = `rgba(164,126,78,${(.025 + thread*.055) * alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(-span,y + Math.sin(t+i)*3);
+            ctx.bezierCurveTo(-span*.2,y+9,span*.2,y-9,span,y+Math.cos(t*.8+i)*3);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawRelicHems(alpha, t){
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for(const h of relic.hems){
+          const w = h.w * (1 + Math.sin(t*.7 + h.wave)*.035);
+          ctx.strokeStyle = `rgba(221,210,191,${h.a * alpha})`;
+          ctx.lineWidth = .45;
+          ctx.beginPath();
+          ctx.moveTo(h.x - w, h.y);
+          ctx.bezierCurveTo(h.x - w*.45, h.y + 12*Math.sin(t+h.wave), h.x + w*.45, h.y - 12*Math.cos(t+h.wave), h.x + w, h.y);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawRelicFractures(alpha, t, rupture){
+        if(rupture < .08) return;
+        ctx.save();
+        ctx.lineCap = "round";
+        for(const f of relic.fractures){
+          ctx.strokeStyle = `rgba(0,0,0,${(.42 + rupture*.3) * alpha})`;
+          ctx.lineWidth = 3.4 + rupture*2.4;
+          ctx.beginPath();
+          f.pts.forEach((p,i) => {
+            const ox = Math.sin(t*1.2 + i) * rupture * 2;
+            if(i===0) ctx.moveTo(p.x+ox,p.y);
+            else ctx.lineTo(p.x+ox,p.y);
+          });
+          ctx.stroke();
+          ctx.globalCompositeOperation = "screen";
+          ctx.strokeStyle = `rgba(220,199,158,${f.a * alpha})`;
+          ctx.lineWidth = .52;
+          ctx.stroke();
+          ctx.globalCompositeOperation = "source-over";
+        }
+        ctx.restore();
+      }
+
+      function drawEmbers(){
+        const heat = state.params.heat / 100;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for(const e of embers){
+          const t = clamp(e.age / e.life, 0, 1);
+          const alpha = Math.sin(t*Math.PI) * (.18 + heat*.34 + state.burnEnergy*.12);
+          const r = e.r * (1 + heat*.7) * (1 - t*.25);
+          const g = ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,r*7);
+          g.addColorStop(0,`rgba(240,218,174,${alpha*.5})`);
+          g.addColorStop(.22,`rgba(155,56,37,${alpha*.42})`);
+          g.addColorStop(1,"rgba(0,0,0,0)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(e.x,e.y,r*7,0,Math.PI*2);
+          ctx.fill();
+          ctx.fillStyle = `rgba(226,207,171,${alpha*.62})`;
+          ctx.beginPath();
+          ctx.arc(e.x,e.y,Math.max(.35,r*.42),0,Math.PI*2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawRupture(now){
+        const rupture = state.params.rupture / 100;
+        if(rupture < .12) return;
+        const active = state.phase === "melt" || state.phase === "ash" || state.phase === "relic apparition";
+        const alpha = (active ? .12 : .035) * rupture + pointer.bloom * .04;
+        if(alpha <= .01) return;
+        const rng = mulberry32(hashString(state.seed + Math.floor(now * .00023) + "rupture"));
+        const count = lowPower ? 2 : 4 + Math.floor(rupture * 5);
+        ctx.save();
+        for(let i=0;i<count;i++){
+          const startA = rng() * Math.PI * 2;
+          let x = core.x + Math.cos(startA) * core.innerW * (.2 + rng()*.32);
+          let y = core.y + Math.sin(startA) * core.innerH * (.1 + rng()*.28);
+          ctx.strokeStyle = `rgba(0,0,0,${alpha*3})`;
+          ctx.lineWidth = 4 + rupture * 5;
+          ctx.beginPath();
+          ctx.moveTo(x,y);
+          const steps = 4 + Math.floor(rng()*4);
+          for(let k=0;k<steps;k++){
+            x += (rng()-.5) * core.innerW * .22;
+            y += (rng()-.5) * core.innerH * .18;
+            ctx.lineTo(x,y);
+          }
+          ctx.stroke();
+          ctx.globalCompositeOperation = "screen";
+          ctx.strokeStyle = `rgba(221,210,191,${alpha*.72})`;
+          ctx.lineWidth = .55;
+          ctx.stroke();
+          ctx.globalCompositeOperation = "source-over";
+        }
+        ctx.restore();
+      }
+
+      function drawAirflow(now){
+        if(pointer.bloom < .01) return;
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        const x = pointer.x * W;
+        const y = pointer.y * H;
+        const g = ctx.createRadialGradient(x,y,0,x,y,Math.min(W,H)*.24);
+        g.addColorStop(0,`rgba(221,210,191,${pointer.bloom*.04})`);
+        g.addColorStop(.26,`rgba(128,49,31,${pointer.bloom*.06})`);
+        g.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,W,H);
+        ctx.restore();
+      }
+
+      function draw(now){
+        updateCore();
+        drawBackground(now);
+        drawAsh(now);
+        drawChamber(now);
+        drawPressureRings(now);
+        drawGlyphs();
+        drawRelic(now);
+        drawRupture(now);
+        drawEmbers();
+        drawAirflow(now);
+      }
+
+      function renderStill(){
+        draw(performance.now());
+        updateLedger(performance.now());
+      }
+
+      function frame(now){
+        rafId = 0;
+        if(!pageAlive || hidden) return;
+        const dt = Math.min(64, now - (lastTime || now));
+        lastTime = now;
+
+        const fps = lowPower ? 24 : 38;
+        const interval = 1000 / fps;
+        frameCarry += dt;
+        if(frameCarry >= interval || stillNeedsRender){
+          updatePhase(now);
+          if(!paused && !reduceMotion) updateParticles(frameCarry);
+          draw(now);
+          updateLedger(now);
+          stillNeedsRender = false;
+          frameCarry = 0;
+        }
+
+        const shouldContinue = !paused && !reduceMotion && (
+          state.activeCycle ||
+          state.burnEnergy > .15 ||
+          rings.length ||
+          glyphs.length ||
+          pointer.bloom > .02 ||
+          true
+        );
+        if(shouldContinue) rafId = requestAnimationFrame(frame);
+      }
+
+      function ensureLoop(){
+        if(reduceMotion){
+          renderStill();
+          return;
+        }
+        if(!rafId && !hidden && pageAlive) rafId = requestAnimationFrame(frame);
+      }
+
+      function handleInput(){
+        state.text = wishInput.value.slice(0,180);
+        state.phase = "primed";
+        state.burnEnergy = clamp(.12 + state.text.length / 260, .12, .72);
+        rebuildRelic();
+        updateDOMFromState();
+        stillNeedsRender = true;
+        if(reduceMotion) renderStill(); else ensureLoop();
+      }
+
+      function bindEvents(){
+        window.addEventListener("resize", () => {
+          resizeCanvas();
+          rebuildRelic();
+          if(reduceMotion) renderStill(); else ensureLoop();
+        }, {passive:true});
+
+        document.addEventListener("visibilitychange", () => {
+          hidden = document.hidden;
+          if(hidden && rafId){
+            cancelAnimationFrame(rafId);
+            rafId = 0;
+          }else if(!hidden){
+            lastTime = 0;
+            ensureLoop();
+          }
+        });
+
+        window.addEventListener("pagehide", () => {
+          pageAlive = false;
+          if(rafId) cancelAnimationFrame(rafId);
+          rafId = 0;
+        });
+        window.addEventListener("pageshow", () => {
+          pageAlive = true;
+          hidden = document.hidden;
+          lastTime = 0;
+          ensureLoop();
+        });
+
+        wishInput.addEventListener("input", handleInput);
+        burnBtn.addEventListener("click", burnWish);
+        stokeBtn.addEventListener("click", stoke);
+        stillBtn.addEventListener("click", togglePause);
+        randomBtn.addEventListener("click", randomWish);
+        copyBtn.addEventListener("click", copyState);
+        resetBtn.addEventListener("click", resetState);
+        hideTextBtn.addEventListener("click", () => {
+          const hiddenText = document.body.classList.toggle("is-text-hidden");
+          hideTextBtn.textContent = hiddenText ? "show text" : "hide text";
+          showToast(hiddenText ? "text hidden" : "text restored");
+        });
+        panelToggle.addEventListener("click", () => {
+          const willOpen = document.body.classList.contains("panel-closed");
+          setPanel(willOpen);
+        });
+        closePanel.addEventListener("click", () => setPanel(false));
+
+        paramInputs.forEach(input => {
+          input.addEventListener("input", () => {
+            const key = input.dataset.param;
+            const value = Number(input.value);
+            if(Number.isFinite(value)) state.params[key] = value;
+            const out = document.getElementById("out" + key.charAt(0).toUpperCase() + key.slice(1));
+            if(out) out.value = String(Math.round(state.params[key]));
+            if(key === "scale") resizeCanvas();
+            rebuildRelic();
+            state.burnEnergy = Math.max(state.burnEnergy, .2);
+            stillNeedsRender = true;
+            if(reduceMotion) renderStill(); else ensureLoop();
+          });
+        });
+
+        const pointerMove = (clientX, clientY, down) => {
+          pointer.tx = clamp(clientX / Math.max(1,W), 0, 1);
+          pointer.ty = clamp(clientY / Math.max(1,H), 0, 1);
+          pointer.down = down;
+          pointer.bloom = clamp(pointer.bloom + (down ? .14 : .035), 0, 1);
+          state.burnEnergy = Math.max(state.burnEnergy, down ? .32 : .2);
+          ensureLoop();
+        };
+        window.addEventListener("pointermove", e => pointerMove(e.clientX, e.clientY, pointer.down), {passive:true});
+        window.addEventListener("pointerdown", e => pointerMove(e.clientX, e.clientY, true), {passive:true});
+        window.addEventListener("pointerup", () => { pointer.down = false; }, {passive:true});
+        window.addEventListener("touchmove", e => {
+          const touch = e.touches && e.touches[0];
+          if(touch) pointerMove(touch.clientX, touch.clientY, true);
+        }, {passive:true});
+
+        window.addEventListener("hashchange", () => {
+          parseHash();
+          updateDOMFromState();
+          resizeCanvas();
+          rebuildRelic();
+          showToast("state restored");
+          if(reduceMotion) renderStill(); else ensureLoop();
+        });
+      }
+
+      function init(){
+        parseHash();
+        updateDOMFromState();
+        if(isMobileLayout() && !new URLSearchParams(location.hash.slice(1)).get("open")) setPanel(false);
+        resizeCanvas();
+        rebuildRelic();
+        bindEvents();
+        updateLedger(performance.now());
+        if(reduceMotion){
+          state.phase = "still relic";
+          renderStill();
+        }else{
+          pulse(.18);
+          ensureLoop();
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>

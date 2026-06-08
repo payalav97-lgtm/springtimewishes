@@ -1,0 +1,1659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Springtime Wishes — black garden index, a living portal of roots, garments, notes, stains, wishes, fittings, relics, and archive rooms.">
+<title>black garden index / springtime wishes</title>
+<style>
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Aktiv Grotesk";src:url("./AktivGrotesk-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"LTC Metropolitan";src:url("./LTC Metropolitan W00 Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  --paper:rgba(232,224,211,.86);
+  --paper-soft:rgba(232,224,211,.58);
+  --paper-dim:rgba(232,224,211,.34);
+  --paper-ghost:rgba(232,224,211,.18);
+  --night:#020101;
+  --soil:#070403;
+  --rust:rgba(105,54,34,.50);
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-r:env(safe-area-inset-right,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px);
+  --mx:50%;
+  --my:50%;
+}
+
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000;color:var(--paper);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+body{font-family:"Aktiv Grotesk",Arial,sans-serif;font-weight:300;letter-spacing:.01em;isolation:isolate}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(232,224,211,.92);color:#050302}
+
+#root{
+  position:fixed;inset:0;overflow:hidden;background:
+    radial-gradient(ellipse at 48% 8%,rgba(64,48,36,.34),transparent 42%),
+    radial-gradient(ellipse at 18% 74%,rgba(44,26,18,.38),transparent 43%),
+    radial-gradient(ellipse at 78% 68%,rgba(35,24,18,.42),transparent 36%),
+    radial-gradient(ellipse at 52% 108%,rgba(37,22,13,.74),transparent 56%),
+    linear-gradient(180deg,#030201 0%,#070403 42%,#030201 74%,#000 100%);
+  touch-action:manipulation;
+}
+
+#root::before{
+  content:"";position:absolute;inset:-2%;z-index:82;pointer-events:none;opacity:.22;mix-blend-mode:overlay;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 5px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.008) 0 1px,transparent 1px 11px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.40'/%3E%3C/svg%3E");
+  background-size:100% 4px,100% 100%,220px 220px;
+  animation:grain 5.8s steps(5,end) infinite;
+}
+
+#root::after{
+  content:"";position:absolute;inset:8px;z-index:81;pointer-events:none;
+  border:1px solid rgba(232,224,211,.105);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.88),inset 0 0 17vw 6vw rgba(0,0,0,.88),0 0 0 1px rgba(0,0,0,.8);
+}
+
+@keyframes grain{
+  0%{transform:translate3d(0,0,0)}
+  20%{transform:translate3d(-1px,1px,0)}
+  40%{transform:translate3d(1px,-1px,0)}
+  60%{transform:translate3d(1px,1px,0)}
+  80%{transform:translate3d(-1px,-1px,0)}
+  100%{transform:translate3d(0,0,0)}
+}
+
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#gardenCanvas{z-index:2}
+#atmosphereCanvas{z-index:5;mix-blend-mode:screen;opacity:.88}
+#focusCanvas{z-index:7;mix-blend-mode:screen;opacity:.92}
+
+.mouse-bloom{
+  position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.82;
+  background:
+    radial-gradient(circle at var(--mx) var(--my),rgba(235,226,211,.08),transparent 8%),
+    radial-gradient(circle at var(--mx) var(--my),rgba(96,61,43,.10),transparent 20%);
+  transition:opacity .4s ease;
+}
+
+.wordmark{
+  position:absolute;left:50%;top:calc(var(--safe-t) + clamp(18px,3.2vh,36px));z-index:16;pointer-events:none;
+  width:min(90vw,1180px);height:auto;transform:translateX(-50%);
+  opacity:.135;mix-blend-mode:screen;filter:grayscale(1) brightness(.68) contrast(1.18) drop-shadow(0 0 26px rgba(232,224,211,.08));
+  animation:wordmarkBreath 18s ease-in-out infinite alternate;
+}
+
+@keyframes wordmarkBreath{
+  0%{opacity:.10;filter:grayscale(1) brightness(.56) contrast(1.22) blur(.2px);transform:translateX(-50%) translateY(0)}
+  45%{opacity:.16}
+  56%{opacity:.075}
+  100%{opacity:.18;filter:grayscale(1) brightness(.76) contrast(1.08) blur(0);transform:translateX(-50%) translateY(2px)}
+}
+
+.old-button{
+  position:absolute;z-index:50;display:grid;place-items:center;min-width:58px;min-height:34px;
+  left:calc(var(--safe-l) + clamp(12px,2.1vw,28px));top:calc(var(--safe-t) + clamp(12px,2.1vh,24px));
+  padding:8px 14px 9px;color:rgba(232,224,211,.74);font-size:11px;line-height:1;letter-spacing:.02em;
+  background:
+    linear-gradient(180deg,rgba(20,14,10,.95),rgba(1,1,1,.98) 58%,rgba(14,11,8,.96)),
+    repeating-linear-gradient(90deg,rgba(232,224,211,.025) 0 1px,transparent 1px 8px);
+  border:1px solid rgba(232,224,211,.22);
+  clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.1),inset -1px -1px 0 rgba(0,0,0,.95),inset 0 0 18px rgba(0,0,0,.70),0 12px 32px rgba(0,0,0,.64);
+  transition:color .25s ease,border-color .25s ease,filter .25s ease;
+}
+
+.old-button::before{
+  content:"";position:absolute;inset:3px;pointer-events:none;border:1px solid rgba(232,224,211,.12);
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);
+}
+
+.old-button:hover,.old-button:focus-visible{color:rgba(248,242,233,.98);border-color:rgba(232,224,211,.42);filter:brightness(1.08)}
+a:focus-visible{outline:1px dotted rgba(248,242,233,.94);outline-offset:5px}
+
+.title{
+  position:absolute;z-index:20;left:clamp(22px,7vw,126px);top:clamp(88px,18vh,180px);
+  width:min(520px,58vw);pointer-events:none;transition:opacity .7s ease,transform .7s ease,filter .7s ease;
+  opacity:.86;text-shadow:0 0 24px rgba(232,224,211,.06);
+}
+body.has-interacted .title{opacity:.48;transform:translateY(-4px);filter:blur(.2px)}
+.title .kicker{display:block;margin:0 0 9px;color:rgba(232,224,211,.34);font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+.title h1{
+  margin:0;font-family:"LTC Metropolitan",Georgia,serif;font-style:italic;font-weight:400;
+  font-size:clamp(46px,7.2vw,118px);line-height:.78;letter-spacing:-.064em;color:rgba(232,224,211,.78);
+}
+.title p{margin:16px 0 0;max-width:410px;color:rgba(232,224,211,.43);font-size:clamp(12px,1.1vw,14px);line-height:1.45}
+
+.garden-links{position:absolute;inset:0;z-index:34}
+
+.garden-link{
+  position:absolute;display:grid;grid-template-columns:16px minmax(0,1fr);gap:10px;align-items:center;
+  min-width:148px;min-height:42px;max-width:270px;padding:10px 14px 11px 10px;
+  transform:translate3d(-50%,-50%,0);
+  color:rgba(232,224,211,.70);font-size:12px;line-height:1.1;letter-spacing:.012em;
+  background:
+    linear-gradient(180deg,rgba(18,12,8,.78),rgba(0,0,0,.52) 76%),
+    repeating-linear-gradient(90deg,rgba(232,224,211,.028) 0 1px,transparent 1px 7px);
+  border:1px solid rgba(232,224,211,.105);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 7px),calc(100% - 8px) 100%,0 100%,0 8px);
+  box-shadow:inset 0 0 16px rgba(0,0,0,.72),0 8px 28px rgba(0,0,0,.34);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  transition:opacity .5s ease,color .4s ease,border-color .4s ease,box-shadow .4s ease,filter .4s ease;
+  will-change:transform,opacity;
+  isolation:isolate;
+}
+.garden-link::before{
+  content:attr(data-id);display:grid;place-items:center;align-self:stretch;min-height:22px;
+  border-right:1px solid rgba(232,224,211,.10);
+  color:rgba(232,224,211,.34);font-size:8px;letter-spacing:.08em;writing-mode:vertical-rl;transform:rotate(180deg);
+}
+.garden-link::after{
+  content:"";position:absolute;left:21px;top:50%;width:28px;height:28px;transform:translate(-50%,-50%) scale(.62);
+  border:1px solid rgba(232,224,211,.13);border-radius:48% 52% 46% 54%;opacity:.75;pointer-events:none;
+  box-shadow:0 0 16px rgba(232,224,211,.025);transition:transform .45s ease,border-color .45s ease,opacity .45s ease;
+}
+.garden-link strong{display:block;font-weight:300;color:currentColor;white-space:normal}
+.garden-link small{display:block;margin-top:4px;color:rgba(232,224,211,.36);font-size:9.5px;line-height:1.25;letter-spacing:.025em}
+.garden-link:hover,.garden-link:focus-visible,.garden-link.is-active{
+  color:rgba(250,244,235,.96);border-color:rgba(232,224,211,.28);
+  box-shadow:inset 0 0 18px rgba(0,0,0,.70),0 12px 34px rgba(0,0,0,.46),0 0 26px rgba(232,224,211,.05);
+  filter:brightness(1.08);
+}
+.garden-link:hover::after,.garden-link:focus-visible::after,.garden-link.is-active::after{transform:translate(-50%,-50%) scale(1.04);opacity:1;border-color:rgba(232,224,211,.36)}
+.garden-link.is-dim{opacity:.64}
+.garden-link.is-active small{color:rgba(232,224,211,.56)}
+
+.garden-ledger{
+  position:absolute;z-index:26;right:calc(var(--safe-r) + clamp(14px,2.2vw,34px));bottom:calc(var(--safe-b) + clamp(14px,2.5vh,32px));
+  width:min(330px,38vw);padding:14px 15px 15px;
+  color:rgba(232,224,211,.46);font-size:10px;line-height:1.38;letter-spacing:.025em;
+  background:linear-gradient(180deg,rgba(13,9,6,.52),rgba(0,0,0,.30));
+  border:1px solid rgba(232,224,211,.075);
+  box-shadow:inset 0 0 22px rgba(0,0,0,.64),0 10px 36px rgba(0,0,0,.34);
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+  pointer-events:none;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+}
+.garden-ledger .ledger-kicker{display:block;margin-bottom:8px;color:rgba(232,224,211,.30);font-size:9px;letter-spacing:.16em;text-transform:uppercase}
+.ledger-line{display:grid;grid-template-columns:72px 1fr;gap:11px;padding:4px 0;border-top:1px solid rgba(232,224,211,.05)}
+.ledger-line:first-of-type{border-top:0}
+.ledger-line span:first-child{color:rgba(232,224,211,.28)}
+.ledger-line span:last-child{color:rgba(232,224,211,.58)}
+#ledgerNote{font-family:"LTC Metropolitan",Georgia,serif;font-style:italic;font-size:14px;line-height:1.15;color:rgba(232,224,211,.62);letter-spacing:-.015em}
+.ledger-fade{animation:ledgerFade .7s ease both}
+@keyframes ledgerFade{from{opacity:.35;filter:blur(3px)}to{opacity:1;filter:blur(0)}}
+
+.vignette{
+  position:absolute;inset:-7%;z-index:78;pointer-events:none;opacity:.90;
+  box-shadow:inset 0 0 18vw 9vw #000,inset 0 0 4vw 1vw rgba(0,0,0,.92);
+}
+
+.sr{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;
+}
+
+@media (max-width:980px){
+  .title{left:clamp(18px,5vw,58px);top:clamp(82px,15vh,132px);width:min(470px,62vw)}
+  .garden-link{min-width:138px;max-width:230px}
+  .garden-ledger{width:min(292px,42vw);font-size:9.5px}
+}
+
+@media (max-width:760px){
+  .wordmark{width:94vw;top:calc(var(--safe-t) + 12px);opacity:.16}
+  .old-button{min-width:56px;min-height:32px;font-size:10px;padding:8px 11px}
+  .title{top:calc(var(--safe-t) + 58px);left:50%;transform:translateX(-50%);text-align:center;width:min(92vw,390px)}
+  body.has-interacted .title{transform:translateX(-50%) translateY(-3px)}
+  .title .kicker{font-size:9px;margin-bottom:5px}
+  .title h1{font-size:clamp(40px,13.5vw,72px)}
+  .title p{display:none}
+  .garden-link{min-width:128px;max-width:min(222px,56vw);min-height:42px;padding:9px 11px 10px 9px;font-size:11.5px;gap:8px}
+  .garden-link small{font-size:9px;line-height:1.15}
+  .garden-link::before{font-size:7px}
+  .garden-ledger{
+    left:calc(var(--safe-l) + 12px);right:calc(var(--safe-r) + 12px);bottom:calc(var(--safe-b) + 10px);
+    width:auto;padding:10px 11px;font-size:9px;line-height:1.28;opacity:.74;
+  }
+  .ledger-line{grid-template-columns:58px 1fr;padding:2px 0}
+  .ledger-line:nth-of-type(3),.ledger-line:nth-of-type(4){display:none}
+  #ledgerNote{font-size:12px}
+  #root::after{inset:6px}
+}
+
+@media (max-width:430px){
+  .title{top:calc(var(--safe-t) + 54px)}
+  .title h1{font-size:clamp(36px,12.8vw,58px)}
+  .garden-link{max-width:50vw;min-width:120px;font-size:10.8px;padding-right:9px}
+  .garden-link small{display:none}
+  .garden-ledger{display:none}
+}
+
+@media (max-height:520px) and (orientation:landscape){
+  .wordmark{width:74vw;left:58%;opacity:.13}
+  .title{top:calc(var(--safe-t) + 48px);left:calc(var(--safe-l) + 90px);transform:none;text-align:left;width:280px}
+  body.has-interacted .title{transform:translateY(-3px)}
+  .title h1{font-size:clamp(35px,11vh,56px)}
+  .title p{display:none}
+  .garden-link{min-width:120px;max-width:190px;min-height:38px;font-size:10.5px;padding:8px 10px}
+  .garden-link small{font-size:8.5px}
+  .garden-ledger{display:none}
+}
+
+@media (hover:none) and (pointer:coarse){
+  body{cursor:default}
+  .garden-link:hover{filter:none}
+  .old-button:hover{filter:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}
+  .mouse-bloom{opacity:.18}
+  #atmosphereCanvas{opacity:.28}
+}
+</style>
+</head>
+<body>
+<main id="root" aria-label="Springtime Wishes black garden index">
+  <canvas id="gardenCanvas" aria-hidden="true"></canvas>
+  <canvas id="atmosphereCanvas" aria-hidden="true"></canvas>
+  <canvas id="focusCanvas" aria-hidden="true"></canvas>
+
+  <div class="mouse-bloom" aria-hidden="true"></div>
+  <img class="wordmark" src="./Stw_Logo.png" width="2048" height="343" alt="Springtime Wishes" decoding="async" fetchpriority="high">
+
+  <a class="old-button back-home" href="index.html">index</a>
+
+  <header class="title">
+    <span class="kicker">springtime wishes / living portal</span>
+    <h1>black garden index</h1>
+    <p>the site returns as roots, spores, relics, stains, wishes, fittings, and dark bloom.</p>
+  </header>
+
+  <nav class="garden-links" aria-label="Springtime Wishes black garden navigation">
+    <a class="garden-link" href="archive.html" data-key="archive" data-id="root 01">
+      <span><strong>archive</strong><small>buried media / residue / return</small></span>
+    </a>
+    <a class="garden-link" href="collection_iii_mortems.html" data-key="mortems" data-id="bloom 02">
+      <span><strong>collection iii — mortem[s]</strong><small>black fabric petals / relic flower</small></span>
+    </a>
+    <a class="garden-link" href="contact.html" data-key="contact" data-id="seed 03">
+      <span><strong>contact</strong><small>appointment pod / reaching tendril</small></span>
+    </a>
+    <a class="garden-link" href="notes.html" data-key="notes" data-id="spore 04">
+      <span><strong>notes</strong><small>fungal notation / paper lichen</small></span>
+    </a>
+    <a class="garden-link" href="pixel_reliquary.html" data-key="pixel" data-id="moss 05">
+      <span><strong>pixel reliquary</strong><small>square mineral moss / pixel fossil</small></span>
+    </a>
+    <a class="garden-link" href="garment_oracle.html" data-key="oracle" data-id="pod 06">
+      <span><strong>garment oracle</strong><small>omen pod / wish fruit</small></span>
+    </a>
+    <a class="garden-link" href="the_fitting_dark.html" data-key="fitting" data-id="measure 07">
+      <span><strong>the fitting dark</strong><small>measuring vine / pressure root</small></span>
+    </a>
+    <a class="garden-link" href="wish_furnace.html" data-key="furnace" data-id="ember 08">
+      <span><strong>wish furnace</strong><small>ember seed / ash bloom</small></span>
+    </a>
+    <a class="garden-link" href="stain_archive.html" data-key="stain" data-id="lichen 09">
+      <span><strong>stain archive</strong><small>oxidized lichen / fabric evidence</small></span>
+    </a>
+  </nav>
+
+  <aside class="garden-ledger" aria-live="polite" aria-atomic="true">
+    <span class="ledger-kicker">living ledger</span>
+    <div class="ledger-line"><span>specimen</span><span id="ledgerSpecimen">archive</span></div>
+    <div class="ledger-line"><span>form</span><span id="ledgerForm">buried root archive</span></div>
+    <div class="ledger-line"><span>signal</span><span id="ledgerSignal">media / residue / return</span></div>
+    <div class="ledger-line"><span>room</span><span id="ledgerRoom">archive.html</span></div>
+    <div class="ledger-line"><span>note</span><span id="ledgerNote">garments keep their afterimage</span></div>
+  </aside>
+
+  <div class="vignette" aria-hidden="true"></div>
+  <p class="sr">Black garden index is a control-free navigation page for Springtime Wishes. It contains real links to archive, collection iii mortems, contact, notes, pixel reliquary, garment oracle, the fitting dark, wish furnace, stain archive, and an index return.</p>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  const REQUIRED_HREFS = [
+    'archive.html',
+    'collection_iii_mortems.html',
+    'contact.html',
+    'notes.html',
+    'pixel_reliquary.html',
+    'garment_oracle.html',
+    'the_fitting_dark.html',
+    'wish_furnace.html',
+    'stain_archive.html'
+  ];
+
+  const canvasGarden = document.getElementById('gardenCanvas');
+  const canvasAtmosphere = document.getElementById('atmosphereCanvas');
+  const canvasFocus = document.getElementById('focusCanvas');
+  const ctxGarden = canvasGarden.getContext('2d', { alpha: true, desynchronized: true });
+  const ctxAtmosphere = canvasAtmosphere.getContext('2d', { alpha: true, desynchronized: true });
+  const ctxFocus = canvasFocus.getContext('2d', { alpha: true, desynchronized: true });
+  const linkEls = Array.from(document.querySelectorAll('.garden-link'));
+  const root = document.documentElement;
+  const body = document.body;
+  const ledger = {
+    specimen: document.getElementById('ledgerSpecimen'),
+    form: document.getElementById('ledgerForm'),
+    signal: document.getElementById('ledgerSignal'),
+    room: document.getElementById('ledgerRoom'),
+    note: document.getElementById('ledgerNote')
+  };
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia('(hover:none), (pointer:coarse)').matches;
+  const lowMemory = (navigator.deviceMemory || 8) <= 4;
+  const lowCores = (navigator.hardwareConcurrency || 8) <= 4;
+
+  const state = {
+    seed: createSeed(),
+    activeIndex: 0,
+    activeMix: 0,
+    lastUserInteraction: 0,
+    autoNextTime: 0,
+    cssW: 1,
+    cssH: 1,
+    dpr: 1,
+    paused: false,
+    hidden: false,
+    lowPower: false,
+    reduceMotion,
+    pointer: { x: 0.5, y: 0.5, sx: 0.5, sy: 0.5, active: false, t: 0 },
+    raf: 0,
+    lastFrame: 0,
+    lastMainDraw: 0,
+    lastAtmosphereDraw: 0,
+    frame: 0,
+    layoutMode: 'desktop',
+    roots: [],
+    rootHairs: [],
+    moss: [],
+    lichen: [],
+    spores: [],
+    ash: [],
+    microText: [],
+    specimens: []
+  };
+
+  const specimenMeta = [
+    {
+      key: 'archive',
+      href: 'archive.html',
+      label: 'archive',
+      specimen: 'archive',
+      form: 'buried root archive',
+      signal: 'media / residue / return',
+      note: 'garments keep their afterimage',
+      family: 'root'
+    },
+    {
+      key: 'mortems',
+      href: 'collection_iii_mortems.html',
+      label: 'collection iii — mortem[s]',
+      specimen: 'mortem bloom',
+      form: 'black fabric petals',
+      signal: 'relic / garment / evidence',
+      note: 'a collection opens like a dark flower',
+      family: 'bloom'
+    },
+    {
+      key: 'contact',
+      href: 'contact.html',
+      label: 'contact',
+      specimen: 'contact',
+      form: 'appointment seed',
+      signal: 'showroom / request / press',
+      note: 'a message waits under the soil',
+      family: 'seed'
+    },
+    {
+      key: 'notes',
+      href: 'notes.html',
+      label: 'notes',
+      specimen: 'notes',
+      form: 'fungal notation',
+      signal: 'process / language / trace',
+      note: 'words grow where fabric remains',
+      family: 'fungal'
+    },
+    {
+      key: 'pixel',
+      href: 'pixel_reliquary.html',
+      label: 'pixel reliquary',
+      specimen: 'pixel reliquary',
+      form: 'mineral moss',
+      signal: '8-bit / relic / chapel',
+      note: 'a square fossil remembers the room',
+      family: 'pixel'
+    },
+    {
+      key: 'oracle',
+      href: 'garment_oracle.html',
+      label: 'garment oracle',
+      specimen: 'garment oracle',
+      form: 'omen pod',
+      signal: 'wish / request / body',
+      note: 'a garment answers in fragments',
+      family: 'oracle'
+    },
+    {
+      key: 'fitting',
+      href: 'the_fitting_dark.html',
+      label: 'the fitting dark',
+      specimen: 'the fitting dark',
+      form: 'measuring vine',
+      signal: 'pressure / seam / body',
+      note: 'the body appears through adjustment',
+      family: 'fitting'
+    },
+    {
+      key: 'furnace',
+      href: 'wish_furnace.html',
+      label: 'wish furnace',
+      specimen: 'wish furnace',
+      form: 'ember seed',
+      signal: 'ash / heat / request',
+      note: 'a wish burns into cloth',
+      family: 'ember'
+    },
+    {
+      key: 'stain',
+      href: 'stain_archive.html',
+      label: 'stain archive',
+      specimen: 'stain archive',
+      form: 'oxidized lichen',
+      signal: 'residue / seam / evidence',
+      note: 'cloth remembers through damage',
+      family: 'stain'
+    }
+  ];
+
+  const layouts = {
+    desktop: {
+      archive: [0.20, 0.68],
+      mortems: [0.43, 0.44],
+      contact: [0.79, 0.67],
+      notes: [0.64, 0.30],
+      pixel: [0.55, 0.78],
+      oracle: [0.31, 0.30],
+      fitting: [0.14, 0.42],
+      furnace: [0.83, 0.42],
+      stain: [0.36, 0.77]
+    },
+    tablet: {
+      archive: [0.20, 0.68],
+      mortems: [0.43, 0.47],
+      contact: [0.78, 0.70],
+      notes: [0.66, 0.30],
+      pixel: [0.57, 0.81],
+      oracle: [0.30, 0.33],
+      fitting: [0.16, 0.47],
+      furnace: [0.81, 0.48],
+      stain: [0.34, 0.80]
+    },
+    mobile: {
+      archive: [0.28, 0.37],
+      oracle: [0.70, 0.36],
+      notes: [0.30, 0.49],
+      mortems: [0.72, 0.50],
+      fitting: [0.28, 0.61],
+      furnace: [0.72, 0.63],
+      stain: [0.30, 0.74],
+      pixel: [0.69, 0.77],
+      contact: [0.51, 0.88]
+    },
+    small: {
+      archive: [0.28, 0.32],
+      oracle: [0.70, 0.34],
+      notes: [0.27, 0.44],
+      mortems: [0.73, 0.47],
+      fitting: [0.27, 0.56],
+      furnace: [0.73, 0.59],
+      stain: [0.29, 0.69],
+      pixel: [0.71, 0.72],
+      contact: [0.50, 0.84]
+    },
+    landscape: {
+      archive: [0.37, 0.70],
+      mortems: [0.55, 0.45],
+      contact: [0.88, 0.64],
+      notes: [0.71, 0.25],
+      pixel: [0.69, 0.78],
+      oracle: [0.39, 0.30],
+      fitting: [0.25, 0.49],
+      furnace: [0.87, 0.38],
+      stain: [0.50, 0.77]
+    }
+  };
+
+  function createSeed() {
+    const hash = String(location.hash || '').replace('#', '').trim();
+    if (/^[a-z0-9-]{3,}$/i.test(hash)) return hash.split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 2166136261);
+    const base = `${Date.now()}-${Math.random()}-${screen.width}x${screen.height}`;
+    return base.split('').reduce((a, c) => (a * 33 + c.charCodeAt(0)) >>> 0, 5381);
+  }
+
+  function makeRng(seed) {
+    let t = seed >>> 0;
+    return function rand() {
+      t += 0x6D2B79F5;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function ease(t) { return t * t * (3 - 2 * t); }
+
+  function curvePoint(p, t) {
+    const mt = 1 - t;
+    const x = mt * mt * mt * p.x0 + 3 * mt * mt * t * p.cx1 + 3 * mt * t * t * p.cx2 + t * t * t * p.x1;
+    const y = mt * mt * mt * p.y0 + 3 * mt * mt * t * p.cy1 + 3 * mt * t * t * p.cy2 + t * t * t * p.y1;
+    return { x, y };
+  }
+
+  function drawCurve(ctx, p) {
+    ctx.beginPath();
+    ctx.moveTo(p.x0, p.y0);
+    ctx.bezierCurveTo(p.cx1, p.cy1, p.cx2, p.cy2, p.x1, p.y1);
+    ctx.stroke();
+  }
+
+  function configureCanvas(canvas, ctx, scale) {
+    const width = Math.max(1, Math.floor(state.cssW * scale));
+    const height = Math.max(1, Math.floor(state.cssH * scale));
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+    canvas.style.width = `${state.cssW}px`;
+    canvas.style.height = `${state.cssH}px`;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+  }
+
+  function getLayoutMode(w, h) {
+    if (w <= 760 && h <= 520 && w > h) return 'landscape';
+    if (w <= 430) return 'small';
+    if (w <= 760) return 'mobile';
+    if (w <= 1080) return 'tablet';
+    return 'desktop';
+  }
+
+  function resize() {
+    state.cssW = Math.max(1, window.innerWidth);
+    state.cssH = Math.max(1, window.innerHeight);
+    state.layoutMode = getLayoutMode(state.cssW, state.cssH);
+    state.lowPower = state.cssW < 760 || coarse || lowMemory || lowCores;
+
+    const maxDpr = state.lowPower ? 1.35 : 1.75;
+    state.dpr = state.reduceMotion ? 1 : Math.min(maxDpr, window.devicePixelRatio || 1);
+    configureCanvas(canvasGarden, ctxGarden, state.dpr);
+    configureCanvas(canvasAtmosphere, ctxAtmosphere, state.dpr);
+    configureCanvas(canvasFocus, ctxFocus, state.dpr);
+    generateGarden();
+    syncDOMLinks();
+    drawMain(performance.now());
+    drawAtmosphere(performance.now());
+    drawFocus(performance.now());
+  }
+
+  function syncDOMLinks() {
+    const list = state.specimens;
+    for (const specimen of list) {
+      const el = specimen.el;
+      const x = Math.round(specimen.x);
+      const y = Math.round(specimen.y);
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.transform = `translate3d(-50%,-50%,0) translate3d(${specimen.domJitterX}px,${specimen.domJitterY}px,0)`;
+    }
+  }
+
+  function generateGarden() {
+    const rng = makeRng(state.seed + hashMode(state.layoutMode));
+    const layout = layouts[state.layoutMode] || layouts.desktop;
+    const w = state.cssW;
+    const h = state.cssH;
+    const center = { x: w * (state.layoutMode === 'landscape' ? 0.54 : 0.50), y: h * (state.layoutMode === 'desktop' ? 0.57 : 0.58) };
+    const rootBase = { x: w * 0.50, y: h * (state.layoutMode === 'desktop' ? 0.95 : 0.97) };
+
+    state.specimens = specimenMeta.map((meta, i) => {
+      const pos = layout[meta.key] || layouts.desktop[meta.key];
+      const jitter = state.layoutMode === 'desktop' ? 0.018 : state.layoutMode === 'landscape' ? 0.010 : 0;
+      const x = clamp((pos[0] + (rng() - 0.5) * jitter) * w, 34, w - 34);
+      const y = clamp((pos[1] + (rng() - 0.5) * jitter) * h, 60, h - 36);
+      const el = linkEls.find(a => a.dataset.key === meta.key);
+      return {
+        ...meta,
+        index: i,
+        el,
+        nx: pos[0],
+        ny: pos[1],
+        x,
+        y,
+        domJitterX: (rng() - 0.5) * 8,
+        domJitterY: (rng() - 0.5) * 6,
+        phase: rng() * Math.PI * 2,
+        breath: 0.7 + rng() * 0.7,
+        scale: 0.82 + rng() * 0.38,
+        rootAnchor: {
+          x: lerp(rootBase.x, x, 0.18 + rng() * 0.18) + (rng() - 0.5) * w * 0.06,
+          y: lerp(rootBase.y, y, 0.34 + rng() * 0.2) + (rng() - 0.5) * h * 0.04
+        },
+        path: null,
+        tendrils: [],
+        details: []
+      };
+    }).filter(specimen => specimen.el);
+
+    state.specimens.forEach((s, i) => {
+      const bend = (rng() - 0.5) * w * 0.22;
+      const depth = h * (0.18 + rng() * 0.11);
+      s.path = {
+        x0: rootBase.x + (rng() - 0.5) * w * 0.18,
+        y0: rootBase.y + (rng() - 0.5) * h * 0.05,
+        cx1: rootBase.x + bend,
+        cy1: h * (0.80 + rng() * 0.08),
+        cx2: s.x + (rng() - 0.5) * w * 0.18,
+        cy2: s.y + depth * (s.y < h * 0.45 ? 1.4 : 0.65),
+        x1: s.x,
+        y1: s.y
+      };
+      const tendrilCount = state.lowPower ? 2 : 4;
+      for (let k = 0; k < tendrilCount; k++) {
+        const side = rng() < 0.5 ? -1 : 1;
+        const len = (24 + rng() * 72) * (state.layoutMode === 'desktop' ? 1 : 0.75);
+        s.tendrils.push({
+          a: rng() * Math.PI * 2,
+          side,
+          len,
+          twist: rng() * 2 - 1,
+          start: 0.15 + rng() * 0.75,
+          phase: rng() * Math.PI * 2
+        });
+      }
+      const detailCount = state.lowPower ? 10 : 22;
+      for (let k = 0; k < detailCount; k++) {
+        s.details.push({ a: rng() * Math.PI * 2, r: 8 + rng() * 48, z: rng(), phase: rng() * Math.PI * 2 });
+      }
+    });
+
+    generateRootNetwork(rng, rootBase, center);
+    generateMoss(rng);
+    generateLichen(rng);
+    generateSpores(rng);
+    generateMicroText(rng);
+
+    state.activeIndex = clamp(state.activeIndex, 0, Math.max(0, state.specimens.length - 1));
+    updateActiveClasses();
+    updateLedger();
+  }
+
+  function hashMode(mode) {
+    return mode.split('').reduce((a, c) => a + c.charCodeAt(0), 0) * 997;
+  }
+
+  function generateRootNetwork(rng, rootBase, center) {
+    const w = state.cssW;
+    const h = state.cssH;
+    const rootCount = state.lowPower ? 18 : 34;
+    const hairCount = state.lowPower ? 95 : 260;
+    state.roots = [];
+    state.rootHairs = [];
+
+    for (const specimen of state.specimens) {
+      state.roots.push({ ...specimen.path, weight: 1.5 + rng() * 2.7, alpha: 0.17 + rng() * 0.18, stitch: rng() < 0.42, kind: 'specimen', index: specimen.index });
+    }
+
+    for (let i = 0; i < rootCount; i++) {
+      const startX = rootBase.x + (rng() - 0.5) * w * 0.56;
+      const startY = h * (0.74 + rng() * 0.27);
+      const endX = clamp(center.x + (rng() - 0.5) * w * 0.95, -80, w + 80);
+      const endY = clamp(h * (0.22 + rng() * 0.68), 40, h + 50);
+      const shallow = rng() < 0.34;
+      state.roots.push({
+        x0: startX,
+        y0: startY,
+        cx1: startX + (rng() - 0.5) * w * 0.36,
+        cy1: startY - h * (0.08 + rng() * 0.18),
+        cx2: endX + (rng() - 0.5) * w * 0.26,
+        cy2: shallow ? endY + h * 0.12 : endY + h * (0.10 + rng() * 0.25),
+        x1: endX,
+        y1: endY,
+        weight: 0.35 + rng() * 2.2,
+        alpha: 0.045 + rng() * 0.12,
+        stitch: rng() < 0.30,
+        kind: 'free',
+        index: -1
+      });
+    }
+
+    for (let i = 0; i < hairCount; i++) {
+      const root = state.roots[Math.floor(rng() * state.roots.length)];
+      const p = curvePoint(root, rng());
+      const angle = -Math.PI / 2 + (rng() - 0.5) * 2.2;
+      const len = 4 + rng() * (state.lowPower ? 18 : 30);
+      state.rootHairs.push({
+        x: p.x,
+        y: p.y,
+        x2: p.x + Math.cos(angle) * len,
+        y2: p.y + Math.sin(angle) * len,
+        alpha: 0.035 + rng() * 0.075,
+        width: 0.25 + rng() * 0.55
+      });
+    }
+  }
+
+  function generateMoss(rng) {
+    const w = state.cssW;
+    const h = state.cssH;
+    const count = state.lowPower ? 180 : 470;
+    state.moss = [];
+    const mossSources = state.specimens.filter(s => ['archive', 'pixel', 'stain'].includes(s.key));
+    for (let i = 0; i < count; i++) {
+      const source = rng() < 0.48 && mossSources.length ? mossSources[Math.floor(rng() * mossSources.length)] : null;
+      const baseX = source ? source.x + (rng() - 0.5) * 130 : rng() * w;
+      const baseY = source ? source.y + (rng() - 0.5) * 80 : h * (0.58 + rng() * 0.42);
+      state.moss.push({
+        x: clamp(baseX, -20, w + 20),
+        y: clamp(baseY, h * 0.22, h + 20),
+        r: 0.45 + rng() * 2.6,
+        a: 0.05 + rng() * 0.14,
+        square: rng() < 0.18,
+        phase: rng() * Math.PI * 2
+      });
+    }
+  }
+
+  function generateLichen(rng) {
+    const count = state.lowPower ? 60 : 150;
+    state.lichen = [];
+    const lichenSources = state.specimens.filter(s => ['stain', 'notes', 'archive'].includes(s.key));
+    for (let i = 0; i < count; i++) {
+      const source = lichenSources[Math.floor(rng() * lichenSources.length)];
+      const scatter = source.key === 'stain' ? 105 : 76;
+      state.lichen.push({
+        x: source.x + (rng() - 0.5) * scatter,
+        y: source.y + (rng() - 0.5) * scatter * 0.72,
+        rx: 3 + rng() * 21,
+        ry: 2 + rng() * 15,
+        a: 0.03 + rng() * 0.12,
+        rust: rng() < 0.45,
+        phase: rng() * Math.PI * 2
+      });
+    }
+  }
+
+  function generateSpores(rng) {
+    const w = state.cssW;
+    const h = state.cssH;
+    const sporeCount = state.reduceMotion ? 18 : state.lowPower ? 95 : 240;
+    const ashCount = state.reduceMotion ? 8 : state.lowPower ? 34 : 95;
+    state.spores = [];
+    state.ash = [];
+
+    for (let i = 0; i < sporeCount; i++) {
+      state.spores.push({
+        x: rng() * w,
+        y: rng() * h,
+        z: 0.18 + rng() * 0.82,
+        r: 0.35 + rng() * 1.5,
+        vx: (rng() - 0.5) * 0.055,
+        vy: (-0.02 - rng() * 0.05),
+        a: 0.03 + rng() * 0.14,
+        phase: rng() * Math.PI * 2,
+        type: rng() < 0.18 ? 'dew' : rng() < 0.34 ? 'ash' : 'spore'
+      });
+    }
+
+    for (let i = 0; i < ashCount; i++) {
+      const furnace = state.specimens.find(s => s.key === 'furnace');
+      const x = furnace ? furnace.x + (rng() - 0.5) * 150 : rng() * w;
+      const y = furnace ? furnace.y + (rng() - 0.5) * 90 : rng() * h;
+      state.ash.push({
+        x,
+        y,
+        r: 0.7 + rng() * 2.5,
+        a: 0.03 + rng() * 0.12,
+        phase: rng() * Math.PI * 2,
+        drift: (rng() - 0.5) * 0.25
+      });
+    }
+  }
+
+  function generateMicroText(rng) {
+    const words = [
+      ['root record', 'archive'],
+      ['stain retained', 'stain'],
+      ['garment trace', 'archive'],
+      ['wish below soil', 'furnace'],
+      ['body through cloth', 'fitting'],
+      ['archive humidity', 'notes'],
+      ['dark return', 'oracle'],
+      ['seam remembers', 'fitting']
+    ];
+    state.microText = words.map(([text, key], i) => {
+      const s = state.specimens.find(item => item.key === key) || state.specimens[i % state.specimens.length];
+      return {
+        text,
+        x: s.x + (rng() - 0.5) * 96,
+        y: s.y + 30 + (rng() - 0.5) * 50,
+        a: 0.10 + rng() * 0.09,
+        angle: (rng() - 0.5) * 0.24
+      };
+    });
+  }
+
+  function drawMain(now) {
+    const ctx = ctxGarden;
+    const w = state.cssW;
+    const h = state.cssH;
+    const t = now * 0.001;
+    ctx.clearRect(0, 0, w, h);
+    drawSoil(ctx, w, h, t);
+    drawRootArchiveNetwork(ctx, t);
+    drawMossField(ctx, t);
+    drawLichenField(ctx, t);
+    for (const specimen of state.specimens) {
+      const active = specimen.index === state.activeIndex ? ease(state.activeMix) : 0;
+      drawSpecimenForm(ctx, specimen, t, active);
+    }
+    drawMicroText(ctx, t);
+  }
+
+  function drawSoil(ctx, w, h, t) {
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(0.45, 'rgba(8,5,4,.10)');
+    g.addColorStop(0.72, 'rgba(17,10,7,.28)');
+    g.addColorStop(1, 'rgba(0,0,0,.74)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.save();
+    ctx.globalAlpha = 0.18;
+    const bands = state.lowPower ? 10 : 18;
+    for (let i = 0; i < bands; i++) {
+      const y = h * (0.60 + i / bands * 0.40) + Math.sin(t * 0.12 + i) * 2;
+      ctx.strokeStyle = `rgba(82,55,39,${0.03 + i / bands * 0.035})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-20, y);
+      for (let x = -20; x <= w + 20; x += 60) {
+        ctx.quadraticCurveTo(x + 30, y + Math.sin(i * 1.7 + x * 0.01) * 8, x + 60, y + Math.cos(i + x * 0.012) * 3);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawRootArchiveNetwork(ctx, t) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    for (const root of state.roots) {
+      const active = root.index === state.activeIndex ? state.activeMix : 0;
+      ctx.strokeStyle = `rgba(89,67,51,${root.alpha + active * 0.11})`;
+      ctx.lineWidth = root.weight + active * 1.25;
+      drawCurve(ctx, breathePath(root, t, 2.2, root.index + 4));
+
+      if (root.stitch) {
+        drawStitchesOnPath(ctx, root, t, active);
+      }
+
+      if (root.kind === 'specimen') {
+        ctx.strokeStyle = `rgba(203,190,169,${0.035 + active * 0.11})`;
+        ctx.lineWidth = 0.7 + active * 0.7;
+        drawCurve(ctx, breathePath(root, t, 3.6, root.index + 20));
+      }
+    }
+
+    ctx.strokeStyle = 'rgba(190,172,143,.08)';
+    for (const hair of state.rootHairs) {
+      ctx.globalAlpha = hair.alpha;
+      ctx.lineWidth = hair.width;
+      ctx.beginPath();
+      ctx.moveTo(hair.x, hair.y);
+      ctx.lineTo(hair.x2, hair.y2);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
+  function breathePath(p, t, amount, seed) {
+    const s = Math.sin(t * 0.35 + seed) * amount;
+    const c = Math.cos(t * 0.27 + seed * 0.4) * amount;
+    return {
+      x0: p.x0, y0: p.y0,
+      cx1: p.cx1 + s, cy1: p.cy1 + c,
+      cx2: p.cx2 - c * 0.7, cy2: p.cy2 + s * 0.8,
+      x1: p.x1, y1: p.y1
+    };
+  }
+
+  function drawStitchesOnPath(ctx, p, t, active) {
+    const count = state.lowPower ? 8 : 16;
+    ctx.save();
+    ctx.strokeStyle = `rgba(211,198,177,${0.055 + active * 0.08})`;
+    ctx.lineWidth = 0.72;
+    for (let i = 1; i < count; i++) {
+      const u = (i + ((Math.sin(t * 0.18 + i) + 1) * 0.05)) / count;
+      const a = curvePoint(p, clamp(u - 0.012, 0, 1));
+      const b = curvePoint(p, clamp(u + 0.012, 0, 1));
+      const nx = b.y - a.y;
+      const ny = a.x - b.x;
+      const len = Math.hypot(nx, ny) || 1;
+      const size = 4.8 + active * 1.8;
+      const x = (a.x + b.x) * 0.5;
+      const y = (a.y + b.y) * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(x - nx / len * size, y - ny / len * size);
+      ctx.lineTo(x + nx / len * size, y + ny / len * size);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawMossField(ctx, t) {
+    ctx.save();
+    for (const m of state.moss) {
+      const pulse = 0.75 + Math.sin(t * 0.7 + m.phase) * 0.25;
+      ctx.globalAlpha = m.a * pulse;
+      if (m.square) {
+        ctx.fillStyle = 'rgba(188,181,164,.62)';
+        const size = m.r * (1.2 + pulse);
+        ctx.fillRect(m.x - size * 0.5, m.y - size * 0.5, size, size);
+      } else {
+        ctx.fillStyle = 'rgba(120,106,83,.62)';
+        ctx.beginPath();
+        ctx.ellipse(m.x, m.y, m.r * 1.9, m.r, m.phase, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
+  function drawLichenField(ctx, t) {
+    ctx.save();
+    for (const l of state.lichen) {
+      const pulse = 0.82 + Math.sin(t * 0.28 + l.phase) * 0.18;
+      const a = l.a * pulse;
+      ctx.fillStyle = l.rust ? `rgba(128,80,51,${a})` : `rgba(213,202,178,${a})`;
+      ctx.strokeStyle = l.rust ? `rgba(139,92,58,${a * 1.15})` : `rgba(218,210,190,${a * 1.2})`;
+      ctx.lineWidth = 0.4;
+      ctx.beginPath();
+      ctx.ellipse(l.x, l.y, l.rx, l.ry, Math.sin(l.phase) * 1.4, 0, Math.PI * 2);
+      ctx.fill();
+      if (!state.lowPower) ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawSpecimenForm(ctx, s, t, active) {
+    const x = s.x + Math.sin(t * 0.32 * s.breath + s.phase) * (state.reduceMotion ? 0 : 2.4);
+    const y = s.y + Math.cos(t * 0.27 * s.breath + s.phase) * (state.reduceMotion ? 0 : 1.8);
+    const open = 0.45 + active * 0.75 + Math.sin(t * 0.46 + s.phase) * 0.045;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(s.scale, s.scale);
+    switch (s.family) {
+      case 'root': drawArchiveRootMass(ctx, s, t, open); break;
+      case 'bloom': drawBlackBloom(ctx, s, t, open); break;
+      case 'seed': drawContactSeed(ctx, s, t, open); break;
+      case 'fungal': drawFungalNotes(ctx, s, t, open); break;
+      case 'pixel': drawPixelMineralMoss(ctx, s, t, open); break;
+      case 'oracle': drawOraclePod(ctx, s, t, open); break;
+      case 'fitting': drawMeasuringVine(ctx, s, t, open); break;
+      case 'ember': drawAshBloom(ctx, s, t, open); break;
+      case 'stain': drawStainColony(ctx, s, t, open); break;
+      default: drawArchiveRootMass(ctx, s, t, open); break;
+    }
+    drawSeamVinesAndThorns(ctx, s, t, open);
+    ctx.restore();
+  }
+
+  function drawArchiveRootMass(ctx, s, t, open) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    for (let i = 0; i < 10; i++) {
+      const a = i / 10 * Math.PI * 2 + s.phase;
+      const r = 18 + Math.sin(t * 0.2 + i) * 2 + i * 0.8;
+      ctx.strokeStyle = `rgba(100,75,55,${0.12 + open * 0.05})`;
+      ctx.lineWidth = 1.4 + (i % 3);
+      ctx.beginPath();
+      ctx.ellipse(Math.cos(a) * 2, Math.sin(a) * 1.5, r * 1.25, r * 0.46, a, 0, Math.PI * 1.7);
+      ctx.stroke();
+    }
+    ctx.fillStyle = `rgba(36,23,15,${0.62 + open * 0.18})`;
+    ctx.beginPath();
+    ctx.ellipse(0, 3, 23 + open * 5, 15 + open * 3, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = `rgba(218,202,174,${0.12 + open * 0.12})`;
+    ctx.lineWidth = 0.8;
+    for (let i = 0; i < 7; i++) {
+      ctx.beginPath();
+      ctx.arc((i - 3) * 5.5, 1 + Math.sin(i) * 3, 2.2 + (i % 2), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawBlackBloom(ctx, s, t, open) {
+    ctx.save();
+    ctx.rotate(Math.sin(t * 0.18 + s.phase) * 0.05);
+    ctx.strokeStyle = `rgba(194,177,151,${0.12 + open * 0.08})`;
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(0, 38);
+    ctx.bezierCurveTo(-8, 18, -5, -4, 0, -25);
+    ctx.stroke();
+
+    const petals = 9;
+    for (let i = 0; i < petals; i++) {
+      const a = i / petals * Math.PI * 2 + s.phase * 0.2;
+      const len = 21 + (i % 3) * 6 + open * 11;
+      const w = 7 + (i % 2) * 3 + open * 2;
+      ctx.save();
+      ctx.rotate(a + Math.sin(t * 0.22 + i) * 0.035 * open);
+      ctx.fillStyle = `rgba(${18 + i * 2},${15 + i},${13 + i},${0.78})`;
+      ctx.strokeStyle = `rgba(220,207,184,${0.09 + open * 0.09})`;
+      ctx.lineWidth = 0.65;
+      ctx.beginPath();
+      ctx.moveTo(0, -3);
+      ctx.bezierCurveTo(-w, -len * 0.45, -w * 1.1, -len * 0.82, 0, -len);
+      ctx.bezierCurveTo(w * 1.3, -len * 0.78, w * 0.75, -len * 0.28, 0, -3);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.fillStyle = `rgba(205,190,164,${0.12 + open * 0.10})`;
+    ctx.beginPath();
+    ctx.ellipse(0, -3, 5 + open * 2.5, 7 + open * 2, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawContactSeed(ctx, s, t, open) {
+    ctx.save();
+    ctx.rotate(-0.25 + Math.sin(t * 0.24 + s.phase) * 0.04);
+    ctx.strokeStyle = `rgba(214,201,177,${0.14 + open * 0.16})`;
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.moveTo(-30, 18);
+    ctx.bezierCurveTo(-15, 3, -8, -8, 5, -16);
+    ctx.bezierCurveTo(14, -22, 22, -24, 35, -38);
+    ctx.stroke();
+
+    ctx.fillStyle = `rgba(191,181,160,${0.10 + open * 0.12})`;
+    ctx.strokeStyle = `rgba(236,226,203,${0.18 + open * 0.22})`;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 15 + open * 4, 24 + open * 6, -0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, -22 - open * 2);
+    ctx.bezierCurveTo(-6, -8, -5, 8, 0, 22 + open * 2);
+    ctx.bezierCurveTo(8, 5, 5, -9, 0, -22 - open * 2);
+    ctx.stroke();
+
+    for (let i = 0; i < 5; i++) {
+      ctx.fillStyle = `rgba(238,230,211,${0.10 + open * 0.12})`;
+      ctx.beginPath();
+      ctx.arc(20 + i * 4, -23 - i * 3, 1.2 + i * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawFungalNotes(ctx, s, t, open) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(221,211,190,${0.13 + open * 0.14})`;
+    ctx.lineWidth = 0.75;
+    for (let i = 0; i < 8; i++) {
+      const x = (i - 3.5) * 9 + Math.sin(t * 0.3 + i) * 1.5;
+      const h = 11 + (i % 4) * 5 + open * 5;
+      ctx.beginPath();
+      ctx.moveTo(x, 18);
+      ctx.lineTo(x + Math.sin(i) * 2, 18 - h);
+      ctx.stroke();
+      ctx.fillStyle = `rgba(216,207,188,${0.08 + open * 0.11})`;
+      ctx.beginPath();
+      ctx.ellipse(x, 15 - h, 7 + (i % 3), 3.2 + open, 0.1 * i, Math.PI, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+    ctx.fillStyle = `rgba(231,224,211,${0.10 + open * 0.10})`;
+    ctx.font = '8px "Aktiv Grotesk", Arial, sans-serif';
+    ctx.fillText('process', -34, -17);
+    ctx.fillText('trace', 12, -25);
+    ctx.restore();
+  }
+
+  function drawPixelMineralMoss(ctx, s, t, open) {
+    ctx.save();
+    const cells = [
+      [-4,2],[-3,1],[-2,1],[-1,0],[0,0],[1,1],[2,1],[3,2],
+      [-3,3],[-2,3],[-1,2],[0,3],[1,3],[2,2],[-1,4],[1,4],
+      [-5,4],[4,4],[-4,5],[-2,5],[0,5],[2,5],[3,5]
+    ];
+    const size = 4 + open * 0.8;
+    for (let i = 0; i < cells.length; i++) {
+      const c = cells[i];
+      const jitter = Math.sin(t * 0.25 + i) * 0.4;
+      ctx.fillStyle = i % 5 === 0 ? `rgba(219,210,190,${0.13 + open * 0.13})` : `rgba(124,109,84,${0.16 + open * 0.08})`;
+      ctx.fillRect(c[0] * size + jitter, c[1] * size - 22, size * 0.82, size * 0.82);
+    }
+    ctx.strokeStyle = `rgba(224,214,190,${0.08 + open * 0.10})`;
+    ctx.lineWidth = 0.7;
+    ctx.strokeRect(-26, -17, 49, 30);
+    ctx.restore();
+  }
+
+  function drawOraclePod(ctx, s, t, open) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(222,210,188,${0.13 + open * 0.14})`;
+    ctx.lineWidth = 0.85;
+    for (let i = 0; i < 3; i++) {
+      const a = -Math.PI / 2 + (i - 1) * (0.55 + open * 0.12);
+      const len = 32 + open * 9;
+      ctx.beginPath();
+      ctx.moveTo(0, 20);
+      ctx.bezierCurveTo(Math.cos(a) * 14, -2, Math.cos(a) * 22, -16, Math.cos(a) * len, Math.sin(a) * len);
+      ctx.stroke();
+      ctx.fillStyle = `rgba(27,20,15,${0.72})`;
+      ctx.strokeStyle = `rgba(220,206,181,${0.12 + open * 0.12})`;
+      ctx.beginPath();
+      ctx.ellipse(Math.cos(a) * len, Math.sin(a) * len, 10 + open * 2, 18 + open * 5, a + Math.PI / 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+    ctx.fillStyle = `rgba(227,218,198,${0.08 + open * 0.12})`;
+    ctx.beginPath();
+    ctx.ellipse(0, 7, 15 + open * 3, 22 + open * 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawMeasuringVine(ctx, s, t, open) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(218,206,184,${0.16 + open * 0.16})`;
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.ellipse(0, 4, 26 + open * 5, 44 + open * 5, -0.18, Math.PI * 0.15, Math.PI * 1.72);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(-5, 1, 18 + open * 4, 32 + open * 3, 0.34, Math.PI * 1.12, Math.PI * 2.08);
+    ctx.stroke();
+
+    ctx.strokeStyle = `rgba(232,224,211,${0.10 + open * 0.16})`;
+    for (let i = 0; i < 13; i++) {
+      const y = -32 + i * 5.8;
+      const len = i % 3 === 0 ? 11 : 6;
+      ctx.beginPath();
+      ctx.moveTo(29, y);
+      ctx.lineTo(29 + len, y + Math.sin(i) * 1);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = `rgba(180,158,130,${0.08 + open * 0.10})`;
+    for (let i = 0; i < 9; i++) {
+      ctx.beginPath();
+      ctx.arc(-26 + i * 7, 24 + Math.sin(i + t) * 2, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawAshBloom(ctx, s, t, open) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(124,78,52,${0.22 + open * 0.18})`;
+    ctx.lineWidth = 1.05;
+    ctx.beginPath();
+    ctx.moveTo(0, 34);
+    ctx.bezierCurveTo(-5, 18, 2, 2, 0, -22);
+    ctx.stroke();
+
+    const petals = 7;
+    for (let i = 0; i < petals; i++) {
+      const a = i / petals * Math.PI * 2 + Math.sin(t * 0.19) * 0.04;
+      ctx.save();
+      ctx.rotate(a);
+      ctx.fillStyle = `rgba(31,21,16,${0.70})`;
+      ctx.strokeStyle = `rgba(168,111,73,${0.10 + open * 0.16})`;
+      ctx.beginPath();
+      ctx.moveTo(0, -2);
+      ctx.bezierCurveTo(-6, -12, -3, -22 - 8 * open, 0, -28 - 8 * open);
+      ctx.bezierCurveTo(8, -21 - 7 * open, 6, -10, 0, -2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+    const pulse = 0.12 + open * 0.16 + Math.max(0, Math.sin(t * 0.9 + s.phase)) * 0.08;
+    ctx.fillStyle = `rgba(129,48,29,${pulse})`;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 7 + open * 4, 9 + open * 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = `rgba(229,177,118,${pulse * 0.35})`;
+    ctx.beginPath();
+    ctx.arc(0, 0, 2.2 + open, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawStainColony(ctx, s, t, open) {
+    ctx.save();
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * Math.PI * 2 + s.phase;
+      const r = 9 + i * 2.2;
+      ctx.fillStyle = i % 2 ? `rgba(144,92,57,${0.045 + open * 0.035})` : `rgba(212,201,178,${0.035 + open * 0.045})`;
+      ctx.beginPath();
+      ctx.ellipse(Math.cos(a) * r * 0.8, Math.sin(a) * r * 0.45, 16 - i * 0.25, 6 + (i % 4), a, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.strokeStyle = `rgba(220,205,178,${0.08 + open * 0.13})`;
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 36 + open * 7, 23 + open * 4, -0.2, 0, Math.PI * 2);
+    ctx.stroke();
+
+    for (let i = 0; i < 16; i++) {
+      const a = i / 16 * Math.PI * 2;
+      const r = 18 + (i % 5) * 4;
+      ctx.fillStyle = `rgba(224,214,191,${0.055 + open * 0.06})`;
+      ctx.beginPath();
+      ctx.arc(Math.cos(a) * r, Math.sin(a) * r * 0.55, 1.3 + (i % 3) * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawSeamVinesAndThorns(ctx, s, t, open) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    for (let i = 0; i < s.tendrils.length; i++) {
+      const tendril = s.tendrils[i];
+      const a = tendril.a + Math.sin(t * 0.23 + tendril.phase) * 0.08;
+      const len = tendril.len * (0.7 + open * 0.3);
+      const sx = Math.cos(a) * 13;
+      const sy = Math.sin(a) * 9;
+      const ex = Math.cos(a) * len;
+      const ey = Math.sin(a) * len * 0.62;
+      ctx.strokeStyle = `rgba(167,146,116,${0.08 + open * 0.075})`;
+      ctx.lineWidth = 0.65 + open * 0.25;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.bezierCurveTo(sx + Math.sin(a) * 12, sy + Math.cos(a) * 10, ex - Math.cos(a) * 16, ey - Math.sin(a) * 10, ex, ey);
+      ctx.stroke();
+
+      if (i % 2 === 0) {
+        const thornCount = state.lowPower ? 2 : 4;
+        ctx.strokeStyle = `rgba(225,213,190,${0.07 + open * 0.10})`;
+        for (let k = 1; k <= thornCount; k++) {
+          const u = k / (thornCount + 1);
+          const px = lerp(sx, ex, u);
+          const py = lerp(sy, ey, u);
+          const side = k % 2 ? 1 : -1;
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(px + Math.cos(a + side * 1.35) * (4 + open * 2), py + Math.sin(a + side * 1.35) * (4 + open * 2));
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawMicroText(ctx, t) {
+    if (state.layoutMode === 'small') return;
+    ctx.save();
+    ctx.font = '9px "Aktiv Grotesk", Arial, sans-serif';
+    ctx.textBaseline = 'middle';
+    for (const m of state.microText) {
+      ctx.save();
+      ctx.translate(m.x, m.y + Math.sin(t * 0.2 + m.x) * 1.5);
+      ctx.rotate(m.angle);
+      ctx.fillStyle = `rgba(232,224,211,${m.a})`;
+      ctx.fillText(m.text, 0, 0);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  function drawAtmosphere(now) {
+    const ctx = ctxAtmosphere;
+    const w = state.cssW;
+    const h = state.cssH;
+    const t = now * 0.001;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.save();
+    for (const p of state.spores) {
+      if (!state.reduceMotion && !state.paused) {
+        const pointerDx = (p.x / w - state.pointer.sx);
+        const pointerDy = (p.y / h - state.pointer.sy);
+        const near = Math.max(0, 1 - Math.hypot(pointerDx, pointerDy) * 3.4);
+        p.x += (p.vx + Math.sin(t * 0.25 + p.phase) * 0.03 + near * pointerDx * 0.24) * p.z * (state.lowPower ? 0.7 : 1);
+        p.y += (p.vy + Math.cos(t * 0.18 + p.phase) * 0.018 + near * pointerDy * 0.18) * p.z * (state.lowPower ? 0.7 : 1);
+        if (p.y < -20) p.y = h + 20;
+        if (p.x < -20) p.x = w + 20;
+        if (p.x > w + 20) p.x = -20;
+      }
+      const twinkle = 0.74 + Math.sin(t * (0.5 + p.z) + p.phase) * 0.26;
+      if (p.type === 'dew') {
+        ctx.fillStyle = `rgba(239,232,218,${p.a * 0.75 * twinkle})`;
+      } else if (p.type === 'ash') {
+        ctx.fillStyle = `rgba(148,97,65,${p.a * 0.78 * twinkle})`;
+      } else {
+        ctx.fillStyle = `rgba(213,203,181,${p.a * twinkle})`;
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * p.z, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    for (const a of state.ash) {
+      const dy = state.reduceMotion ? 0 : Math.sin(t * 0.33 + a.phase) * 10;
+      const dx = state.reduceMotion ? 0 : Math.cos(t * 0.23 + a.phase) * 6 + a.drift * 10;
+      ctx.fillStyle = `rgba(118,64,43,${a.a * (0.7 + Math.sin(t + a.phase) * 0.3)})`;
+      ctx.beginPath();
+      ctx.ellipse(a.x + dx, a.y + dy, a.r * 1.4, a.r * 0.55, a.phase, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    if (!state.lowPower && !state.reduceMotion) {
+      drawSurfaceGrain(ctx, w, h, t);
+    }
+  }
+
+  function drawSurfaceGrain(ctx, w, h, t) {
+    ctx.save();
+    ctx.globalAlpha = 0.10;
+    ctx.strokeStyle = 'rgba(232,224,211,.10)';
+    ctx.lineWidth = 0.35;
+    const step = 26;
+    const offset = (Math.floor(t * 2) % step);
+    for (let y = offset; y < h; y += step) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y + Math.sin(y * 0.03 + t) * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawFocus(now) {
+    const ctx = ctxFocus;
+    const w = state.cssW;
+    const h = state.cssH;
+    const t = now * 0.001;
+    ctx.clearRect(0, 0, w, h);
+    const active = state.specimens[state.activeIndex];
+    if (!active) return;
+
+    state.activeMix = state.reduceMotion ? 0.55 : lerp(state.activeMix, 1, 0.035);
+
+    const x = active.x + Math.sin(t * 0.32 + active.phase) * (state.reduceMotion ? 0 : 2);
+    const y = active.y + Math.cos(t * 0.25 + active.phase) * (state.reduceMotion ? 0 : 1.5);
+
+    ctx.save();
+    const radius = 74 + Math.sin(t * 0.4 + active.phase) * 7 + state.activeMix * 28;
+    const halo = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    halo.addColorStop(0, active.key === 'furnace' ? `rgba(176,76,45,${0.13 * state.activeMix})` : `rgba(232,224,211,${0.11 * state.activeMix})`);
+    halo.addColorStop(0.36, `rgba(190,169,140,${0.045 * state.activeMix})`);
+    halo.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = active.key === 'furnace' ? `rgba(177,78,48,${0.18 * state.activeMix})` : `rgba(235,225,204,${0.13 * state.activeMix})`;
+    ctx.lineWidth = state.lowPower ? 1.4 : 2.2;
+    drawCurve(ctx, breathePath(active.path, t, 2.7, active.index + 30));
+
+    if (!state.lowPower) {
+      ctx.strokeStyle = `rgba(235,225,204,${0.10 * state.activeMix})`;
+      ctx.lineWidth = 0.8;
+      drawStitchesOnPath(ctx, active.path, t, state.activeMix);
+    }
+
+    if (state.pointer.active && !state.reduceMotion) {
+      const px = state.pointer.sx * w;
+      const py = state.pointer.sy * h;
+      const rg = ctx.createRadialGradient(px, py, 0, px, py, 80);
+      rg.addColorStop(0, 'rgba(237,228,212,.07)');
+      rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.arc(px, py, 80, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function activateNode(index, userInitiated) {
+    if (!state.specimens[index]) return;
+    if (index === state.activeIndex && userInitiated) {
+      state.lastUserInteraction = performance.now();
+      return;
+    }
+    state.activeIndex = index;
+    state.activeMix = 0;
+    if (userInitiated) {
+      state.lastUserInteraction = performance.now();
+      body.classList.add('has-interacted');
+    }
+    updateActiveClasses();
+    updateLedger();
+    if (userInitiated) scheduleAutoCycle(performance.now() + 11000 + Math.random() * 4000);
+  }
+
+  function updateActiveClasses() {
+    for (const s of state.specimens) {
+      if (!s.el) continue;
+      const active = s.index === state.activeIndex;
+      s.el.classList.toggle('is-active', active);
+      s.el.classList.toggle('is-dim', !active);
+      s.el.setAttribute('aria-current', active ? 'page' : 'false');
+    }
+  }
+
+  function updateLedger() {
+    const active = state.specimens[state.activeIndex];
+    if (!active) return;
+    ledger.specimen.textContent = active.specimen;
+    ledger.form.textContent = active.form;
+    ledger.signal.textContent = active.signal;
+    ledger.room.textContent = active.href;
+    ledger.note.textContent = active.note;
+    Object.values(ledger).forEach(el => {
+      el.classList.remove('ledger-fade');
+      void el.offsetWidth;
+      el.classList.add('ledger-fade');
+    });
+  }
+
+  function scheduleAutoCycle(baseTime) {
+    const jitter = 8000 + Math.random() * 6000;
+    state.autoNextTime = (baseTime || performance.now()) + jitter;
+  }
+
+  function maybeAutoCycle(now) {
+    if (state.reduceMotion || state.specimens.length < 2) return;
+    if (now - state.lastUserInteraction < 10000) return;
+    if (now >= state.autoNextTime) {
+      const jump = 1 + Math.floor(Math.random() * Math.min(3, state.specimens.length - 1));
+      activateNode((state.activeIndex + jump) % state.specimens.length, false);
+      scheduleAutoCycle(now);
+    }
+  }
+
+  function animationLoop(now) {
+    if (state.paused || state.hidden) {
+      state.raf = 0;
+      return;
+    }
+
+    const targetFps = state.reduceMotion ? 5 : state.lowPower ? 20 : 32;
+    const minDelta = 1000 / targetFps;
+    if (!state.lastFrame || now - state.lastFrame >= minDelta) {
+      state.frame++;
+      state.pointer.sx = lerp(state.pointer.sx, state.pointer.x, 0.08);
+      state.pointer.sy = lerp(state.pointer.sy, state.pointer.y, 0.08);
+      root.style.setProperty('--mx', `${state.pointer.sx * 100}%`);
+      root.style.setProperty('--my', `${state.pointer.sy * 100}%`);
+
+      maybeAutoCycle(now);
+
+      const mainInterval = state.reduceMotion ? 900 : state.lowPower ? 135 : 65;
+      const atmosphereInterval = state.reduceMotion ? 1500 : state.lowPower ? 80 : 45;
+
+      if (now - state.lastMainDraw > mainInterval) {
+        drawMain(now);
+        state.lastMainDraw = now;
+      }
+      if (now - state.lastAtmosphereDraw > atmosphereInterval) {
+        drawAtmosphere(now);
+        state.lastAtmosphereDraw = now;
+      }
+      drawFocus(now);
+      state.lastFrame = now;
+    }
+    state.raf = requestAnimationFrame(animationLoop);
+  }
+
+  function startLoop() {
+    if (!state.raf && !state.paused && !state.hidden) {
+      state.raf = requestAnimationFrame(animationLoop);
+    }
+  }
+
+  function stopLoop() {
+    if (state.raf) {
+      cancelAnimationFrame(state.raf);
+      state.raf = 0;
+    }
+  }
+
+  function bindEvents() {
+    for (const s of state.specimens) {
+      if (!s.el) continue;
+      s.el.addEventListener('mouseenter', () => activateNode(s.index, true), { passive: true });
+      s.el.addEventListener('focus', () => activateNode(s.index, true), { passive: true });
+      s.el.addEventListener('touchstart', () => activateNode(s.index, true), { passive: true });
+      s.el.addEventListener('pointerdown', () => activateNode(s.index, true), { passive: true });
+    }
+
+    window.addEventListener('pointermove', event => {
+      state.pointer.x = clamp(event.clientX / state.cssW, 0, 1);
+      state.pointer.y = clamp(event.clientY / state.cssH, 0, 1);
+      state.pointer.active = true;
+      state.pointer.t = performance.now();
+      if (performance.now() - state.lastUserInteraction > 260) {
+        body.classList.add('has-interacted');
+      }
+      const nearest = nearestSpecimen(event.clientX, event.clientY, 92);
+      if (nearest !== -1) activateNode(nearest, true);
+    }, { passive: true });
+
+    window.addEventListener('pointerleave', () => {
+      state.pointer.active = false;
+    }, { passive: true });
+
+    let resizeRaf = 0;
+    window.addEventListener('resize', () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        resizeRaf = 0;
+        resize();
+      });
+    }, { passive: true });
+
+    document.addEventListener('visibilitychange', () => {
+      state.hidden = document.hidden;
+      if (state.hidden) stopLoop();
+      else {
+        state.lastFrame = 0;
+        state.lastMainDraw = 0;
+        state.lastAtmosphereDraw = 0;
+        scheduleAutoCycle(performance.now() + 4000);
+        startLoop();
+      }
+    });
+
+    window.addEventListener('pagehide', () => {
+      state.paused = true;
+      stopLoop();
+    });
+
+    window.addEventListener('pageshow', () => {
+      state.paused = false;
+      state.hidden = document.hidden;
+      state.lastFrame = 0;
+      if (!state.hidden) {
+        resize();
+        scheduleAutoCycle(performance.now() + 3000);
+        startLoop();
+      }
+    });
+  }
+
+  function nearestSpecimen(x, y, threshold) {
+    let best = -1;
+    let bestD = threshold;
+    for (const s of state.specimens) {
+      const d = Math.hypot(s.x - x, s.y - y);
+      if (d < bestD) {
+        bestD = d;
+        best = s.index;
+      }
+    }
+    return best;
+  }
+
+  function validateLinks() {
+    const hrefs = linkEls.map(link => link.getAttribute('href'));
+    const missing = REQUIRED_HREFS.filter(href => !hrefs.includes(href));
+    const hasShop = hrefs.some(href => href === 'shop.html');
+    if (missing.length || hasShop) {
+      throw new Error('Black garden links failed validation.');
+    }
+  }
+
+  function init() {
+    validateLinks();
+    resize();
+    bindEvents();
+    activateNode(0, false);
+    scheduleAutoCycle(performance.now() + 4500);
+    if (state.reduceMotion) {
+      drawMain(performance.now());
+      drawAtmosphere(performance.now());
+      drawFocus(performance.now());
+    } else {
+      startLoop();
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
