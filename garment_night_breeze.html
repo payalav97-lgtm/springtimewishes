@@ -450,7 +450,7 @@ const product = {
   currency:'USD',
   status:'available'
 };
-let selected = {size:'s', color:'purple / grey'};
+let selected = {size:'s', color:'black / pink'};
 function resize(){
   W = innerWidth; H = innerHeight;
   const scale = lowPower ? 1.55 : 1.1;
@@ -537,8 +537,12 @@ document.addEventListener('pointermove', e => {
 document.querySelectorAll('.choice').forEach(btn => {
   btn.addEventListener('click', () => {
     const type = btn.dataset.choice;
- function addToCart   document.querySelectorAll(`.choice[data-choice="${type}"]`).forEach(b => b.setAttribute('aria-pressed','false'));
-    btn.setAttribute('aria-pressed','true');
+
+    document
+      .querySelectorAll(`.choice[data-choice="${type}"]`)
+      .forEach(b => b.setAttribute('aria-pressed', 'false'));
+
+    btn.setAttribute('aria-pressed', 'true');
     selected[type] = btn.textContent.trim().toLowerCase();
   });
 });
