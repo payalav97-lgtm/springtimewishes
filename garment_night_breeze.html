@@ -383,10 +383,10 @@ button{background:none;border:0;color:inherit;cursor:pointer}
             <button type="button" id="qtyPlus" aria-label="increase quantity">+</button>
           </div>
         </div>
-        <div class="action-row">
-          <button class="add-cart" type="button" onclick="window.location.href='https://springtime-wishes.myshopify.com/products/night-breeze-top'">add to cart</button>
-          <a class="request" href="contact.html?request=night-breeze">private sizing</a>
-        </div>
+       <div class="action-row">
+  <button class="add-cart" type="submit">add to cart</button>
+  <a class="request" href="contact.html?request=night-breeze">private sizing</a>
+</div>
       </form>
 
       <section class="archive-info" aria-label="garment details">
@@ -418,12 +418,12 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         <a href="shop.html#fragment"><span>related</span><strong>fragment</strong></a>
       </nav>
     </section>
-  </main>
-  <aside class="mobile-buy" aria-label="mobile purchase">
-    <div class="mobile-buy-inner">
-      <div class="mini">night breeze<strong>$240 usd / available</strong></div>
-     <button class="add-cart" id="mobileAdd" type="button" onclick="window.location.href='https://springtime-wishes.myshopify.com/products/night-breeze-top'">add to cart</button>
-    </div>
+ <aside class="mobile-buy" aria-label="mobile purchase">
+  <div class="mobile-buy-inner">
+    <div class="mini">night breeze<strong>$240 usd / available</strong></div>
+    <button class="add-cart" id="mobileAdd" type="button">add to cart</button>
+  </div>
+</aside>
   </aside>
   <p class="sr">Individual Springtime Wishes product page for night breeze, with size, material, care, measurements, private sizing request, and add to cart.</p>
 </div>
@@ -470,15 +470,26 @@ function updateCart(){
   cartCount.textContent = String(count);
 }
 function addToCart(){
-  const items = cart();
-  items.push({...product, qty, variant:{...selected}, addedAt:Date.now()});
-  setCart(items);
-  const buttons = [form.querySelector('.add-cart'), mobileAdd].filter(Boolean);
-  buttons.forEach(btn => {
-    const old = btn.textContent;
-    btn.textContent = 'added';
-    setTimeout(()=>{btn.textContent = old}, 900);
-  });
+  const shopifyVariants = {
+    I: '45756109357227',
+    II: '45756109389995',
+    III: '45756109455531'
+  };
+
+  const activeChoices = Array.from(document.querySelectorAll('.choice[aria-pressed="true"]'))
+    .map(choice => choice.textContent.trim().toUpperCase());
+
+  const size = activeChoices.find(value => ['I', 'II', 'III'].includes(value));
+  const variantId = shopifyVariants[size];
+
+  if(!variantId){
+    alert('Please select a size.');
+    return;
+  }
+
+  const qty = Math.max(1, Number(document.getElementById('qtyOut')?.value || 1));
+
+  window.location.href = `https://springtime-wishes.myshopify.com/cart/${variantId}:${qty}`;
 }
 function draw(t){
   if(document.hidden){raf=requestAnimationFrame(draw);return}
@@ -526,7 +537,7 @@ document.addEventListener('pointermove', e => {
 document.querySelectorAll('.choice').forEach(btn => {
   btn.addEventListener('click', () => {
     const type = btn.dataset.choice;
-    document.querySelectorAll(`.choice[data-choice="${type}"]`).forEach(b => b.setAttribute('aria-pressed','false'));
+ function addToCart   document.querySelectorAll(`.choice[data-choice="${type}"]`).forEach(b => b.setAttribute('aria-pressed','false'));
     btn.setAttribute('aria-pressed','true');
     selected[type] = btn.textContent.trim().toLowerCase();
   });
