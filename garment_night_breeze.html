@@ -361,7 +361,32 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   bottom:7% !important;
   z-index:20 !important;
 }
-</style>
+</style>/* final fixed placement for Are.na product image */
+.garment-form{
+  position:relative !important;
+}
+
+#arenaPhoto.arena-photo{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  z-index:1 !important;
+  display:none;
+  opacity:1 !important;
+  filter:brightness(.86) contrast(.96) saturate(.9) !important;
+}
+
+.garment-form svg{
+  opacity:0 !important;
+  visibility:hidden !important;
+}
+
+.chamber-shell .specimen-lines,
+.chamber-shell .scanline{
+  display:none !important;
+}
 </head>
 <body>
 <canvas class="canvas-field" id="field" aria-hidden="true"></canvas>
@@ -381,7 +406,7 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         <div class="orbit" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="garment-stage">
           <div class="garment-form" id="garmentForm" aria-hidden="true">
-            <svg viewBox="0 0 420 620" preserveAspectRatio="xMidYMid meet">
+           <img id="arenaPhoto" class="arena-photo" alt="night breeze top image" loading="lazy"> <svg viewBox="0 0 420 620" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <radialGradient id="clothGradient" cx="50%" cy="32%" r="76%">
                   <stop offset="0%" stop-color="rgba(238,232,220,.34)"/>
@@ -404,7 +429,6 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         </div>
         <div class="specimen-lines" aria-hidden="true"></div>
         <div class="scanline" aria-hidden="true"></div>
-      <img id="arenaPhoto" class="arena-photo" alt="night breeze top image" loading="lazy">
 
 <div class="thumbs" aria-label="product images">
   <button class="thumb is-active" data-view="front" data-arena-index="0" type="button"><span>01</span></button>
