@@ -292,30 +292,34 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .canvas-field{opacity:.22}
   .form-line{stroke-dasharray:none}
-}.arena-photo{
+.chamber-shell{
+  position:relative;
+  overflow:hidden;
+}
+
+.arena-photo{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
   z-index:2;
-  opacity:.86;
-  filter:brightness(.68) contrast(.9) saturate(.82);
+  display:none;
+  opacity:1;
+  filter:brightness(.86) contrast(.96) saturate(.9);
 }
 
 .chamber-shell svg,
 .chamber-shell .specimen-lines,
 .chamber-shell .scanline{
-  position:relative;
-  z-index:3;
-  opacity:.18;
-  pointer-events:none;
+  display:none !important;
 }
 
 .chamber-shell .thumbs{
   position:absolute;
   z-index:5;
 }
+ } 
 </style>
 </head>
 <body>
