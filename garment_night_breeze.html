@@ -362,10 +362,9 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         <div class="field">
           <div class="field-label">size</div>
           <div class="choice-row" role="group" aria-label="select size">
-            <button class="choice" type="button" data-choice="size" aria-pressed="false">xs</button>
-            <button class="choice" type="button" data-choice="size" aria-pressed="true">s</button>
-            <button class="choice" type="button" data-choice="size" aria-pressed="false">m</button>
-            <button class="choice" type="button" data-choice="size" aria-pressed="false">l</button>
+            <button class="choice" type="button" data-choice="size" aria-pressed="true">xs/s</button>
+<button class="choice" type="button" data-choice="size" aria-pressed="false">s/m</button>
+<button class="choice" type="button" data-choice="size" aria-pressed="false">m/l</button>
           </div>
         </div>
         <div class="field">
@@ -469,17 +468,16 @@ function updateCart(){
   cartCount.textContent = String(count);
 }
 function addToCart(){
-const shopifyVariants = {
-  XS: '45756109357227',
-  S: '45756109389995',
-  M: '45756109455531',
-  L: '47264209928363'
-};
+  const shopifyVariants = {
+    'XS/S': '45756109357227',
+    'S/M': '45756109389995',
+    'M/L': '45756109455531'
+  };
 
   const activeChoices = Array.from(document.querySelectorAll('.choice[aria-pressed="true"]'))
     .map(choice => choice.textContent.trim().toUpperCase());
 
-  const size = activeChoices.find(value => ['XS', 'S', 'M', 'L'].includes(value));
+  const size = activeChoices.find(value => ['XS/S', 'S/M', 'M/L'].includes(value));
   const variantId = shopifyVariants[size];
 
   if(!variantId){
