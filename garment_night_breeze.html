@@ -292,6 +292,62 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .canvas-field{opacity:.22}
   .form-line{stroke-dasharray:none}
+}/* TEST — Are.na image inside original garment stage */
+#chamber .garment-stage{
+  position:relative !important;
+}
+
+#chamber .garment-stage > #arenaPhoto.arena-photo{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  z-index:2 !important;
+  display:none;
+  opacity:1 !important;
+  filter:brightness(.86) contrast(.96) saturate(.9) !important;
+  pointer-events:none !important;
+}
+
+#chamber #garmentForm{
+  opacity:0 !important;
+  visibility:hidden !important;
+}/* TEST — move Are.na buttons below image */
+#chamber .garment-stage > #arenaPhoto.arena-photo{
+  height:100% !important;
+  bottom:auto !important;
+}
+
+#chamber .arena-thumbs{
+  position:relative !important;
+  left:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+  display:grid !important;
+  grid-template-columns:repeat(3, 92px) !important;
+  gap:12px !important;
+  z-index:50 !important;
+  width:max-content !important;
+  margin:18px auto 0 !important;
+}
+
+#chamber .arena-thumbs .thumb{
+  width:92px !important;
+  height:74px !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  overflow:hidden !important;
+  position:relative !important;
+}
+
+#chamber .arena-thumbs .thumb span{
+  position:absolute !important;
+  left:10px !important;
+  bottom:8px !important;
+  z-index:2 !important;
 }
 </style>
 </head>
@@ -311,8 +367,9 @@ button{background:none;border:0;color:inherit;cursor:pointer}
     <section class="chamber" aria-label="garment visual chamber">
       <div class="chamber-shell" id="chamber">
         <div class="orbit" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="garment-stage">
-          <div class="garment-form" id="garmentForm" aria-hidden="true">
+       <div class="garment-stage">
+  <img id="arenaPhoto" class="arena-photo" alt="night breeze top image" loading="lazy">
+  <div class="garment-form" id="garmentForm" aria-hidden="true">
             <svg viewBox="0 0 420 620" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <radialGradient id="clothGradient" cx="50%" cy="32%" r="76%">
@@ -336,12 +393,11 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         </div>
         <div class="specimen-lines" aria-hidden="true"></div>
         <div class="scanline" aria-hidden="true"></div>
-        <div class="thumbs" aria-label="product views">
-          <button class="thumb is-active" data-view="front" type="button"><span>front</span></button>
-          <button class="thumb" data-view="side" type="button"><span>side</span></button>
-          <button class="thumb" data-view="detail" type="button"><span>detail</span></button>
-          <button class="thumb" data-view="trace" type="button"><span>trace</span></button>
-        </div>
+      <div class="thumbs arena-thumbs" aria-label="product images">
+  <button class="thumb is-active" data-arena-index="0" type="button"><span>01</span></button>
+  <button class="thumb" data-arena-index="1" type="button"><span>02</span></button>
+  <button class="thumb" data-arena-index="2" type="button"><span>03</span></button>
+</div>
       </div>
     </section>
 
@@ -544,7 +600,7 @@ document.querySelectorAll('.choice').forEach(btn => {
     selected[type] = btn.textContent.trim().toLowerCase();
   });
 });
-document.querySelectorAll('.thumb').forEach(btn => {
+document.querySelectorAll('.thumb[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.thumb').forEach(b => b.classList.remove('is-active'));
     btn.classList.add('is-active');
@@ -565,6 +621,70 @@ window.addEventListener('pageshow',()=>{cancelAnimationFrame(raf);raf=requestAni
 window.addEventListener('resize',()=>requestAnimationFrame(resize),{passive:true});
 resize(); updateCart(); raf=requestAnimationFrame(draw);
 })();
+
+const arenaChannel = 'night_breeze_top';
+const arenaPhoto = document.getElementById('arenaPhoto');
+const arenaButtons = document.querySelectorAll('.arena-thumbs .thumb[data-arena-index]');
+let arenaImages = [];
+
+function setArenaImage(index){
+  if(!arenaPhoto || !arenaImages.length) return;
+
+  const safeIndex = Math.max(0, Math.min(Number(index) || 0, arenaImages.length - 1));
+  const image = arenaImages[safeIndex];
+
+  if(!image) return;
+
+  arenaPhoto.src = image;
+  arenaPhoto.style.display = 'block';
+
+  arenaButtons.forEach((button, buttonIndex) => {
+    const thumbImage = arenaImages[buttonIndex];
+
+    button.classList.toggle('is-active', buttonIndex === safeIndex);
+    button.style.display = thumbImage ? '' : 'none';
+
+    if(thumbImage){
+      button.style.backgroundImage = `linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.48)), url("${thumbImage}")`;
+    }
+  });
+}
+
+async function loadArenaImages(){
+  try{
+    const response = await fetch(`https://api.are.na/v2/channels/${arenaChannel}/contents?per=100`);
+    const data = await response.json();
+
+    arenaImages = (data.contents || [])
+      .filter(block => block.image)
+      .map(block =>
+        block.image?.original?.url ||
+        block.image?.large?.url ||
+        block.image?.display?.url ||
+        block.image?.thumb?.url
+      )
+      .filter(Boolean)
+      .reverse();
+
+    arenaImages = [...new Set(arenaImages)].slice(0, 3);
+
+    console.log('Night Breeze Are.na images:', arenaImages);
+
+    setArenaImage(0);
+  }catch(error){
+    console.warn('Could not load Are.na images', error);
+  }
+}
+
+arenaButtons.forEach(button => {
+  button.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setArenaImage(Number(button.dataset.arenaIndex || 0));
+  }, true);
+});
+
+loadArenaImages();
 </script>
 </body>
 </html>
