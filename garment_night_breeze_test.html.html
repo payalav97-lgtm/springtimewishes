@@ -315,10 +315,15 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   opacity:0 !important;
   visibility:hidden !important;
 }/* TEST — move Are.na buttons below image */
+#chamber .garment-stage > #arenaPhoto.arena-photo{
+  height:calc(100% - 96px) !important;
+  bottom:auto !important;
+}
+
 #chamber .arena-thumbs{
   position:absolute !important;
   left:50% !important;
-  bottom:-92px !important;
+  bottom:0 !important;
   transform:translateX(-50%) !important;
   display:grid !important;
   grid-template-columns:repeat(3, 92px) !important;
@@ -627,8 +632,7 @@ async function loadArenaImages(){
     const data = await response.json();
 
     arenaImages = (data.contents || [])
-      .filter(block => block.class === 'Image' && block.image)
-      .sort((a, b) => {
+.filter(block => block.image)      .sort((a, b) => {
         const positionA = typeof a.position === 'number' ? a.position : 9999;
         const positionB = typeof b.position === 'number' ? b.position : 9999;
         return positionA - positionB;
