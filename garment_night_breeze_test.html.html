@@ -316,19 +316,21 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   visibility:hidden !important;
 }/* TEST — move Are.na buttons below image */
 #chamber .garment-stage > #arenaPhoto.arena-photo{
-  height:calc(100% - 96px) !important;
+  height:100% !important;
   bottom:auto !important;
 }
 
 #chamber .arena-thumbs{
-  position:absolute !important;
-  left:50% !important;
-  bottom:0 !important;
-  transform:translateX(-50%) !important;
+  position:relative !important;
+  left:auto !important;
+  bottom:auto !important;
+  transform:none !important;
   display:grid !important;
   grid-template-columns:repeat(3, 92px) !important;
   gap:12px !important;
   z-index:50 !important;
+  width:max-content !important;
+  margin:18px auto 0 !important;
 }
 
 #chamber .arena-thumbs .thumb{
