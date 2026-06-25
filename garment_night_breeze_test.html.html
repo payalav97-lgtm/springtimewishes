@@ -336,6 +336,18 @@ button{background:none;border:0;color:inherit;cursor:pointer}
 #chamber .arena-thumbs .thumb{
   width:92px !important;
   height:74px !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  overflow:hidden !important;
+  position:relative !important;
+}
+
+#chamber .arena-thumbs .thumb span{
+  position:absolute !important;
+  left:10px !important;
+  bottom:8px !important;
+  z-index:2 !important;
 }
 </style>
 </head>
@@ -588,7 +600,7 @@ document.querySelectorAll('.choice').forEach(btn => {
     selected[type] = btn.textContent.trim().toLowerCase();
   });
 });
-document.querySelectorAll('.thumb').forEach(btn => {
+document.querySelectorAll('.thumb[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.thumb').forEach(b => b.classList.remove('is-active'));
     btn.classList.add('is-active');
@@ -612,19 +624,29 @@ resize(); updateCart(); raf=requestAnimationFrame(draw);
 
 const arenaChannel = 'night_breeze_top';
 const arenaPhoto = document.getElementById('arenaPhoto');
-const arenaButtons = document.querySelectorAll('.thumb[data-arena-index]');
+const arenaButtons = document.querySelectorAll('.arena-thumbs .thumb[data-arena-index]');
 let arenaImages = [];
 
 function setArenaImage(index){
   if(!arenaPhoto || !arenaImages.length) return;
 
-  const safeIndex = Math.min(index, arenaImages.length - 1);
-  arenaPhoto.src = arenaImages[safeIndex];
+  const safeIndex = Math.max(0, Math.min(Number(index) || 0, arenaImages.length - 1));
+  const image = arenaImages[safeIndex];
+
+  if(!image) return;
+
+  arenaPhoto.src = image;
   arenaPhoto.style.display = 'block';
 
   arenaButtons.forEach((button, buttonIndex) => {
+    const thumbImage = arenaImages[buttonIndex];
+
     button.classList.toggle('is-active', buttonIndex === safeIndex);
-    button.style.display = arenaImages[buttonIndex] ? '' : 'none';
+    button.style.display = thumbImage ? '' : 'none';
+
+    if(thumbImage){
+      button.style.backgroundImage = `linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.48)), url("${thumbImage}")`;
+    }
   });
 }
 
@@ -634,20 +656,19 @@ async function loadArenaImages(){
     const data = await response.json();
 
     arenaImages = (data.contents || [])
-.filter(block => block.image)      .sort((a, b) => {
-        const positionA = typeof a.position === 'number' ? a.position : 9999;
-        const positionB = typeof b.position === 'number' ? b.position : 9999;
-        return positionA - positionB;
-      })
+      .filter(block => block.image)
       .map(block =>
+        block.image?.original?.url ||
         block.image?.large?.url ||
         block.image?.display?.url ||
-        block.image?.original?.url ||
         block.image?.thumb?.url
       )
-      .filter(Boolean);
+      .filter(Boolean)
+      .reverse();
 
-    arenaImages = [...new Set(arenaImages)].slice(0, 4);
+    arenaImages = [...new Set(arenaImages)].slice(0, 3);
+
+    console.log('Night Breeze Are.na images:', arenaImages);
 
     setArenaImage(0);
   }catch(error){
