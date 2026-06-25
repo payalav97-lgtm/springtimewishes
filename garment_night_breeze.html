@@ -403,71 +403,7 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   bottom:8% !important;
   z-index:20 !important;
 }
-/* NIGHT BREEZE ARENA FINAL OVERRIDE */
-#chamber .garment-stage{
-  position:absolute !important;
-  left:5vw !important;
-  top:18vh !important;
-  width:46vw !important;
-  height:68vh !important;
-  min-height:560px !important;
-  z-index:2 !important;
-}
 
-#chamber #garmentForm{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  transform:none !important;
-}
-
-#arenaPhoto.arena-photo{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  object-fit:cover !important;
-  object-position:center center !important;
-  z-index:10 !important;
-  display:block !important;
-  opacity:1 !important;
-  filter:brightness(.86) contrast(.96) saturate(.9) !important;
-  pointer-events:none !important;
-}
-
-#chamber #garmentForm svg,
-#chamber .specimen-lines,
-#chamber .scanline{
-  display:none !important;
-  opacity:0 !important;
-  visibility:hidden !important;
-}
-
-#chamber .thumbs{
-  position:absolute !important;
-  left:5vw !important;
-  top:calc(18vh + 68vh + 18px) !important;
-  z-index:30 !important;
-}
-
-@media (max-width: 900px){
-  #chamber .garment-stage{
-    position:relative !important;
-    left:auto !important;
-    top:auto !important;
-    width:100% !important;
-    height:62vh !important;
-    min-height:420px !important;
-  }
-
-  #chamber .thumbs{
-    position:relative !important;
-    left:auto !important;
-    top:auto !important;
-    margin-top:14px !important;
-  }
-}
 </style>
 <canvas class="canvas-field" id="field" aria-hidden="true"></canvas>
 <div class="page">
@@ -747,50 +683,15 @@ let arenaImages = [];
 function setArenaImage(index){
   if(!arenaPhoto || !arenaImages.length) return;
 
-  const safeIndex = index % arenaImages.length;
-  arenaPhoto.src = arenaImages[safeIndex];
-  arenaPhoto.style.display = 'block';
-
+  const image = arenaImages[index] || arenaImages[0];
+  arenaPhoto.src = image;
+arenaPhoto.style.display = 'block';
   arenaButtons.forEach((button, buttonIndex) => {
-    button.classList.toggle('is-active', buttonIndex === safeIndex);
+    button.classList.toggle('is-active', buttonIndex === index);
   });
 }
 
 async function loadArenaImages(){
-  try{
-    const response = await fetch(`https://api.are.na/v2/channels/${arenaChannel}/contents?per=100`);
-    const data = await response.json();
-
-    arenaImages = Array.from(new Set(
-      (data.contents || [])
-        .map(block =>
-          block.image?.display?.url ||
-          block.image?.large?.url ||
-          block.image?.original?.url ||
-          block.image?.thumb?.url
-        )
-        .filter(Boolean)
-    )).slice(0, 4);
-
-    arenaButtons.forEach((button, index) => {
-      button.style.display = arenaImages[index] ? '' : 'none';
-    });
-
-    setArenaImage(0);
-  }catch(error){
-    console.warn('Could not load Are.na images', error);
-  }
-}
-
-arenaButtons.forEach(button => {
-  button.addEventListener('click', event => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    setArenaImage(Number(button.dataset.arenaIndex || 0));
-  }, true);
-});
-
-loadArenaImages();
   try{
     const response = await fetch(`https://api.are.na/v2/channels/${arenaChannel}/contents?per=100`);
     const data = await response.json();
@@ -808,7 +709,7 @@ loadArenaImages();
   }catch(error){
     console.warn('Could not load Are.na images', error);
   }
-
+}
 
 arenaButtons.forEach(button => {
   button.addEventListener('click', () => {
