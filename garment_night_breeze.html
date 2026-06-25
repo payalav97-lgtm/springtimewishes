@@ -292,29 +292,6 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .canvas-field{opacity:.22}
   .form-line{stroke-dasharray:none}
-}.arena-photo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:2;
-  opacity:.86;
-  filter:brightness(.68) contrast(.9) saturate(.82);
-}
-
-.chamber-shell svg,
-.chamber-shell .specimen-lines,
-.chamber-shell .scanline{
-  position:relative;
-  z-index:3;
-  opacity:.18;
-  pointer-events:none;
-}
-
-.chamber-shell .thumbs{
-  position:absolute;
-  z-index:5;
 }
 </style>
 </head>
@@ -359,14 +336,12 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         </div>
         <div class="specimen-lines" aria-hidden="true"></div>
         <div class="scanline" aria-hidden="true"></div>
-      <img id="arenaPhoto" class="arena-photo" alt="night breeze top image" loading="lazy">
-
-<div class="thumbs" aria-label="product images">
-  <button class="thumb is-active" data-view="front" data-arena-index="0" type="button"><span>01</span></button>
-  <button class="thumb" data-view="side" data-arena-index="1" type="button"><span>02</span></button>
-  <button class="thumb" data-view="detail" data-arena-index="2" type="button"><span>03</span></button>
-  <button class="thumb" data-view="trace" data-arena-index="3" type="button"><span>04</span></button>
-</div>
+        <div class="thumbs" aria-label="product views">
+          <button class="thumb is-active" data-view="front" type="button"><span>front</span></button>
+          <button class="thumb" data-view="side" type="button"><span>side</span></button>
+          <button class="thumb" data-view="detail" type="button"><span>detail</span></button>
+          <button class="thumb" data-view="trace" type="button"><span>trace</span></button>
+        </div>
       </div>
     </section>
 
@@ -589,49 +564,7 @@ window.addEventListener('pagehide',()=>cancelAnimationFrame(raf),{passive:true})
 window.addEventListener('pageshow',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(draw)},{passive:true});
 window.addEventListener('resize',()=>requestAnimationFrame(resize),{passive:true});
 resize(); updateCart(); raf=requestAnimationFrame(draw);
-})();const arenaChannel = 'night_breeze_top';
-const arenaPhoto = document.getElementById('arenaPhoto');
-const arenaButtons = document.querySelectorAll('.thumb[data-arena-index]');
-let arenaImages = [];
-
-function setArenaImage(index){
-  if(!arenaPhoto || !arenaImages.length) return;
-
-  const image = arenaImages[index] || arenaImages[0];
-  arenaPhoto.src = image;
-
-  arenaButtons.forEach((button, buttonIndex) => {
-    button.classList.toggle('is-active', buttonIndex === index);
-  });
-}
-
-async function loadArenaImages(){
-  try{
-    const response = await fetch(`https://api.are.na/v2/channels/${arenaChannel}/contents?per=100`);
-    const data = await response.json();
-
-    arenaImages = (data.contents || [])
-      .filter(block => block.class === 'Image' && block.image)
-      .map(block =>
-        block.image?.large?.url ||
-        block.image?.display?.url ||
-        block.image?.original?.url
-      )
-      .filter(Boolean);
-
-    setArenaImage(0);
-  }catch(error){
-    console.warn('Could not load Are.na images', error);
-  }
-}
-
-arenaButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    setArenaImage(Number(button.dataset.arenaIndex || 0));
-  });
-});
-
-loadArenaImages();
+})();
 </script>
 </body>
 </html>
