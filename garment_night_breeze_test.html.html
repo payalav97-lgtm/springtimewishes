@@ -314,6 +314,21 @@ button{background:none;border:0;color:inherit;cursor:pointer}
 #chamber #garmentForm{
   opacity:0 !important;
   visibility:hidden !important;
+}/* TEST — move Are.na buttons below image */
+#chamber .arena-thumbs{
+  position:absolute !important;
+  left:50% !important;
+  bottom:-92px !important;
+  transform:translateX(-50%) !important;
+  display:grid !important;
+  grid-template-columns:repeat(3, 92px) !important;
+  gap:12px !important;
+  z-index:50 !important;
+}
+
+#chamber .arena-thumbs .thumb{
+  width:92px !important;
+  height:74px !important;
 }
 </style>
 </head>
@@ -359,10 +374,10 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         </div>
         <div class="specimen-lines" aria-hidden="true"></div>
         <div class="scanline" aria-hidden="true"></div>
-        <div class="thumbs" aria-label="product images">
-  <button class="thumb is-active" data-view="front" data-arena-index="0" type="button"><span>01</span></button>
-  <button class="thumb" data-view="side" data-arena-index="1" type="button"><span>02</span></button>
-  <button class="thumb" data-view="detail" data-arena-index="2" type="button"><span>03</span></button>
+      <div class="thumbs arena-thumbs" aria-label="product images">
+  <button class="thumb is-active" data-arena-index="0" type="button"><span>01</span></button>
+  <button class="thumb" data-arena-index="1" type="button"><span>02</span></button>
+  <button class="thumb" data-arena-index="2" type="button"><span>03</span></button>
 </div>
       </div>
     </section>
@@ -586,7 +601,9 @@ window.addEventListener('pagehide',()=>cancelAnimationFrame(raf),{passive:true})
 window.addEventListener('pageshow',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(draw)},{passive:true});
 window.addEventListener('resize',()=>requestAnimationFrame(resize),{passive:true});
 resize(); updateCart(); raf=requestAnimationFrame(draw);
-})();const arenaChannel = 'night_breeze_top';
+})();
+
+const arenaChannel = 'night_breeze_top';
 const arenaPhoto = document.getElementById('arenaPhoto');
 const arenaButtons = document.querySelectorAll('.thumb[data-arena-index]');
 let arenaImages = [];
