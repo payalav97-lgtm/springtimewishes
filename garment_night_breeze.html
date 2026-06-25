@@ -589,8 +589,7 @@ window.addEventListener('pagehide',()=>cancelAnimationFrame(raf),{passive:true})
 window.addEventListener('pageshow',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(draw)},{passive:true});
 window.addEventListener('resize',()=>requestAnimationFrame(resize),{passive:true});
 resize(); updateCart(); raf=requestAnimationFrame(draw);
-})();
-const arenaChannel = 'night_breeze_top';
+})();const arenaChannel = 'night_breeze_top';
 const arenaPhoto = document.getElementById('arenaPhoto');
 const arenaButtons = document.querySelectorAll('.thumb[data-arena-index]');
 let arenaImages = [];
@@ -600,7 +599,7 @@ function setArenaImage(index){
 
   const image = arenaImages[index] || arenaImages[0];
   arenaPhoto.src = image;
-arenaPhoto.style.display = 'block';
+
   arenaButtons.forEach((button, buttonIndex) => {
     button.classList.toggle('is-active', buttonIndex === index);
   });
