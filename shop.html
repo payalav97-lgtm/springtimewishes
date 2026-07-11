@@ -810,91 +810,82 @@ h1{
   const archiveImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBR58HmXHKdarg9D-tcaZlZ_gCadZVV19RQ&s";
 
   const pieces = [
-    {
-      name:"night breeze", type:"top", state:"available", specimen:"001", url:"garment_night_breeze_test.html.html",
-      material:"mesh, ribbon, hand-worked edge", body:"shoulder / chest / veil tension",
-      request:"private fitting or purchase inquiry",
-      note:"A suspended top-form held between purple dusk, grey veil, and soft pressure. Built for request, fitting, and slow apparition.",
-      signal:"purple / grey", form:"top", media:archiveImage
-    },
-    {
-      name:"mystery pond", type:"skirt", state:"available", specimen:"002",
-      material:"dark sheer layers, soft lining, tied waist", body:"waist / hip / lower shadow",
-      request:"purchase or custom length",
-      note:"A lower-body reflection. Its movement is slow, pond-like, and deliberately unstable at the hem.",
-      signal:"nude / black", form:"skirt"
-    },
-    {
-      name:"moss", type:"dress", state:"archive request", specimen:"003",
-      material:"washed cotton, soft dye residue, repaired seam", body:"torso / shoulder / softened fall",
-      request:"archive retrieval only",
-      note:"A remembered dress-form, soft at the edge. It behaves like vegetation returning through cloth.",
-      signal:"soft residue", form:"dress"
-    },
-    {
-      name:"little wish", type:"dress", state:"available", specimen:"004",
-      material:"pale cotton, translucent layer, delicate closure", body:"small frame / chest / hem",
-      request:"purchase or private variation",
-      note:"A small apparition in blue-white light. It does not perform innocence; it keeps a sharper memory.",
-      signal:"blue / white", form:"dress"
-    },
-    {
-      name:"garden of joy", type:"skirt", state:"private request", specimen:"005",
-      material:"charcoal mesh, black cotton, gathered pressure", body:"waist / walking shadow / garden edge",
-      request:"made to order",
-      note:"A dark garden without sweetness. Built as a skirt that opens and closes like a low night plant.",
-      signal:"charcoal / black", form:"skirt"
-    },
-    {
-      name:"among webs", type:"skirt", state:"private request", specimen:"006",
-      material:"thread web, sheer support, irregular tie points", body:"waist / side body / caught motion",
-      request:"custom request",
-      note:"A body caught gently. The web is not decoration; it is a structure for holding desire at a distance.",
-      signal:"web structure", form:"web"
-    },
-    {
-      name:"fragment", type:"top", state:"available", specimen:"007",
-      material:"silver trace, mesh panel, stitched residue", body:"chest / collar / reflected cut",
-      request:"purchase inquiry",
-      note:"A reflected cut that never resolves into a clean object. Worn like a piece of delayed light.",
-      signal:"silver", form:"top"
-    },
-    {
-      name:"shield", type:"dress", state:"private request", specimen:"008",
-      material:"dense cotton, structured panel, soft armor seam", body:"torso / protection / long fall",
-      request:"made to measure",
-      note:"A dress as soft armor. It protects by remaining tender, heavy, and severe.",
-      signal:"soft armor", form:"armor"
-    },
-    {
-      name:"veiled thorn", type:"veil", state:"available", specimen:"009",
-      material:"transparent veil, thorn stitch, narrow tie", body:"head / face / shoulder shadow",
-      request:"purchase or color request",
-      note:"A veil that does not hide the body; it delays it. The edge holds a thin thorn record.",
-      signal:"veil / thorn", form:"veil"
-    },
-    {
-      name:"mourning sleeve", type:"sleeve study", state:"private request", specimen:"010",
-      material:"gauze, elastic seam, dark residue dye", body:"arm / wrist / held gesture",
-      request:"single or pair request",
-      note:"A sleeve-study for the arm as witness. It carries pressure where the gesture refuses to leave.",
-      signal:"arm / relic", form:"sleeve"
-    },
-    {
-      name:"stain relic", type:"panel", state:"archive request", specimen:"011",
-      material:"oxidized cotton, stain field, thread ghost", body:"panel / lining / evidence",
-      request:"archive inquiry",
-      note:"A material fragment held as evidence. It is closer to a record than a garment.",
-      signal:"oxidized cloth", form:"panel"
-    },
-    {
-      name:"spring under ash", type:"custom garment", state:"private request", specimen:"012",
-      material:"selected after fitting, shadow dye, seam ritual", body:"built from measurement and wish",
-      request:"private commission",
-      note:"A commission path for a garment made from request, body, memory, and dark return. Spring appears under ash.",
-      signal:"commission", form:"commission"
-    }
-  ];
+  {
+    name:"night breeze",
+    type:"top",
+    state:"available",
+    specimen:"001",
+    url:"garment_night_breeze_test.html.html",
+    material:"cotton mesh, black body, rose sleeves",
+    body:"close fitted top",
+    request:"purchase",
+    note:"A close fitted top held between black body and rose sleeves.",
+    signal:"black / pink",
+    form:"top",
+    media:archiveImage,
+    arenaChannel:"night_breeze_top"
+  },
+  {
+    name:"nila skirt",
+    type:"skirt",
+    state:"available",
+    specimen:"002",
+    url:"#",
+    material:"cotton and gauze",
+    body:"long skirt",
+    request:"purchase",
+    note:"A long skirt cut in cotton and gauze, made to fall softly around the body.",
+    signal:"bone",
+    form:"skirt",
+    media:archiveImage,
+    arenaChannel:"nila_skirt"
+  },
+  {
+    name:"misty meadow corset",
+    type:"corset",
+    state:"available",
+    specimen:"003",
+    url:"#",
+    material:"organic linen",
+    body:"structured corset",
+    request:"purchase",
+    note:"A boned corset cut in organic linen, shaped close to the torso.",
+    signal:"earthen linen",
+    form:"corset",
+    media:archiveImage,
+    arenaChannel:"misty_meadow_corset"
+  },
+  {
+    name:"midnight spell dress [silver moon]",
+    type:"dress",
+    state:"available",
+    specimen:"004",
+    url:"#",
+    material:"soft rayon jersey",
+    body:"long sleeve maxi dress",
+    request:"purchase",
+    note:"A long sleeve maxi dress cut close to the body in soft rayon jersey.",
+    signal:"silver moon",
+    form:"dress",
+    media:archiveImage,
+    arenaChannel:"midnight_spell_silver_moon"
+  },
+  {
+    name:"midnight spell dress [chocolate]",
+    type:"dress",
+    state:"available",
+    specimen:"005",
+    url:"#",
+    material:"soft rayon jersey",
+    body:"long sleeve maxi dress",
+    request:"purchase",
+    note:"A long sleeve maxi dress cut close to the body in soft rayon jersey.",
+    signal:"chocolate",
+    form:"dress",
+    media:archiveImage,
+    arenaChannel:"midnight_spell_chocolate"
+  }
+];
 
   let bw = 1, bh = 1, dpr = 1, raf = 0, last = 0, frame = 0;
   let targetFPS = reduced ? 8 : lowPower ? 22 : 32;
@@ -1310,5 +1301,7 @@ h1{
   init();
 })();
 </script>
+
+<script src="./shop_arena.js"></script>
 </body>
 </html>
