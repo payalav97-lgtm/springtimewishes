@@ -525,9 +525,9 @@ function updateCart(){
 }
 function addToCart(){
   const shopifyVariants = {
-    'XS/S': '45756109357227',
-    'S/M': '45756109389995',
-    'M/L': '45756109455531'
+    'XS/S': '44495072919603',
+    'S/M': '44495072952371',
+    'M/L': '44495072985139'
   };
 
   const activeChoices = Array.from(document.querySelectorAll('.choice[aria-pressed="true"]'))
@@ -543,7 +543,7 @@ function addToCart(){
 
   const qty = Math.max(1, Number(document.getElementById('qtyOut')?.value || 1));
 
-  window.location.href = `https://springtime-wishes.myshopify.com/cart/${variantId}:${qty}`;
+  window.location.href = `https://springtime-wishes-2.myshopify.com/cart/${variantId}:${qty}`;
 }
 function draw(t){
   if(document.hidden){raf=requestAnimationFrame(draw);return}
