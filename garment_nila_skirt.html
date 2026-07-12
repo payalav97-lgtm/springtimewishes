@@ -350,59 +350,6 @@ button{background:none;border:0;color:inherit;cursor:pointer}
   z-index:2 !important;
 }
 </style>
-<script>
-(function () {
-  if (window.__STW_DETAIL_GUARD__) return;
-  window.__STW_DETAIL_GUARD__ = true;
-
-  document.addEventListener("click", function (event) {
-    const el = event.target.closest("button, a, summary, [role='button'], .detail, .detail-toggle, .detail-title, .detail-label, .accordion-toggle, .accordion-header, .spec-label, [data-detail]");
-    if (!el) return;
-
-    const raw = (el.textContent || "").trim().toLowerCase();
-    const label = raw.split("\n")[0].trim();
-
-    const isDetail =
-      label === "fabric" ||
-      label === "care" ||
-      label === "sizing" ||
-      raw.startsWith("fabric") ||
-      raw.startsWith("care") ||
-      raw.startsWith("sizing");
-
-    if (!isDetail) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-
-    const parent = el.closest(".detail, .accordion-item, .product-detail, .spec, .info-row, li, div") || el.parentElement;
-    let panel = null;
-
-    if (parent) {
-      const children = Array.from(parent.children);
-      panel = children.find(function (node) {
-        if (node === el) return false;
-        const tag = (node.tagName || "").toLowerCase();
-        return (tag === "p" || tag === "div") && (node.textContent || "").trim().length > 0;
-      });
-    }
-
-    if (!panel && el.nextElementSibling) {
-      panel = el.nextElementSibling;
-    }
-
-    if (panel) {
-      const hidden = panel.hidden || panel.style.display === "none";
-      panel.hidden = false;
-      panel.style.display = hidden ? "block" : "none";
-    }
-
-    return false;
-  }, true);
-})();
-</script>
-
 </head>
 <body>
 <canvas class="canvas-field" id="field" aria-hidden="true"></canvas>
@@ -447,9 +394,9 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         <div class="specimen-lines" aria-hidden="true"></div>
         <div class="scanline" aria-hidden="true"></div>
       <div class="thumbs arena-thumbs" aria-label="product images">
-  <button type="button" class="thumb is-active" data-arena-index="0" type="button"><span>01</span></button>
-  <button type="button" class="thumb" data-arena-index="1" type="button"><span>02</span></button>
-  <button type="button" class="thumb" data-arena-index="2" type="button"><span>03</span></button>
+  <button class="thumb is-active" data-arena-index="0" type="button"><span>01</span></button>
+  <button class="thumb" data-arena-index="1" type="button"><span>02</span></button>
+  <button class="thumb" data-arena-index="2" type="button"><span>03</span></button>
 </div>
       </div>
     </section>
@@ -471,27 +418,27 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         <div class="field">
           <div class="field-label">size</div>
           <div class="choice-row" role="group" aria-label="select size">
-            <button type="button" class="choice" type="button" data-choice="size" aria-pressed="true">xs</button>
-<button type="button" class="choice" type="button" data-choice="size" aria-pressed="false">s</button>
-<button type="button" class="choice" type="button" data-choice="size" aria-pressed="false">m</button>
+            <button class="choice" type="button" data-choice="size" aria-pressed="true">XS</button>
+<button class="choice" type="button" data-choice="size" aria-pressed="false">S</button>
+<button class="choice" type="button" data-choice="size" aria-pressed="false">M</button>
           </div>
         </div>
         <div class="field">
           <div class="field-label">color / material signal</div>
           <div class="choice-row" role="group" aria-label="select color">
-  <button type="button" class="choice" type="button" data-choice="color" aria-pressed="true">bone</button>
+  <button class="choice" type="button" data-choice="color" aria-pressed="true">cotton gauze</button>
 </div>
         </div>
         <div class="field">
           <div class="field-label">quantity</div>
           <div class="qty">
-            <button type="button" type="button" id="qtyMinus" aria-label="decrease quantity">−</button>
+            <button type="button" id="qtyMinus" aria-label="decrease quantity">−</button>
             <output id="qtyOut">1</output>
-            <button type="button" type="button" id="qtyPlus" aria-label="increase quantity">+</button>
+            <button type="button" id="qtyPlus" aria-label="increase quantity">+</button>
           </div>
         </div>
        <div class="action-row">
-  <button type="button" class="add-cart" type="submit">add to cart</button>
+  <button class="add-cart" type="submit">add to cart</button>
   <a class="request" href="contact.html?request=night-breeze">private sizing</a>
 </div>
       </form>
@@ -528,7 +475,7 @@ button{background:none;border:0;color:inherit;cursor:pointer}
  <aside class="mobile-buy" aria-label="mobile purchase">
   <div class="mobile-buy-inner">
     <div class="mini">nila skirt<strong>$5,500 mxn / available</strong></div>
-    <button type="button" class="add-cart" id="mobileAdd" type="button">add to cart</button>
+    <button class="add-cart" id="mobileAdd" type="button">add to cart</button>
   </div>
 </aside>
   </aside>
@@ -558,7 +505,7 @@ const product = {
   currency:'USD',
   status:'available'
 };
-let selected = {size:'s', color:'bone'};
+let selected = {size:'s', color:'cotton gauze'};
 function resize(){
   W = innerWidth; H = innerHeight;
   const scale = lowPower ? 1.55 : 1.1;
@@ -586,7 +533,7 @@ function addToCart(){
   const activeChoices = Array.from(document.querySelectorAll('.choice[aria-pressed="true"]'))
     .map(choice => choice.textContent.trim().toUpperCase());
 
-  const size = activeChoices.find(value => ['XS', 'S', 'M'].includes(value));
+  const size = activeChoices.find(value => ['XS/S', 'S/M', 'M/L'].includes(value));
   const variantId = shopifyVariants[size];
 
   if(!variantId){
