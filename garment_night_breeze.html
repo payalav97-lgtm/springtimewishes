@@ -410,8 +410,12 @@ button{background:none;border:0;color:inherit;cursor:pointer}
           <span>status</span><strong>available</strong>
           <span>record</span><strong>sw-g-001</strong>
         </div>
-        <div class="price">$240 usd</div>
-        <div class="description">A suspended torso signal in purple and grey. Cut close to the body, softened by shadow, held by a seam that remembers pressure.</div>
+        <div class="price">$1,880 mxn</div>
+        <div class="description">cut from a soft rayon and elastane blend, this long sleeve raglan t-shirt belongs to the everyday side of the archive. the fabric is lightweight, fluid, and lightly elastic, allowing the piece to sit close to the skin without feeling restrictive.
+
+constructed with a fitted silhouette, black body, and rose-colored raglan sleeves. the contrast is subtle but intentional, defining the shape of the upper body through color and seam placement rather than ornament.
+
+designed and sewn in mexico.</div>
       </div>
 
       <form class="purchase-panel" id="purchaseForm">
@@ -446,15 +450,15 @@ button{background:none;border:0;color:inherit;cursor:pointer}
       <section class="archive-info" aria-label="garment details">
         <details open>
           <summary>fabric</summary>
-          <p>Cotton mesh and treated voile with hand-finished seam work. Lightweight, sheer in shadow, structured through the side trace.</p>
+          <p>soft rayon and elastane blend. lightweight, fluid, and lightly elastic, with a close fit against the skin.</p>
         </details>
         <details>
           <summary>care</summary>
-          <p>Cold hand wash only. Dry flat in shadow. Do not bleach. Store folded with tissue or hung away from direct light.</p>
+          <p>cold hand wash. dry flat in shade. do not bleach. do not tumble dry. avoid wringing to preserve the shape of the fabric.</p>
         </details>
         <details>
           <summary>sizing</summary>
-          <p>Fits close to the body. Choose your usual size for a compressed silhouette; size up for softer fall and more air around the torso.</p>
+          <p>fitted silhouette with light stretch. choose your usual size.</p>
         </details>
         <details>
           <summary>measurements</summary>
@@ -467,14 +471,14 @@ button{background:none;border:0;color:inherit;cursor:pointer}
       </section>
 
       <nav class="related" aria-label="related garments">
-        <a href="shop.html#garden-of-joy"><span>related</span><strong>garden of joy</strong></a>
-        <a href="shop.html#mystery-pond"><span>related</span><strong>mystery pond</strong></a>
-        <a href="shop.html#fragment"><span>related</span><strong>fragment</strong></a>
+        <a href="#" data-related-channel="nila_skirt"><span>related</span><strong>nila skirt</strong></a>
+        <a href="#" data-related-channel="misty_meadow_corset"><span>related</span><strong>misty meadow corset</strong></a>
+        <a href="#" data-related-channel="midnight_spell_silver_moon"><span>related</span><strong>midnight spell dress [silver moon]</strong></a>
       </nav>
     </section>
  <aside class="mobile-buy" aria-label="mobile purchase">
   <div class="mobile-buy-inner">
-    <div class="mini">night breeze<strong>$240 usd / available</strong></div>
+    <div class="mini">night breeze<strong>$1,880 mxn / available</strong></div>
     <button class="add-cart" id="mobileAdd" type="button">add to cart</button>
   </div>
 </aside>
@@ -686,5 +690,25 @@ arenaButtons.forEach(button => {
 
 loadArenaImages();
 </script>
+
+<script>
+window.STW_PRODUCT = {
+  title: "night breeze top",
+  price: 1880,
+  variants: {
+    "XS/S": "44495072919603",
+    "S/M": "44495072952371",
+    "M/L": "44495072985139"
+  },
+  stock: {
+    "XS/S": 2,
+    "S/M": 2,
+    "M/L": 4
+  }
+};
+</script>
+
+<script src="./cart.js"></script>
+<script src="./product_related.js"></script>
 </body>
 </html>
