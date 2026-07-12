@@ -418,15 +418,15 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         <div class="field">
           <div class="field-label">size</div>
           <div class="choice-row" role="group" aria-label="select size">
-            <button class="choice" type="button" data-choice="size" aria-pressed="true">xs</button>
-<button class="choice" type="button" data-choice="size" aria-pressed="false">s</button>
-<button class="choice" type="button" data-choice="size" aria-pressed="false">m</button>
+            <button class="choice" type="button" data-choice="size" aria-pressed="true">XS</button>
+<button class="choice" type="button" data-choice="size" aria-pressed="false">S</button>
+<button class="choice" type="button" data-choice="size" aria-pressed="false">M</button>
           </div>
         </div>
         <div class="field">
           <div class="field-label">color / material signal</div>
           <div class="choice-row" role="group" aria-label="select color">
-  <button class="choice" type="button" data-choice="color" aria-pressed="true">bone</button>
+  <button class="choice" type="button" data-choice="color" aria-pressed="true">cotton gauze</button>
 </div>
         </div>
         <div class="field">
@@ -446,11 +446,11 @@ button{background:none;border:0;color:inherit;cursor:pointer}
       <section class="archive-info" aria-label="garment details">
         <details open>
           <summary>fabric</summary>
-          <p>soft cotton and gauze. lightweight, semi-sheer, and fluid, with an elongated fall around the body.</p>
+          <p>cotton, gauze.</p>
         </details>
         <details>
           <summary>care</summary>
-          <p>cold hand wash. dry flat in shade. do not bleach. do not tumble dry. handle gently to preserve the gauze texture.</p>
+          <p>hand wash cold. do not bleach. do not tumble dry. line dry in shade. iron on low heat.</p>
         </details>
         <details>
           <summary>sizing</summary>
@@ -505,7 +505,7 @@ const product = {
   currency:'USD',
   status:'available'
 };
-let selected = {size:'s', color:'bone'};
+let selected = {size:'s', color:'cotton gauze'};
 function resize(){
   W = innerWidth; H = innerHeight;
   const scale = lowPower ? 1.55 : 1.1;
@@ -533,7 +533,7 @@ function addToCart(){
   const activeChoices = Array.from(document.querySelectorAll('.choice[aria-pressed="true"]'))
     .map(choice => choice.textContent.trim().toUpperCase());
 
-  const size = activeChoices.find(value => ['XS', 'S', 'M'].includes(value));
+  const size = activeChoices.find(value => ['XS/S', 'S/M', 'M/L'].includes(value));
   const variantId = shopifyVariants[size];
 
   if(!variantId){
