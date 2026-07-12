@@ -351,35 +351,7 @@ button{background:none;border:0;color:inherit;cursor:pointer}
 }
 </style>
 
-<style>
-.product-details-clean{
-  border-top:1px solid rgba(255,255,255,.18);
-  margin-top:22px;
-}
-.product-detail-clean{
-  border-bottom:1px solid rgba(255,255,255,.18);
-}
-.detail-clean-toggle{
-  width:100%;
-  appearance:none;
-  background:transparent;
-  border:0;
-  color:inherit;
-  font:inherit;
-  text-align:left;
-  padding:13px 0;
-  cursor:pointer;
-  text-transform:lowercase;
-}
-.detail-clean-panel{
-  padding:0 0 15px;
-}
-.detail-clean-panel p{
-  margin:0;
-  opacity:.74;
-  line-height:1.55;
-}
-</style>
+
 
 </head>
 <body>
@@ -470,29 +442,6 @@ button{background:none;border:0;color:inherit;cursor:pointer}
         </div>
        <div class="action-row">
   
-<div class="product-details-clean" id="nilaDetails">
-  <div class="product-detail-clean">
-    <button type="button" class="detail-clean-toggle" data-nila-detail="fabric" aria-expanded="false">fabric</button>
-    <div class="detail-clean-panel" data-nila-panel="fabric" hidden>
-      <p>cotton, gauze.</p>
-    </div>
-  </div>
-
-  <div class="product-detail-clean">
-    <button type="button" class="detail-clean-toggle" data-nila-detail="care" aria-expanded="false">care</button>
-    <div class="detail-clean-panel" data-nila-panel="care" hidden>
-      <p>hand wash cold. do not bleach. do not tumble dry. line dry in shade. iron on low heat.</p>
-    </div>
-  </div>
-
-  <div class="product-detail-clean">
-    <button type="button" class="detail-clean-toggle" data-nila-detail="sizing" aria-expanded="false">sizing</button>
-    <div class="detail-clean-panel" data-nila-panel="sizing" hidden>
-      <p>long skirt with a controlled, fluid fall. choose your usual size.</p>
-    </div>
-  </div>
-</div>
-
 <button class="add-cart" type="submit">add to cart</button>
   <a class="request" href="contact.html?request=night-breeze">private sizing</a>
 </div>
@@ -760,29 +709,7 @@ window.STW_PRODUCT = {
 </script>
 
 
-<script>
-(function () {
-  document.addEventListener("click", function (event) {
-    const button = event.target.closest("[data-nila-detail]");
-    if (!button) return;
 
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-
-    const key = button.getAttribute("data-nila-detail");
-    const panel = document.querySelector('[data-nila-panel="' + key + '"]');
-    const isOpen = button.getAttribute("aria-expanded") === "true";
-
-    button.setAttribute("aria-expanded", isOpen ? "false" : "true");
-
-    if (panel) {
-      panel.hidden = isOpen;
-      panel.style.display = isOpen ? "none" : "block";
-    }
-  }, true);
-})();
-</script>
 
 <script src="./cart.js"></script>
 <script src="./product_related.js"></script>
