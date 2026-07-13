@@ -614,71 +614,124 @@ document.addEventListener("click", function(event) {
   document.addEventListener("click", runAdd, true);
 })();
 
-/* STW mobile gallery thumbnail fix — no layout / no HTML changes */
+
+
+
+/* STW gallery coordinate fix — no layout / no HTML changes */
 (function () {
-  if (window.__STW_MOBILE_GALLERY_FIX__) return;
-  window.__STW_MOBILE_GALLERY_FIX__ = true;
+  if (window.__STW_GALLERY_COORDINATE_FIX__) return;
+  window.__STW_GALLERY_COORDINATE_FIX__ = true;
+
+  function pointFromEvent(event) {
+    const touch =
+      event.changedTouches && event.changedTouches[0] ||
+      event.touches && event.touches[0];
+
+    return {
+      x: touch ? touch.clientX : event.clientX,
+      y: touch ? touch.clientY : event.clientY
+    };
+  }
+
+  function thumbs() {
+    return Array.from(document.querySelectorAll(".thumb"));
+  }
+
+  function thumbAtPoint(x, y) {
+    return thumbs().find(function (thumb) {
+      const r = thumb.getBoundingClientRect();
+      return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+    });
+  }
 
   function mainImage() {
     return (
       document.querySelector("#arenaPhoto") ||
       document.querySelector(".arena-photo") ||
       document.querySelector(".product-image img") ||
-      document.querySelector("img")
+      document.querySelector("main img")
     );
   }
 
-  function getThumbs() {
-    return Array.from(document.querySelectorAll(".thumb"));
-  }
-
-  function imageFromThumb(thumb) {
+  function srcFromThumb(thumb) {
     const img = thumb.querySelector("img");
-    if (img) return img.currentSrc || img.src;
+    if (img) return img.currentSrc || img.src || "";
+
+    const attrs = ["data-src", "data-image", "data-full", "data-url"];
+    for (const attr of attrs) {
+      const value = thumb.getAttribute(attr);
+      if (value) return value;
+    }
 
     const bg = window.getComputedStyle(thumb).backgroundImage;
     const match = bg && bg.match(/url\(["']?(.*?)["']?\)/);
-
     if (match && match[1]) return match[1];
 
-    return thumb.getAttribute("data-src") ||
-      thumb.getAttribute("data-image") ||
-      thumb.getAttribute("data-full") ||
-      "";
+    return "";
   }
 
-  function activateThumb(thumb) {
+  function activate(thumb) {
+    if (!thumb) return;
+
+    const allThumbs = thumbs();
+    const index = allThumbs.indexOf(thumb);
     const img = mainImage();
-    if (!img || !thumb) return;
 
-    const src = imageFromThumb(thumb);
-    if (!src) return;
-
-    img.src = src;
-    img.removeAttribute("srcset");
-
-    getThumbs().forEach(function (item) {
+    allThumbs.forEach(function (item) {
       item.classList.remove("is-active", "active", "selected");
       item.setAttribute("aria-pressed", "false");
     });
 
     thumb.classList.add("is-active");
     thumb.setAttribute("aria-pressed", "true");
+
+    // primero intenta usar el comportamiento original de la página
+    if (!window.__STW_GALLERY_INTERNAL_CLICK__) {
+      window.__STW_GALLERY_INTERNAL_CLICK__ = true;
+      try {
+        thumb.dispatchEvent(new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        }));
+      } catch (e) {}
+      window.__STW_GALLERY_INTERNAL_CLICK__ = false;
+    }
+
+    // fallback directo: cambiar la imagen grande
+    const src = srcFromThumb(thumb);
+    if (img && src) {
+      img.src = src;
+      img.removeAttribute("srcset");
+    }
+
+    // fallback por índice si la página usa una galería interna
+    if (typeof window.showImage === "function" && index > -1) {
+      try { window.showImage(index); } catch (e) {}
+    }
+    if (typeof window.setActiveImage === "function" && index > -1) {
+      try { window.setActiveImage(index); } catch (e) {}
+    }
   }
 
-  function handleThumb(event) {
-    const thumb = event.target.closest && event.target.closest(".thumb");
+  function handle(event) {
+    const point = pointFromEvent(event);
+    const directThumb = event.target.closest && event.target.closest(".thumb");
+    const coordinateThumb = thumbAtPoint(point.x, point.y);
+    const thumb = directThumb || coordinateThumb;
+
     if (!thumb) return;
 
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
 
-    activateThumb(thumb);
+    activate(thumb);
     return false;
   }
 
-  document.addEventListener("click", handleThumb, true);
-  document.addEventListener("touchend", handleThumb, true);
-  document.addEventListener("pointerup", handleThumb, true);
+  window.addEventListener("touchend", handle, true);
+  window.addEventListener("pointerup", handle, true);
+  window.addEventListener("click", handle, true);
 })();
+
