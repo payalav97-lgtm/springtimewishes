@@ -578,3 +578,38 @@ document.addEventListener("click", function(event) {
     init();
   }
 })();
+
+/* STW mobile add-to-cart fix — no layout / no HTML changes */
+(function () {
+  if (window.__STW_MOBILE_ADD_FIX__) return;
+  window.__STW_MOBILE_ADD_FIX__ = true;
+
+  function isAddButton(target) {
+    return target && target.closest && target.closest('#mobileAdd, .add-cart, [data-add-to-cart]');
+  }
+
+  function runAdd(event) {
+    const button = isAddButton(event.target);
+    if (!button) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    if (typeof window.STWCartAdd === "function") {
+      window.STWCartAdd();
+      return false;
+    }
+
+    const fallback = document.querySelector('.add-cart:not(#mobileAdd), [data-add-to-cart]');
+    if (fallback && fallback !== button) {
+      fallback.click();
+    }
+
+    return false;
+  }
+
+  document.addEventListener("touchend", runAdd, true);
+  document.addEventListener("pointerup", runAdd, true);
+  document.addEventListener("click", runAdd, true);
+})();
