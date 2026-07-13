@@ -613,3 +613,72 @@ document.addEventListener("click", function(event) {
   document.addEventListener("pointerup", runAdd, true);
   document.addEventListener("click", runAdd, true);
 })();
+
+/* STW mobile gallery thumbnail fix — no layout / no HTML changes */
+(function () {
+  if (window.__STW_MOBILE_GALLERY_FIX__) return;
+  window.__STW_MOBILE_GALLERY_FIX__ = true;
+
+  function mainImage() {
+    return (
+      document.querySelector("#arenaPhoto") ||
+      document.querySelector(".arena-photo") ||
+      document.querySelector(".product-image img") ||
+      document.querySelector("img")
+    );
+  }
+
+  function getThumbs() {
+    return Array.from(document.querySelectorAll(".thumb"));
+  }
+
+  function imageFromThumb(thumb) {
+    const img = thumb.querySelector("img");
+    if (img) return img.currentSrc || img.src;
+
+    const bg = window.getComputedStyle(thumb).backgroundImage;
+    const match = bg && bg.match(/url\(["']?(.*?)["']?\)/);
+
+    if (match && match[1]) return match[1];
+
+    return thumb.getAttribute("data-src") ||
+      thumb.getAttribute("data-image") ||
+      thumb.getAttribute("data-full") ||
+      "";
+  }
+
+  function activateThumb(thumb) {
+    const img = mainImage();
+    if (!img || !thumb) return;
+
+    const src = imageFromThumb(thumb);
+    if (!src) return;
+
+    img.src = src;
+    img.removeAttribute("srcset");
+
+    getThumbs().forEach(function (item) {
+      item.classList.remove("is-active", "active", "selected");
+      item.setAttribute("aria-pressed", "false");
+    });
+
+    thumb.classList.add("is-active");
+    thumb.setAttribute("aria-pressed", "true");
+  }
+
+  function handleThumb(event) {
+    const thumb = event.target.closest && event.target.closest(".thumb");
+    if (!thumb) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    activateThumb(thumb);
+    return false;
+  }
+
+  document.addEventListener("click", handleThumb, true);
+  document.addEventListener("touchend", handleThumb, true);
+  document.addEventListener("pointerup", handleThumb, true);
+})();
