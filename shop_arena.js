@@ -72,11 +72,91 @@ function addShopArenaStyles() {
       font-size: 10px !important;
       letter-spacing: .12em !important;
     }
+
+    .hero {
+  overflow: hidden;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+}
+
+.stw-shop-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stw-shop-hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 28%, transparent 68%, rgba(0,0,0,.72)),
+    radial-gradient(ellipse at center, transparent 46%, rgba(0,0,0,.52) 100%);
+  pointer-events: none;
+}
+
+.stw-shop-hero-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: .66;
+  filter: grayscale(.12) contrast(.94) brightness(.72);
+}
+
+@media (max-width: 760px) {
+  .stw-shop-hero-media {
+    top: calc(var(--safe-t) + 82px);
+    width: 88vw;
+    height: 46svh;
+    transform: translateX(-50%);
+  }
+
+  .stw-shop-hero-media img {
+    opacity: .58;
+  }
+}
   `;
 
   document.head.appendChild(style);
 }
 
+
+
+async function replaceShopHeroImage(channel) {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+
+  const imageUrl = await getArenaCover(channel);
+  if (!imageUrl) return;
+
+  let media = hero.querySelector(".stw-shop-hero-media");
+
+  if (!media) {
+    media = document.createElement("figure");
+    media.className = "stw-shop-hero-media";
+    media.setAttribute("aria-hidden", "true");
+
+    const img = document.createElement("img");
+    img.alt = "";
+    img.decoding = "async";
+    img.fetchPriority = "high";
+
+    media.appendChild(img);
+    hero.prepend(media);
+  }
+
+  media.querySelector("img").src = imageUrl;
+}
 function findPieceCardByName(name) {
   const cards = Array.from(document.querySelectorAll(".piece-card"));
   return cards.find(card => card.textContent.toLowerCase().includes(name.toLowerCase()));
@@ -113,6 +193,9 @@ async function replaceProductImage(name, channel) {
 
 function initShopArena() {
   addShopArenaStyles();
+
+  replaceShopHeroImage("shop_html");
+
 
   replaceProductImage("night breeze", "night_breeze_top");
   replaceProductImage("nila skirt", "nila_skirt");
