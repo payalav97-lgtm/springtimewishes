@@ -8,11 +8,19 @@ async function getArenaCover(channel) {
 
     const data = await response.json();
 
-    const block = data.contents.find(item =>
+    const imageBlocks = data.contents.filter(item =>
       item.class === "Image" &&
       item.image &&
       (item.image.display || item.image.large || item.image.original)
     );
+
+    const usePhoto01 =
+      channel === "midnight_spell_silver_moon" ||
+      channel === "midnight_spell_chocolate";
+
+    const block = usePhoto01
+      ? imageBlocks[imageBlocks.length - 1]
+      : imageBlocks[0];
 
     if (!block) return "";
 
