@@ -14,13 +14,9 @@ async function getArenaCover(channel) {
       (item.image.display || item.image.large || item.image.original)
     );
 
-    const usePhoto01 =
-      channel === "midnight_spell_silver_moon" ||
-      channel === "midnight_spell_chocolate";
-
-    const block = usePhoto01
-      ? imageBlocks[imageBlocks.length - 1]
-      : imageBlocks[0];
+    const block = channel === "shop_html"
+  ? imageBlocks[0]
+  : imageBlocks[imageBlocks.length - 1];
 
     if (!block) return "";
 
